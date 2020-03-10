@@ -1,0 +1,16 @@
+site_name: HAPHPIPE
+nav:
+- Home: index.md
+- Installation: install.md
+- Reads: hp_reads.md
+- Assemble: hp_assemble.md
+- Annotate: hp_annotate.md
+- Haplotype: hp_haplotype.md
+- Phylo: phylo.md
+- Example Pipelines: expipes.md
+- Input/Output: inout.md
+- Demos: demos.md
+- Advanced Users: adv.md
+- FAQ: faq.md
+- Helpful Resources: help.md
+theme: readthedocs
