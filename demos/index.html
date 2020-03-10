@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Demos - HAPHPIPE</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Demos";
+    var mkdocs_page_input_path = "demos.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> HAPHPIPE</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hp_reads/">Reads</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hp_assemble/">Assemble</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hp_annotate/">Annotate</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hp_haplotype/">Haplotype</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../phylo/">Phylo</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../expipes/">Example Pipelines</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../inout/">Input/Output</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Demos</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#demo01">Demo01</a></li>
+    
+
+    <li class="toctree-l2"><a href="#demo02">Demo02</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../adv/">Advanced Users</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">FAQ</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../help/">Helpful Resources</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">HAPHPIPE</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Demos</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>Data for both demos is included in the repository. Both samples should run quickly (less than five minutes using eight CPUs). <em>Note: ensure PredictHaplo is installed prior to running the demos</em>.<br></p>
+<h2 id="demo01">Demo01</h2>
+<p>We provide a subsample of reads for this sample. We obtained this sample using <a href="https://ncbi.github.io/sra-tools/fastq-dump.html">fastq-dump</a>.</p>
+<pre><code>fastq-dump --origfmt --defline-qual &quot;+&quot; --split-files --accession SRR8525886
+
+condo activate haphpipe
+hp_sample_reads --fq1 SRR8525886_1.fastq --fq2 SRR8525886_2.fastq --nreads 10000
+</code></pre>
+
+<p>Demo01 uses real HIV-1 data (SRA: <a href="https://www.ncbi.nlm.nih.gov/biosample/SAMN10820316">SAMN10820316</a>). This demo runs both the <em>haphpipe_assemble_01</em> de novo assembly and <em>haphpipe_assemble_02</em> amplicon assembly pipelines (see <a href="https://github.com/gwcbi/haphpipe/wiki/Example-Pipelines">here</a> for details). Then, the final output of each pipeline (<em>final.fna</em>) is run through the haplotype stages (see <a href="https://github.com/gwcbi/haphpipe/wiki/hp_haplotype">here</a> for details). To run, activate your HAPHPIPE environment and execute the following code:</p>
+<pre><code>code block here
+</code></pre>
+
+<p>After running, you should see the following output files:</p>
+<pre><code>final.fna
+final.vcf.gz
+final.bam
+
+# For all three amplicons:
+
+ph_summary.txt
+ph_haplotypes.fna
+</code></pre>
+
+<h2 id="demo02">Demo02</h2>
+<p>Demo02 uses a mixture of three HIV-1 subtype B references (Genbank: <a href="https://www.ncbi.nlm.nih.gov/nuccore/AY795905">AY795905</a>, <a href="https://www.ncbi.nlm.nih.gov/nuccore/KP411829">KP411829</a>, <a href="https://www.ncbi.nlm.nih.gov/nuccore/MF373129">MF373129</a>) in a ratio of 60%, 30%, and 10%, respectively. The provided FASTA file contains the protease and reverse transcriptase gene regions. This demo runs the <em>hp_assemble_01</em> de novo assembly pipeline (see <a href="https://github.com/gwcbi/haphpipe/wiki/Example-Pipelines">here</a> for details) and uses the final output (<em>final.fna</em>) as input for the haplotype stages (see <a href="https://github.com/gwcbi/haphpipe/wiki/hp_haplotype">here</a> for details).
+To run, activate your HAPHPIPE environment and execute the following code:</p>
+<pre><code>code block here
+</code></pre>
+
+<p>The output for demo02 includes three 1,617bp reconstructed haplotypes and a haplotype diversity estimate of 0.5481. After running, you should see the following output files:</p>
+<pre><code>final.fna
+final.vcf.gz
+final.bam
+ph_summary.txt
+ph_haplotypes.fna
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../adv/" class="btn btn-neutral float-right" title="Advanced Users">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../inout/" class="btn btn-neutral" title="Input/Output"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../inout/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../adv/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
