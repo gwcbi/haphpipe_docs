@@ -1,6 +1,6 @@
 **Phylo** includes phylogenomics stages.
 
-### *multiple_align_*
+### *_multiple_align_*
 Align consensus sequences using MAFFT ([documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)). Input can be a list of directories which contain `final.fna` files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the `final.fna` files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the `--alignall` option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the `--fastaonly` option.
 Alignments are by default outputted as FASTA files, although PHYLIP (`--phylipout`) or CLUSTAL (`--clustalout`) output options are also available.
