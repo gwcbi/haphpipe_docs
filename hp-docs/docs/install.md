@@ -193,6 +193,9 @@ Commands:
 ## Windows Users
 
 HAPHPIPE is only available for Mac OSX or Linux platforms. We suggest the following options for running HAPHPIPE on a Windows machine:
+
 1. Run HAPHPIPE on your institution's HPC cluster, if available. 
+
 2. Utilize the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
 3. Run Linux in a virtual machine via [VirtualBox](https://www.virtualbox.org)
