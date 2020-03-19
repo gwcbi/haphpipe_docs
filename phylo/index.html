@@ -83,7 +83,7 @@
     <a class="current" href="./">Phylo</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#multiple_align">multiple_align</a></li>
+    <li class="toctree-l2"><a href="#multiple_align_">multiple_align_</a></li>
     
 
     </ul>
@@ -151,8 +151,8 @@
           <div role="main">
             <div class="section">
               
-                <p><em>phylo</em> includes phylogenomics stages.</p>
-<h3 id="multiple_align"><em>multiple_align</em></h3>
+                <p><strong>Phylo</strong> includes phylogenomics stages.</p>
+<h3 id="multiple_align_"><em>multiple_align_</em></h3>
 <p>Align consensus sequences using MAFFT (<a href="https://mafft.cbrc.jp/alignment/software/manual/manual.html">documentation</a>). Input can be a list of directories which contain <code>final.fna</code> files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the <code>final.fna</code> files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the <code>--alignall</code> option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the <code>--fastaonly</code> option.
 Alignments are by default outputted as FASTA files, although PHYLIP (<code>--phylipout</code>) or CLUSTAL (<code>--clustalout</code>) output options are also available.
@@ -162,6 +162,7 @@ Many options from MAFFT are available in this module. Please refer to the MAFFT 
 <p><strong>(or):</strong></p>
 <p><code>hp_multiple_align [MAFFT OPTIONS] [HAPHPIPE OPTIONS] --seqs &lt;FASTA&gt; --dir_list &lt;TXT&gt; --ref_gtf &lt;GTF&gt; [--outdir]</code></p>
 <p><em>Output files:</em> alignment files in FASTA format (default), one per amplicon (or one <code>alignment.fasta</code> file if using <code>--alignall</code> option)</p>
+<p>Note: MAFFT stores intermediate files in a temporary directory located in /tmp. More information is available <a href="https://mafft.cbrc.jp/alignment/software/mpi.html#TMPDIR">here</a>.</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
