@@ -67,6 +67,9 @@
     <li class="toctree-l2"><a href="#quick-start">Quick start</a></li>
     
 
+    <li class="toctree-l2"><a href="#windows-users">Windows Users</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -211,6 +214,12 @@ download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
 </code></pre>
 
 <p>This will copy GATK into your conda environment.</p>
+<p>Alternatively, GATK may be installed directly on the command line with the following commands:</p>
+<pre><code class="bash">mkdir -p /path/to/gatk_dir
+wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&amp;version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
+gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
+</code></pre>
+
 <p>NOTE: HAPHPIPE was developed and tested using GATK 3.8.</p>
 <p><strong>6. Install HAPHPIPE</strong></p>
 <pre><code>pip install git+git://github.com/gwcbi/haphpipe.git
@@ -298,6 +307,12 @@ Commands:
  -- Miscellaneous
     demo                     setup demo directory and test data
 </code></pre>
+
+<h2 id="windows-users">Windows Users</h2>
+<p>HAPHPIPE is only available for Mac OSX or Linux platforms. We suggest the following options for running HAPHPIPE on a Windows machine:
+1. Run HAPHPIPE on your institution's HPC cluster, if available. 
+2. Utilize the <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Windows Subsystem for Linux</a>.
+3. Run Linux in a virtual machine via <a href="https://www.virtualbox.org">VirtualBox</a></p>
               
             </div>
           </div>
