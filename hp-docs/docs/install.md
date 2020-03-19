@@ -72,6 +72,15 @@ gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
 
 This will copy GATK into your conda environment.
 
+Alternatively, GATK may be installed directly on the command line with the following commands:
+
+```bash
+mkdir -p /path/to/gatk_dir
+wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
+gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
+```
+
+
 NOTE: HAPHPIPE was developed and tested using GATK 3.8.
 
 __6. Install HAPHPIPE__
@@ -140,7 +149,7 @@ For students at GW using Colonial One, you need to load the `miniconda3` module 
 conda activate haphpipe
 ```
 
-**2. Test that it is loaded correctly**
+__2. Test that it is loaded correctly__
 
 ```
 haphpipe -h
@@ -181,3 +190,9 @@ Commands:
  -- Miscellaneous
     demo                     setup demo directory and test data
 ```
+## Windows Users
+
+HAPHPIPE is only available for Mac OSX or Linux platforms. We suggest the following options for running HAPHPIPE on a Windows machine:
+1. Run HAPHPIPE on your institution's HPC cluster, if available. 
+2. Utilize the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+3. Run Linux in a virtual machine via [VirtualBox](https://www.virtualbox.org)
