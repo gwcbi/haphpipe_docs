@@ -105,72 +105,6 @@
             
     <li class="toctree-l2"><a href="#making-your-own-pipelines-with-bash">Making your own pipelines with Bash</a></li>
     
-        <ul>
-        
-            <li><a class="toctree-l3" href="#this-is-an-example-of-how-to-make-your-own-pipeline-with-bash-this-example-uses-four-ngs-samples-for-covid-19-from-ncbi-and-puts-them-through-whole-genome-de-novo-assembly">This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly.</a></li>
-        
-        </ul>
-    
-
-    <li class="toctree-l2"><a href="#step-0-obtaining-samples">Step 0 - Obtaining samples.</a></li>
-    
-
-    <li class="toctree-l2"><a href="#step-1-evaluate-which-modules-you-want-to-use">Step 1 - Evaluate which modules you want to use.</a></li>
-    
-
-    <li class="toctree-l2"><a href="#step-2-document-files-and-options-needed-for-each-module">Step 2 - Document files and options needed for each module.</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l3" href="#part-2a-sample-reads">Part 2A - Sample reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2b-trim-reads">Part 2B - Trim reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2c-error-correct-reads">Part 2C - Error correct reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2d-de-novo-assembly">Part 2D - De novo assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2e-assemble-scaffold">Part 2E - Assemble scaffold.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2f-refine-assembly">Part 2F - Refine assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2g-finalize-assembly">Part 2G - Finalize assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-2h-gather-the-needed-initial-input-for-each-sample">Part 2H - Gather the needed initial input for each sample.</a></li>
-        
-        </ul>
-    
-
-    <li class="toctree-l2"><a href="#step-3-create-a-bash-script-for-each-module">Step 3 - Create a bash script for each module.</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l3" href="#part-3a-input-options">Part 3A - Input options.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3b-sample-reads">Part 3B - Sample reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3c-trim-reads">Part 3C - Trim reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3d-error-correct-reads">Part 3D - Error correct reads.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3e-de-novo-assembly">Part 3E - De novo assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3f-assemble-scaffold">Part 3F - Assemble scaffold.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3g-refine-assembly">Part 3G - Refine assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3h-finalize-assembly">Part 3H - Finalize assembly.</a></li>
-        
-            <li><a class="toctree-l3" href="#part-3i-gather-all-the-individual-module-scripts-into-the-final-pipeline-script">Part 3I - Gather all the individual module scripts into the final pipeline script</a></li>
-        
-        </ul>
-    
-
-    <li class="toctree-l2"><a href="#step-4-combine-both-the-input-code-and-bash-scripts-for-each-module-into-a-single-script">Step 4 - Combine both the input code and bash scripts for each module into a single script.</a></li>
-    
-
-    <li class="toctree-l2"><a href="#step-4-executing-the-script">Step 4 - Executing the script.</a></li>
-    
 
     </ul>
 	    </li>
@@ -217,15 +151,15 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="making-your-own-pipelines-with-bash">Making your own pipelines with Bash</h2>
-<h3 id="this-is-an-example-of-how-to-make-your-own-pipeline-with-bash-this-example-uses-four-ngs-samples-for-covid-19-from-ncbi-and-puts-them-through-whole-genome-de-novo-assembly">This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly.</h3>
+                <h3 id="making-your-own-pipelines-with-bash">Making your own pipelines with Bash</h3>
+<p>This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly. </p>
 <p>SRA accession numbers:
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140744">SRR11140744</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140746">SRR11140746</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140748">SRR11140748</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140750">SRR11140750</a></p>
 <h2 id="_1"><br/></h2>
-<h3 id="step-0-obtaining-samples">Step 0 - Obtaining samples.</h3>
+<p><em>Step 0 - Obtaining samples.</em></p>
 <p>We will assume that you have downloaded the reads from NCBI or know how to use fastq-dump. We will show the fastq-dump command here that we used to download the files. <em><strong>This part is not included in the pipeline.</strong></em></p>
 <pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
     fastq-dump --outdir ${sra} --split-files --origfmt ${sra}
@@ -262,13 +196,13 @@ Written 17657 spots for SRR11140750
 
 <p>We also know we will need a reference genome to help scaffold the contigs. We have downloaded the COVID19 reference genome <a href="https://www.ncbi.nlm.nih.gov/nuccore/1798174254">here</a> as a FASTA file.</p>
 <h2 id="_2"><br/></h2>
-<h3 id="step-1-evaluate-which-modules-you-want-to-use">Step 1 - Evaluate which modules you want to use.</h3>
+<p><em>Step 1 - Evaluate which modules you want to use.</em></p>
 <p>View all the module options using <code>haphpipe -h</code>. We have decided that we want to sample the reads (<code>sample_reads</code>), trim the reads (<code>trim_reads</code>), error correct the reads (<code>ec_reads</code>). We want to do genome de novo assembly, so we want to use <code>assemble_denovo</code> and <code>assemble_scaffold</code>. We then want to do refinement of the assembly (<code>refine_assembly</code>) and finalize the assembly (<code>finaliza_assembly</code>). </p>
 <h2 id="_3"><br/></h2>
-<h3 id="step-2-document-files-and-options-needed-for-each-module">Step 2 - Document files and options needed for each module.</h3>
+<p><em>Step 2 - Document files and options needed for each module.</em></p>
 <p>As we go through each module, we will take note of what we need and which input is specific for an individual sample (i.e., the input fastq reads will be different per sample, but we probably want the same number of reads for each sample.)</p>
 <p>We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.</p>
-<h4 id="part-2a-sample-reads">Part 2A - Sample reads.</h4>
+<p><em>Part 2A - Sample reads.</em></p>
 <p>Upon viewing the <code>haphpipe sample_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of reads desired.</p>
 <p>Sample specific options:</p>
 <ul>
@@ -280,7 +214,7 @@ Written 17657 spots for SRR11140750
 <ul>
 <li>number of reads desired </li>
 </ul>
-<h4 id="part-2b-trim-reads">Part 2B - Trim reads.</h4>
+<p><em>Part 2B - Trim reads.</em></p>
 <p>Upon viewing the <code>haphpipe trim_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, number of reads, and number of CPUs desired. There is an option to change the timming commands, but we'll keep default. </p>
 <p>Sample specific options:</p>
 <ul>
@@ -293,7 +227,7 @@ Written 17657 spots for SRR11140750
 <li>number of reads desired </li>
 <li>ncpu</li>
 </ul>
-<h4 id="part-2c-error-correct-reads">Part 2C - Error correct reads.</h4>
+<p><em>Part 2C - Error correct reads.</em></p>
 <p>Upon viewing the <code>haphpipe ec_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.</p>
 <p>Sample specific options:</p>
 <ul>
@@ -305,7 +239,7 @@ Written 17657 spots for SRR11140750
 <ul>
 <li>ncpu</li>
 </ul>
-<h4 id="part-2d-de-novo-assembly">Part 2D - De novo assembly.</h4>
+<p><em>Part 2D - De novo assembly.</em></p>
 <p>Upon viewing the <code>haphpipe assemble_denovo -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.</p>
 <p>Because we previously completed error correction. We will not want to include it here (i.e., we will invoke the option command <code>--no_error_correction</code>).</p>
 <p>Sample specific options:</p>
@@ -319,7 +253,7 @@ Written 17657 spots for SRR11140750
 <li>ncpu</li>
 <li>no error correction option</li>
 </ul>
-<h4 id="part-2e-assemble-scaffold">Part 2E - Assemble scaffold.</h4>
+<p><em>Part 2E - Assemble scaffold.</em></p>
 <p>Upon viewing the <code>haphpipe assemble_scaffold -h</code> we see that we need to provide fasta file containing assembled contigs, an output directory, name to append to scaffold sequence and reference fasta desired. There is an option to change the timming commands, but we'll keep default. </p>
 <p>Sample specific options:</p>
 <ul>
@@ -331,7 +265,7 @@ Written 17657 spots for SRR11140750
 <ul>
 <li>reference fasta</li>
 </ul>
-<h4 id="part-2f-refine-assembly">Part 2F - Refine assembly.</h4>
+<p><em>Part 2F - Refine assembly.</em></p>
 <p>Upon viewing the <code>haphpipe refine_assembly -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to refine, a sample ID and a maximum number of refinement steps, and number of CPUs desired.</p>
 <p>Sample specific options:</p>
 <ul>
@@ -346,7 +280,7 @@ Written 17657 spots for SRR11140750
 <li>ncpu</li>
 <li>maximum number of refinement steps (we'll do 3 for sake of simplicity and time)</li>
 </ul>
-<h4 id="part-2g-finalize-assembly">Part 2G - Finalize assembly.</h4>
+<p><em>Part 2G - Finalize assembly.</em></p>
 <p>Upon viewing the <code>haphpipe finalize_assembly -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to finalize, a sample ID and a maximum number of refinement steps, and number of CPUs desired. We could replace the preset bowtie2 option, but we will leave it as default for this sample pipeline.</p>
 <p>Sample specific options:</p>
 <ul>
@@ -360,8 +294,8 @@ Written 17657 spots for SRR11140750
 <ul>
 <li>ncpu</li>
 </ul>
-<h4 id="part-2h-gather-the-needed-initial-input-for-each-sample">Part 2H - Gather the needed initial input for each sample.</h4>
-<p>We need to gather the necessary files that we will need to input for each sample so that we can make a script that takes in input files. We know from the User Guide that we can look at the output/input file types and names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. Because each module has a standard output file name, we will only need to be specific about the input for the raw fastq files for each sample. Therefore we need:</p>
+<p><em>Part 2H - Gather the needed initial input for each sample.</em>
+We need to gather the necessary files that we will need to input for each sample so that we can make a script that takes in input files. We know from the User Guide that we can look at the output/input file types and names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. Because each module has a standard output file name, we will only need to be specific about the input for the raw fastq files for each sample. Therefore we need:</p>
 <ol>
 <li>input raw fastq read 1</li>
 <li>input raw fastq read 2</li>
@@ -371,9 +305,9 @@ Written 17657 spots for SRR11140750
 </ol>
 <p>The other options we can code into the bash script for each module, since they will be the same for every sample in this analysis.</p>
 <h2 id="_4"><br/></h2>
-<h3 id="step-3-create-a-bash-script-for-each-module">Step 3 - Create a bash script for each module.</h3>
+<p><em>Step 3 - Create a bash script for each module.</em></p>
 <p>Now we will format a bash script for each module. </p>
-<h4 id="part-3a-input-options">Part 3A - Input options.</h4>
+<p><em>Part 3A - Input options.</em></p>
 <p>Because we have a list of needed input options (specified by the user), we need to make a bash command to take in the inputs. </p>
 <p>First, we will specify the script name. We can do this one of two ways. i) explicitly or 2) through a command.</p>
 <p>i) <code>SN='covid_genome'</code> # this sets the script name (SN variable) to covid_genome <br/>
@@ -579,7 +513,7 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
-<h4 id="part-3b-sample-reads">Part 3B - Sample reads.</h4>
+<p><em>Part 3B - Sample reads.</em></p>
 <p>Now we will begin constructing bash scripts for each module.
 Each module will follow a similar trend. <br/></p>
 <ol>
@@ -625,7 +559,7 @@ fi
 
 </code></pre>
 
-<h4 id="part-3c-trim-reads">Part 3C - Trim reads.</h4>
+<p><em>Part 3C - Trim reads.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. <br/></p>
 <p>Now, because we are doing trimming after the sampled reads module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (sample reads). Therefore, the input fastq files are named <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -660,7 +594,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3d-error-correct-reads">Part 3D - Error correct reads.</h4>
+<p><em>Part 3D - Error correct reads.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. <br/></p>
 <p>Now, because we are doing error correction after the trimming module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (trimmed reads). Therefore, the input fastq files are named <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input (just like the sampled reads in the previous step), so we have to list the path to the input fastq files. <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -695,7 +629,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3e-de-novo-assembly">Part 3E - De novo assembly.</h4>
+<p><em>Part 3E - De novo assembly.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>denovo_contigs.fna</code>. <br/></p>
 <p>Now, because we are doing denovo assembly after the error correction module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, remember we want to specify that we do NOT want to do another round of error correction.  <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -732,7 +666,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3f-assemble-scaffold">Part 3F - Assemble scaffold.</h4>
+<p><em>Part 3F - Assemble scaffold.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>scaffold_assembly.fa</code>. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/></p>
 <p>Now, because we are doing scaffold assembly after the denovo assembly module, we need to specify that the input file is the output contig file (<code>denovo_contigs.fna</code>). Again, remember that this file is now contained in the outdirectory specified by the input, so we have to list the path too. We also have to use our input reference fasta file and input sampleID from the script command. <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -767,7 +701,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3g-refine-assembly">Part 3G - Refine assembly.</h4>
+<p><em>Part 3G - Refine assembly.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>refined.fna</code>. <br/></p>
 <p>Now, because we are doing refining the assembly after the scaffold assembly module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>scaffold_assembly.fa</code> file from the previous scaffold assembly step (above), which is also located in the outdirectory.  <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -808,7 +742,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3h-finalize-assembly">Part 3H - Finalize assembly.</h4>
+<p><em>Part 3H - Finalize assembly.</em></p>
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput files for this stage are: <code>final.fna</code>, <code>final.bam</code>, <code>final.vcf.gz</code>. <br/></p>
 <p>Now, because we are doing finalizing the assembly after the refinement module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>refined.fna</code> file from the previous refinement step (above), which is also located in the outdirectory.  <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
@@ -847,7 +781,7 @@ EOF
 fi
 </code></pre>
 
-<h4 id="part-3i-gather-all-the-individual-module-scripts-into-the-final-pipeline-script">Part 3I - Gather all the individual module scripts into the final pipeline script</h4>
+<p><em>Part 3I - Gather all the individual module scripts into the final pipeline script.</em></p>
 <p>For readable code, we will separate each module with <code>###</code> like so:</p>
 <pre><code class="bash">###############################################################################
 # Step #: description here
@@ -1036,7 +970,7 @@ fi
 </code></pre>
 
 <h2 id="_5"><br/></h2>
-<h3 id="step-4-combine-both-the-input-code-and-bash-scripts-for-each-module-into-a-single-script">Step 4 - Combine both the input code and bash scripts for each module into a single script.</h3>
+<p><em>Step 4 - Combine both the input code and bash scripts for each module into a single script.</em></p>
 <p>We named this script <code>covid_genome_assembly.sh</code> and the entire code is:</p>
 <pre><code class="bash">#!/usr/bin/env bash
 
@@ -1298,7 +1232,7 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
-<h3 id="step-4-executing-the-script">Step 4 - Executing the script.</h3>
+<p><em>Step 5 - Executing the script.</em></p>
 <p>Example to run:</p>
 <p><code>bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750</code></p>
 <p>Example to run in a loop over all the samples:</p>
