@@ -8,7 +8,7 @@ nav:
 - Haplotype: hp_haplotype.md
 - Phylo: phylo.md
 - Example Pipelines: expipes.md
-- Input/Output: inout.md
+- File Input/Output: inout.md
 - Demos: demos.md
 - Advanced Users: adv.md
 - FAQ: faq.md
