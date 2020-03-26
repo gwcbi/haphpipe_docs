@@ -217,8 +217,6 @@ ii) `SN=$(basename $0)` # this sets the script name (SN variable) to whatever th
 
 Because we are in charge of this script, we will explicitly set it.
 
---
-
 Second, we want to set some input information for the user. 
 
 We can do this as such:
@@ -245,7 +243,6 @@ outdir:            Output directory (default is [sample_dir]/$SN)
 EOF
 ```
 
---
 Third, we want to provide help information for the script. We can do that using the avoce code, which has been saved in the variable `$USAGE`. Therefore,  
 
 ```bash
@@ -276,7 +273,7 @@ outdir:            Output directory (default is [sample_dir]/covid_genome_assemb
 
 Note that this output looks identical to the information we put into `$USAGE` variable above in the second part of this section.
 
---
+
 Fourth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.
 
 ```bash
@@ -288,7 +285,7 @@ Fourth, we want to read in the command with the provided input options. Because 
 [[ -n "$5" ]] && outdir="$5"
 ```
 
---
+
 Fifth, we want to check that the input files are provided and are not empty. We also want to set the outdirectory.
 
 ```bash
@@ -330,7 +327,7 @@ echo "[---$SN---] ($(date)) outdir:            $outdir"
 echo "[---$SN---] ($(date)) num CPU:           $ncpu"
 ```
 
---
+
 Finally, because here at GWU CBI, we like to time everything, we include a line of code to start a timer and end the timer:
 
 ```bash
@@ -347,7 +344,7 @@ echo "[---$SN---] ($(date)) $SN COMPLETE."
 
 ```
 
---
+
 After Part 3A, our pipeline file should read as such:
 
 ```bash
