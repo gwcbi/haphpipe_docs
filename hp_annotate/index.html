@@ -79,7 +79,7 @@
     <li class="toctree-l2"><a href="#extract_pairwise">extract_pairwise</a></li>
     
 
-    <li class="toctree-l2"><a href="#annotate_-from_ref">annotate_ from_ref</a></li>
+    <li class="toctree-l2"><a href="#summary_stats">summary_stats</a></li>
     
 
     </ul>
@@ -221,6 +221,9 @@ pairwise_aligned.json</p>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
+<pre><code>haphpipe pairwise_align --amplicons_fa final.fna --ref_fa HIV_B.K03455.HXB2.fasta --ref_gtf HIV_B.K03455.HXB2.gtf
+</code></pre>
+
 <h3 id="extract_pairwise"><em>extract_pairwise</em></h3>
 <p>Extract sequence regions from the pairwise alignment produced in <em>pairwise_align</em>. Input is the JSON file from <em>pairwise_align</em>. Output is either an unaligned nucleotide FASTA file, an aligned nucleotide FASTA file, an amino acid FASTA file, an amplicon GTF file, or a tab-separated values (TSV) file (default: nucleotide FASTA with regions of interest from GTF file used in <em>pairwise_align</em>). </p>
 <p><strong>Usage:</strong></p>
@@ -283,13 +286,67 @@ stdout.fasta</p>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<h3 id="annotate_-from_ref"><em>annotate_ from_ref</em></h3>
-<p>Annotate consensus sequence from reference annotation. Input is JSON file from <em>pairwise_align</em> and reference GTF file. </p>
+<pre><code>haphpipe extract_pairwise --align_json pairwise_aligned.json --refreg HIV_B.K03455.HXB2:2085-5096
+</code></pre>
+
+<h3 id="summary_stats"><em>summary_stats</em></h3>
+<p>Report summary statistics from an alignment and/or haplotype calling as TXT and TSV files. Input is a list of paths to directories (TXT format, one per line), each of which contain the following files: <code>final_bt2.out</code>, <code>trimmomatic_summary.out</code>, <code>final.bam</code>, <code>final.fna</code>, and <code>final.vcf.gz</code>.
+If applicable, also input a list of directories containing PredictHaplo summary files (<code>ph_summary.txt</code>). If amplicons were used in assembly, use the <code>--amplicons</code> option to report statistics per amplicon.</p>
 <p><strong>Usage:</strong></p>
-<p><code>haphpipe annotate_from_ref [OPTIONS] [SETTINGS] --haplotypes_fa &lt;best.fas&gt; [--outdir]</code></p>
+<p><code>haphpipe summary_stats [SETTINGS] --dir_list &lt;TXT&gt; [--ph_list &lt;TXT&gt;] [--amplicons] [--outdir]</code></p>
 <p><strong>(or):</strong></p>
-<p><code>hp_annotate_from_ref [OPTIONS] [SETTINGS] --haplotypes_fa &lt;best.fas&gt; [--outdir]</code></p>
+<p><code>hp_summary_stats [SETTINGS] --dir_list &lt;TXT&gt; [--ph_list &lt;TXT&gt;] [--amplicons] [--outdir]</code></p>
+<p><em>Output files:</em> <br> 
+summary_stats.txt, summary_stats.tsv, PH_summary_stats.tsv</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--dir_list</td>
+<td>List of directories which include the required files, one on each line.</td>
+</tr>
+<tr>
+<td>--ph_list</td>
+<td>List of directories which include haplotype summary files, one on each line.</td>
+</tr>
+<tr>
+<td>--amplicons</td>
+<td>Amplicons used in assembly (default: False).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr) (default: False).</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Name for log file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
 <p><em>Example usage:</em></p>
+<pre><code>haphpipe summary_stats --dir_list demo_sra_list.txt --ph_list demo_sra_ph_list.txt --amplicons
+</code></pre>
               
             </div>
           </div>

@@ -166,9 +166,9 @@ refinement steps.</p>
 <p>Pipeline 2 implements amplicon assembly using a <em>reference-based</em> mapping 
 approach. Reads are error-corrected and used to refine the initial assembly,
 with up to 5 refinement steps.</p>
+<p><img alt="haphpipe_01" src="../img/haphpipe3.png" /></p>
 <h3 id="pipeline-1-haphpipe_assemble_01">Pipeline 1: <strong><code>haphpipe_assemble_01</code></strong></h3>
 <p>This pipeline implements <em>de novo</em> assembly. Reads are first trimmed (<em>trim_reads</em>) and used as input for denovo assembly (<em>assemble_denovo</em>). The <em>de novo</em> assembly stage automatically performs error correction on the trimmed reads. The assembled contigs are used as input for amplicon assembly (<em>assemble_amplicons</em>) along with reference FASTA and GTF files. The assembly is then iteratively refined up to five times (<em>refine_assembly</em>) by mapping corrected reads to the assembled FASTA file and lastly finalized (<em>finalize_assembly</em>), resulting in a FASTA file with final consensus sequences, final VCF, and aligned BAM file.</p>
-<p><img alt="haphpipe_01" src="../img/hp01.png" /></p>
 <p>To see the input information for Pipeline 1, use the <code>-h</code> option again like so:
 <code>haphpipe_assemble_01 -h</code>, and it will show the output:</p>
 <pre><code>USAGE:
@@ -193,8 +193,8 @@ outdir:            Output directory (default is [sample_dir]/haphpipe_assemble_0
 <pre><code>haphpipe_assemble_01 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta refs/ref.gtf samp
 </code></pre>
 
-<p>Example command to run with demo01:</p>
-<pre><code>insert
+<p>Example command to run with demo samples:</p>
+<pre><code>haphpipe_assemble_01 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.fasta refs/HIV_B.K03455.HXB2.gtf SRR8525886 SRR8525886
 </code></pre>
 
 <h3 id="pipeline-2-haphpipe_assemble_02">Pipeline 2: <strong><code>haphpipe_assemble_02</code></strong></h3>
@@ -220,10 +220,10 @@ outdir:            Output directory (default is sample_dir/haphpipe_assemble_02)
 </code></pre>
 
 <p>General command to execute pipeline 1:</p>
-<pre><code>haphpipe_assemble_02 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta samp
+<pre><code>haphpipe_assemble_02 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.amplicons fasta SRR8525886 SRR8525886
 </code></pre>
 
-<p>Example command to run with demo01:</p>
+<p>Example command to run with demo samples:</p>
 <pre><code>insert
 </code></pre>
 
