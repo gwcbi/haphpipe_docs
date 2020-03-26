@@ -1,4 +1,4 @@
-**Phylo** includes phylogenomics stages.
+**hp_phylo** includes phylogenomics stages.
 
 ### *multiple_align*
 Align consensus sequences using MAFFT ([documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)). Input can be a list of directories which contain `final.fna` files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the `final.fna` files retreived before the alignment.
@@ -93,3 +93,22 @@ _Example usage:_
 ```
 haphpipe multiple_align --dir_list demo_sra_list.txt --ref_gtf HIV_B.K03455.HXB2.gtf --phylipout --logfile demo_multiple_align.log
 ```
+### *build_tree*
+Phylogeny reconstruction with RAxML ([documentation](https://cme.h-its.org/exelixis/resource/download/NewManual.pdf)). Input is an alignment (FASTA or PHYLIP format). Output is a tree file (TRE format).
+
+
+**Usage:**
+
+`haphpipe build_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
+
+**(or):**
+
+`hpbuild_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
+
+*Output files:*
+
+*Input/Output Arguments:* 
+
+*RAxML Options:*
+
+*Options:*

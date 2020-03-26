@@ -143,7 +143,9 @@ Option     | Description
 
 _Example usage:_
 
---
+```
+haphpipe join_reads --fq1 trimmed_1.fastq --fq2 trimmed_2.fastq
+```
 
 ### *ec_reads*
 Error correction using SPAdes ([documentation](http://cab.spbu.ru/software/spades/)). Input is reads in FASTQ format. Output is error-corrected reads in FASTQ format. Remember that HAPHPIPE is intended for Illumina reads, therefore the error correction is based on Illumina sequencing errors.
@@ -179,4 +181,6 @@ Option        | Description
 
 _Example usage:_
 
---
+```
+haphpipe ec_reads --fq1 trimmed_1.fastq --fq2 trimmed_2.fastq
+```

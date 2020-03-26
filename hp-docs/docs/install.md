@@ -51,6 +51,11 @@ conda create -n haphpipe \
 
 ```
 
+Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:
+```
+pip install --user <package name>
+````
+
 __4. Activate the environment__
 
 ```
@@ -190,6 +195,14 @@ Commands:
  -- Miscellaneous
     demo                     setup demo directory and test data
 ```
+
+## Directory Structure
+
+Below is the recommended directory structure for using HAPHPIPE:
+![schematic](img/Directory_fig1_.png)
+
+We recommend creating a separate directory for each sample, as well as a directory for reference files.
+
 ## Windows Users
 
 HAPHPIPE is only available for Mac OSX or Linux platforms. We suggest the following options for running HAPHPIPE on a Windows machine:

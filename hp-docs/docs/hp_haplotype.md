@@ -40,7 +40,11 @@ Option      | Description
 --debug     | Print commands but do not run (default: False).
 
 
-_Example usage_
+_Example usage:_
+
+```
+haphpipe predict_haplo corrected_1.fastq --fq2 corrected_2.fastq --ref_fa final.fna
+```
 
 ### *ph_parser*
 Returns PredictHaplo output as a correctly formatted FASTA file. Input is the output file from predict_haplo (longest global .fas file). Output is a correctly formatted FASTA file.
@@ -80,6 +84,11 @@ Option    | Description
 
 
 _Example usage:_
+```
+haphpipe ph_parser PH01.best_1_864.fas
+```
+
+Example:
 
 By default, PredictHaplo outputs their own unique version of a fasta file. It includes the frequency, some information regarding their unqiue overlapping scores, and their unique confidence scores. This file is always named `PH#.best_#_#.fas`, where the first number is the reconstructed haplotype number and the next numbers are the start and end of the longest haplotype reconstructed by PredictHaplo.
 

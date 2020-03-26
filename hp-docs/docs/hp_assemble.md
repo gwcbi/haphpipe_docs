@@ -43,6 +43,9 @@ Option      | Description
 
 _Example usage:_
 
+```
+haphpipe assemble_denovo --fq1 corrected_1.fastq --fq2 corrected_2.fastq --outdir denovo_assembly --no_error_correction TRUE
+```
 
 ### *assemble_amplicons*
 Assemble contigs from de novo assembly using both a reference sequence and amplicon regions with MUMMER 3+ ([documentation](http://mummer.sourceforge.net/manual/)). Input is contigs and reference sequence in FASTA format and amplicon regions in GTF format.
@@ -84,6 +87,9 @@ Option      | Description
 
 
 _Example usage:_
+```
+haphpipe assemble_amplicons --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta --ref_gtf HIV_B.K03455.HXB2.gtf
+```
 
 ### *assemble_scaffold*
 Scaffold contigs against a reference sequence with MUMMER 3+ ([documentation](http://mummer.sourceforge.net/manual/)). Input is contigs in FASTA format and reference sequence in FASTA format. Output is scaffold assembly, alligned scaffold, imputed scaffold, and padded scaffold in FASTA format.
@@ -124,6 +130,11 @@ Option      | Description
 --debug     | Print commands but do not run (default: False).
 
 _Example usage:_
+```
+haphpipe assemble_scaffold --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta
+```
+
+
 
 ### *align_reads*
 Map reads to reference sequence (instead of running de novo assembly) using Bowtie2 ([documentation](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)) and Picard ([documentation](https://broadinstitute.github.io/picard/)). Input is reads in FASTQ format and reference sequence in FASTA format. 
@@ -171,6 +182,11 @@ Option      | Description
 
 _Example usage:_
 
+```
+haphpipe align_reads --fq1 corrected_1.fastq --fq2 corrected _2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
+```
+
+
 ### *call_variants*
 Variant calling from alignment using GATK ([documentation](https://software.broadinstitute.org/gatk/download/archive)). Input is alignment file in BAM format and reference sequence in FASTA format (either reference from reference-based assembly or consensus final sequence from de novo assembly). Output is a Variant Call File (VCF) format file. 
 
@@ -214,6 +230,10 @@ Option       | Description
 
 _Example usage:_
 
+```
+haphpipe call_variants --aln_bam alignment.bam --ref_fa HIV_B.K03455.HXB2.fasta
+```
+
 ### *vcf_to_consensus*
 Generate a consensus sequence from a VCF file. Input is a VCF file. Output is the consensus sequence in FASTA format. 
 
@@ -253,6 +273,9 @@ Option       | Description
 
 
 _Example usage:_
+```
+haphpipe vcf_to_consensus --vcf variants.vcf
+```
 
 ### *refine_assembly*
 Map reads to a denovo assembly or reference alignment. Assembly or alignment is iteratively updated. Input is reads in FASTQ format and reference sequence (assembly or reference alignment) in FASTA format. Output is refined assembly in FASTA format.
@@ -299,6 +322,10 @@ Option     | Description
 
 _Example usage:_
 
+```
+haphpipe refine_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
+```
+
 ### *finalize_assembly*
 Finalize consensus, map reads to consensus, and call variants. Input is reads in FASTQ format and reference sequence in FASTA format. Output is finalized reference sequence, alignment, and variants (in FASTA, BAM, and VCF formats, respectively).
 
@@ -341,4 +368,7 @@ Option     | Description
 
 
 _Example usage:_
+```
+haphpipe finalize_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa refined.fna 
+```
 

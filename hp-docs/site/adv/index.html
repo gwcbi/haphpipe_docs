@@ -1236,7 +1236,7 @@ echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 <p>Example to run:</p>
 <p><code>bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750</code></p>
 <p>Example to run in a loop over all the samples:</p>
-<pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
+<pre><code>for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
     bash covid_genome_assembly.sh ${sra}/${sra}_1.fastq ${sra}/${sra}_2.fastq SARSCoV2.NC_045512.COVID19.fasta ${sra} covid_genome_assembly
 done
 </code></pre>

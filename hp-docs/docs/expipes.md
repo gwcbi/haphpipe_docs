@@ -13,13 +13,14 @@ Pipeline 2 implements amplicon assembly using a *reference-based* mapping
 approach. Reads are error-corrected and used to refine the initial assembly,
 with up to 5 refinement steps.
 
+![haphpipe_01](img/haphpipe3.png)
+
 
 ### Pipeline 1: __`haphpipe_assemble_01`__
 
 This pipeline implements *de novo* assembly. Reads are first trimmed (*trim_reads*) and used as input for denovo assembly (*assemble_denovo*). The *de novo* assembly stage automatically performs error correction on the trimmed reads. The assembled contigs are used as input for amplicon assembly (*assemble_amplicons*) along with reference FASTA and GTF files. The assembly is then iteratively refined up to five times (*refine_assembly*) by mapping corrected reads to the assembled FASTA file and lastly finalized (*finalize_assembly*), resulting in a FASTA file with final consensus sequences, final VCF, and aligned BAM file.
 
 
-![haphpipe_01](img/hp01.png)
 
 To see the input information for Pipeline 1, use the `-h` option again like so:
 `haphpipe_assemble_01 -h`, and it will show the output:
@@ -49,9 +50,9 @@ General command to execute pipeline 1:
 haphpipe_assemble_01 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta refs/ref.gtf samp
 ```
 
-Example command to run with demo01:
+Example command to run with demo samples:
 ```
-insert
+haphpipe_assemble_01 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.fasta refs/HIV_B.K03455.HXB2.gtf SRR8525886 SRR8525886
 ```
 
 
@@ -84,10 +85,10 @@ outdir:            Output directory (default is sample_dir/haphpipe_assemble_02)
 
 General command to execute pipeline 1:
 ```
-haphpipe_assemble_02 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta samp
+haphpipe_assemble_02 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.amplicons fasta SRR8525886 SRR8525886
 ```
 
-Example command to run with demo01:
+Example command to run with demo samples:
 ```
 insert
 ```
