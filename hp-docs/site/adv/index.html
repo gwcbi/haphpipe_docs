@@ -158,7 +158,8 @@
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140746">SRR11140746</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140748">SRR11140748</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140750">SRR11140750</a></p>
-<h2 id="_1"><br/></h2>
+<p><br/></p>
+<hr />
 <p><strong>Step 0 - Obtaining samples.</strong></p>
 <p>We will assume that you have downloaded the reads from NCBI or know how to use fastq-dump. We will show the fastq-dump command here that we used to download the files. <em><strong>This part is not included in the pipeline.</strong></em></p>
 <pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
@@ -195,10 +196,12 @@ Written 17657 spots for SRR11140750
 </code></pre>
 
 <p>We also know we will need a reference genome to help scaffold the contigs. We have downloaded the COVID19 reference genome <a href="https://www.ncbi.nlm.nih.gov/nuccore/1798174254">here</a> as a FASTA file.</p>
-<h2 id="_2"><br/></h2>
+<p><br/></p>
+<hr />
 <p><strong>Step 1 - Evaluate which modules you want to use.</strong></p>
 <p>View all the module options using <code>haphpipe -h</code>. We have decided that we want to sample the reads (<code>sample_reads</code>), trim the reads (<code>trim_reads</code>), error correct the reads (<code>ec_reads</code>). We want to do genome de novo assembly, so we want to use <code>assemble_denovo</code> and <code>assemble_scaffold</code>. We then want to do refinement of the assembly (<code>refine_assembly</code>) and finalize the assembly (<code>finaliza_assembly</code>). </p>
-<h2 id="_3"><br/></h2>
+<p><br/></p>
+<hr />
 <p><strong>Step 2 - Document files and options needed for each module.</strong></p>
 <p>As we go through each module, we will take note of what we need and which input is specific for an individual sample (i.e., the input fastq reads will be different per sample, but we probably want the same number of reads for each sample.)</p>
 <p>We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.</p>
@@ -304,7 +307,8 @@ We need to gather the necessary files that we will need to input for each sample
 <li>sample name</li>
 </ol>
 <p>The other options we can code into the bash script for each module, since they will be the same for every sample in this analysis.</p>
-<h2 id="_4"><br/></h2>
+<p><br/></p>
+<hr />
 <p><strong>Step 3 - Create a bash script for each module.</strong></p>
 <p>Now we will format a bash script for each module. </p>
 <p><em>Part 3A - Input options.</em></p>
@@ -313,8 +317,7 @@ We need to gather the necessary files that we will need to input for each sample
 <p>i) <code>SN='covid_genome'</code> # this sets the script name (SN variable) to covid_genome <br/>
 ii) <code>SN=$(basename $0)</code> # this sets the script name (SN variable) to whatever the script filename is. If the script's file name is <code>covid.sh</code> then it is set as that. If the file name is <code>this_is_file</code> it will be set as that.</p>
 <p>Because we are in charge of this script, we will explicitly set it.</p>
-<p>--
-Second, we want to set some input information for the user. </p>
+<p>Second, we want to set some input information for the user. </p>
 <p>We can do this as such:</p>
 <pre><code class="bash">read -r -d '' USAGE &lt;&lt;EOF
 USAGE:
@@ -337,8 +340,7 @@ outdir:            Output directory (default is [sample_dir]/$SN)
 EOF
 </code></pre>
 
-<p>--
-Third, we want to provide help information for the script. We can do that using the avoce code, which has been saved in the variable <code>$USAGE</code>. Therefore,  </p>
+<p>Third, we want to provide help information for the script. We can do that using the avoce code, which has been saved in the variable <code>$USAGE</code>. Therefore,  </p>
 <pre><code class="bash">#--- Read command line args and if arg is -h, provide the usage information
 [[ -n &quot;$1&quot; ]] &amp;&amp; [[ &quot;$1&quot; == '-h' ]] &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 0
 </code></pre>
@@ -363,8 +365,7 @@ outdir:            Output directory (default is [sample_dir]/covid_genome_assemb
 </code></pre>
 
 <p>Note that this output looks identical to the information we put into <code>$USAGE</code> variable above in the second part of this section.</p>
-<p>--
-Forth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.</p>
+<p>Fourth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.</p>
 <pre><code class="bash">#--- Read command line args
 [[ -n &quot;$1&quot; ]] &amp;&amp; raw1=&quot;$1&quot;
 [[ -n &quot;$2&quot; ]] &amp;&amp; raw2=&quot;$2&quot;
@@ -373,8 +374,7 @@ Forth, we want to read in the command with the provided input options. Because w
 [[ -n &quot;$5&quot; ]] &amp;&amp; outdir=&quot;$5&quot;
 </code></pre>
 
-<p>--
-Fifth, we want to check that the input files are provided and are not empty. We also want to set the outdirectory.</p>
+<p>Fifth, we want to check that the input files are provided and are not empty. We also want to set the outdirectory.</p>
 <pre><code class="bash">#--- Check that files are provided and exist
 [[ -z ${raw1+x} ]] &amp;&amp; echo &quot;FAILED: read1 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
 [[ ! -e &quot;$raw1&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw1 does not exist&quot; &amp;&amp; exit 1
@@ -409,8 +409,7 @@ echo &quot;[---$SN---] ($(date)) outdir:            $outdir&quot;
 echo &quot;[---$SN---] ($(date)) num CPU:           $ncpu&quot;
 </code></pre>
 
-<p>--
-Finally, because here at GWU CBI, we like to time everything, we include a line of code to start a timer and end the timer:</p>
+<p>Finally, because here at GWU CBI, we like to time everything, we include a line of code to start a timer and end the timer:</p>
 <pre><code class="bash">#--- Start the timer
 t1=$(date +&quot;%s&quot;)
 
@@ -424,8 +423,7 @@ echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 
 </code></pre>
 
-<p>--
-After Part 3A, our pipeline file should read as such:</p>
+<p>After Part 3A, our pipeline file should read as such:</p>
 <pre><code class="bash">#!/usr/bin/env bash
 
 ###############################################################################
@@ -969,7 +967,8 @@ EOF
 fi
 </code></pre>
 
-<h2 id="_5"><br/></h2>
+<p><br/></p>
+<hr />
 <p><strong>Step 4 - Combine both the input code and bash scripts for each module into a single script.</strong></p>
 <p>We named this script <code>covid_genome_assembly.sh</code> and the entire code is:</p>
 <pre><code class="bash">#!/usr/bin/env bash
@@ -1232,6 +1231,7 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
+<hr />
 <p><strong>Step 5 - Executing the script.</strong></p>
 <p>Example to run:</p>
 <p><code>bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750</code></p>

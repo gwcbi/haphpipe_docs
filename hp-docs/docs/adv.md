@@ -1228,7 +1228,7 @@ Example to run:
 
 Example to run in a loop over all the samples:
 
-```bash
+```
 for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
     bash covid_genome_assembly.sh ${sra}/${sra}_1.fastq ${sra}/${sra}_2.fastq SARSCoV2.NC_045512.COVID19.fasta ${sra} covid_genome_assembly
 done
