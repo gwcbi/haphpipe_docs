@@ -9,6 +9,7 @@ SRA accession numbers:
 [SRR11140750](https://www.ncbi.nlm.nih.gov/sra/SRR11140750)
 
 <br/>
+
 ---
 
 **Step 0 - Obtaining samples.**
@@ -55,6 +56,7 @@ You're starting directory should look like for this example, whether the reads w
 We also know we will need a reference genome to help scaffold the contigs. We have downloaded the COVID19 reference genome [here](https://www.ncbi.nlm.nih.gov/nuccore/1798174254) as a FASTA file.
 
 <br/>
+
 ---
 
 **Step 1 - Evaluate which modules you want to use.**
@@ -62,6 +64,7 @@ We also know we will need a reference genome to help scaffold the contigs. We ha
 View all the module options using `haphpipe -h`. We have decided that we want to sample the reads (`sample_reads`), trim the reads (`trim_reads`), error correct the reads (`ec_reads`). We want to do genome de novo assembly, so we want to use `assemble_denovo` and `assemble_scaffold`. We then want to do refinement of the assembly (`refine_assembly`) and finalize the assembly (`finaliza_assembly`). 
 
 <br/>
+
 ---
 
 **Step 2 - Document files and options needed for each module.**
@@ -196,6 +199,7 @@ We need to gather the necessary files that we will need to input for each sample
 The other options we can code into the bash script for each module, since they will be the same for every sample in this analysis.
 
 <br/>
+
 ---
 
 **Step 3 - Create a bash script for each module.**
@@ -272,7 +276,7 @@ outdir:            Output directory (default is [sample_dir]/covid_genome_assemb
 Note that this output looks identical to the information we put into `$USAGE` variable above in the second part of this section.
 
 --
-Forth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.
+Fourth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.
 
 ```bash
 #--- Read command line args
@@ -948,6 +952,7 @@ fi
 
 
 <br/>
+
 ---
 
 **Step 4 - Combine both the input code and bash scripts for each module into a single script.**
@@ -1214,6 +1219,8 @@ diff=$(($t2-$t1))
 echo "[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed."
 echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
+
+---
 
 **Step 5 - Executing the script.**
 

@@ -159,7 +159,7 @@
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140748">SRR11140748</a>
 <a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140750">SRR11140750</a></p>
 <h2 id="_1"><br/></h2>
-<p><em>Step 0 - Obtaining samples.</em></p>
+<p><strong>Step 0 - Obtaining samples.</strong></p>
 <p>We will assume that you have downloaded the reads from NCBI or know how to use fastq-dump. We will show the fastq-dump command here that we used to download the files. <em><strong>This part is not included in the pipeline.</strong></em></p>
 <pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
     fastq-dump --outdir ${sra} --split-files --origfmt ${sra}
@@ -196,10 +196,10 @@ Written 17657 spots for SRR11140750
 
 <p>We also know we will need a reference genome to help scaffold the contigs. We have downloaded the COVID19 reference genome <a href="https://www.ncbi.nlm.nih.gov/nuccore/1798174254">here</a> as a FASTA file.</p>
 <h2 id="_2"><br/></h2>
-<p><em>Step 1 - Evaluate which modules you want to use.</em></p>
+<p><strong>Step 1 - Evaluate which modules you want to use.</strong></p>
 <p>View all the module options using <code>haphpipe -h</code>. We have decided that we want to sample the reads (<code>sample_reads</code>), trim the reads (<code>trim_reads</code>), error correct the reads (<code>ec_reads</code>). We want to do genome de novo assembly, so we want to use <code>assemble_denovo</code> and <code>assemble_scaffold</code>. We then want to do refinement of the assembly (<code>refine_assembly</code>) and finalize the assembly (<code>finaliza_assembly</code>). </p>
 <h2 id="_3"><br/></h2>
-<p><em>Step 2 - Document files and options needed for each module.</em></p>
+<p><strong>Step 2 - Document files and options needed for each module.</strong></p>
 <p>As we go through each module, we will take note of what we need and which input is specific for an individual sample (i.e., the input fastq reads will be different per sample, but we probably want the same number of reads for each sample.)</p>
 <p>We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.</p>
 <p><em>Part 2A - Sample reads.</em></p>
@@ -305,7 +305,7 @@ We need to gather the necessary files that we will need to input for each sample
 </ol>
 <p>The other options we can code into the bash script for each module, since they will be the same for every sample in this analysis.</p>
 <h2 id="_4"><br/></h2>
-<p><em>Step 3 - Create a bash script for each module.</em></p>
+<p><strong>Step 3 - Create a bash script for each module.</strong></p>
 <p>Now we will format a bash script for each module. </p>
 <p><em>Part 3A - Input options.</em></p>
 <p>Because we have a list of needed input options (specified by the user), we need to make a bash command to take in the inputs. </p>
@@ -970,7 +970,7 @@ fi
 </code></pre>
 
 <h2 id="_5"><br/></h2>
-<p><em>Step 4 - Combine both the input code and bash scripts for each module into a single script.</em></p>
+<p><strong>Step 4 - Combine both the input code and bash scripts for each module into a single script.</strong></p>
 <p>We named this script <code>covid_genome_assembly.sh</code> and the entire code is:</p>
 <pre><code class="bash">#!/usr/bin/env bash
 
@@ -1232,7 +1232,7 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
-<p><em>Step 5 - Executing the script.</em></p>
+<p><strong>Step 5 - Executing the script.</strong></p>
 <p>Example to run:</p>
 <p><code>bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750</code></p>
 <p>Example to run in a loop over all the samples:</p>
