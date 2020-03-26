@@ -90,7 +90,7 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../inout/">Input/Output</a>
+    <a class="" href="../inout/">File Input/Output</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -104,6 +104,72 @@
     <ul class="subnav">
             
     <li class="toctree-l2"><a href="#making-your-own-pipelines-with-bash">Making your own pipelines with Bash</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#this-is-an-example-of-how-to-make-your-own-pipeline-with-bash-this-example-uses-four-ngs-samples-for-covid-19-from-ncbi-and-puts-them-through-whole-genome-de-novo-assembly">This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly.</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#step-0-obtaining-samples">Step 0 - Obtaining samples.</a></li>
+    
+
+    <li class="toctree-l2"><a href="#step-1-evaluate-which-modules-you-want-to-use">Step 1 - Evaluate which modules you want to use.</a></li>
+    
+
+    <li class="toctree-l2"><a href="#step-2-document-files-and-options-needed-for-each-module">Step 2 - Document files and options needed for each module.</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#part-2a-sample-reads">Part 2A - Sample reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2b-trim-reads">Part 2B - Trim reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2c-error-correct-reads">Part 2C - Error correct reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2d-de-novo-assembly">Part 2D - De novo assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2e-assemble-scaffold">Part 2E - Assemble scaffold.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2f-refine-assembly">Part 2F - Refine assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2g-finalize-assembly">Part 2G - Finalize assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-2h-gather-the-needed-initial-input-for-each-sample">Part 2H - Gather the needed initial input for each sample.</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#step-3-create-a-bash-script-for-each-module">Step 3 - Create a bash script for each module.</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#part-3a-input-options">Part 3A - Input options.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3b-sample-reads">Part 3B - Sample reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3c-trim-reads">Part 3C - Trim reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3d-error-correct-reads">Part 3D - Error correct reads.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3e-de-novo-assembly">Part 3E - De novo assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3f-assemble-scaffold">Part 3F - Assemble scaffold.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3g-refine-assembly">Part 3G - Refine assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3h-finalize-assembly">Part 3H - Finalize assembly.</a></li>
+        
+            <li><a class="toctree-l3" href="#part-3i-gather-all-the-individual-module-scripts-into-the-final-pipeline-script">Part 3I - Gather all the individual module scripts into the final pipeline script</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#step-4-combine-both-the-input-code-and-bash-scripts-for-each-module-into-a-single-script">Step 4 - Combine both the input code and bash scripts for each module into a single script.</a></li>
+    
+
+    <li class="toctree-l2"><a href="#step-4-executing-the-script">Step 4 - Executing the script.</a></li>
     
 
     </ul>
@@ -152,6 +218,1134 @@
             <div class="section">
               
                 <h2 id="making-your-own-pipelines-with-bash">Making your own pipelines with Bash</h2>
+<h3 id="this-is-an-example-of-how-to-make-your-own-pipeline-with-bash-this-example-uses-four-ngs-samples-for-covid-19-from-ncbi-and-puts-them-through-whole-genome-de-novo-assembly">This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly.</h3>
+<p>SRA accession numbers:
+<a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140744">SRR11140744</a>
+<a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140746">SRR11140746</a>
+<a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140748">SRR11140748</a>
+<a href="https://www.ncbi.nlm.nih.gov/sra/SRR11140750">SRR11140750</a></p>
+<h2 id="_1"><br/></h2>
+<h3 id="step-0-obtaining-samples">Step 0 - Obtaining samples.</h3>
+<p>We will assume that you have downloaded the reads from NCBI or know how to use fastq-dump. We will show the fastq-dump command here that we used to download the files. <em><strong>This part is not included in the pipeline.</strong></em></p>
+<pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
+    fastq-dump --outdir ${sra} --split-files --origfmt ${sra}
+done
+</code></pre>
+
+<p>Output is:</p>
+<pre><code>Read 503344 spots for SRR11140744
+Written 503344 spots for SRR11140744
+Read 358971 spots for SRR11140746
+Written 358971 spots for SRR11140746
+Read 421395 spots for SRR11140748
+Written 421395 spots for SRR11140748
+Read 17657 spots for SRR11140750
+Written 17657 spots for SRR11140750
+
+</code></pre>
+
+<p>You're starting directory should look like for this example, whether the reads were obtained manually or downloaded with fastq-dump:</p>
+<pre><code>.
+├── SRR11140744
+|   ├── SRR11140744_1.fastq
+|   └── SRR11140744_2.fastq
+├── SRR11140746
+|   ├── SRR11140746_1.fastq
+|   └── SRR11140746_2.fastq
+├── SRR11140748
+|   ├── SRR11140748_1.fastq
+|   └── SRR11140748_2.fastq
+└── SRR11140750
+    ├── SRR11140750_1.fastq
+    └── SRR11140750_2.fastq
+</code></pre>
+
+<p>We also know we will need a reference genome to help scaffold the contigs. We have downloaded the COVID19 reference genome <a href="https://www.ncbi.nlm.nih.gov/nuccore/1798174254">here</a> as a FASTA file.</p>
+<h2 id="_2"><br/></h2>
+<h3 id="step-1-evaluate-which-modules-you-want-to-use">Step 1 - Evaluate which modules you want to use.</h3>
+<p>View all the module options using <code>haphpipe -h</code>. We have decided that we want to sample the reads (<code>sample_reads</code>), trim the reads (<code>trim_reads</code>), error correct the reads (<code>ec_reads</code>). We want to do genome de novo assembly, so we want to use <code>assemble_denovo</code> and <code>assemble_scaffold</code>. We then want to do refinement of the assembly (<code>refine_assembly</code>) and finalize the assembly (<code>finaliza_assembly</code>). </p>
+<h2 id="_3"><br/></h2>
+<h3 id="step-2-document-files-and-options-needed-for-each-module">Step 2 - Document files and options needed for each module.</h3>
+<p>As we go through each module, we will take note of what we need and which input is specific for an individual sample (i.e., the input fastq reads will be different per sample, but we probably want the same number of reads for each sample.)</p>
+<p>We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.</p>
+<h4 id="part-2a-sample-reads">Part 2A - Sample reads.</h4>
+<p>Upon viewing the <code>haphpipe sample_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of reads desired.</p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1</li>
+<li>fastq read 2</li>
+<li>output directory</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>number of reads desired </li>
+</ul>
+<h4 id="part-2b-trim-reads">Part 2B - Trim reads.</h4>
+<p>Upon viewing the <code>haphpipe trim_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, number of reads, and number of CPUs desired. There is an option to change the timming commands, but we'll keep default. </p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1 -- we will want these to be the subsampled read file</li>
+<li>fastq read 2 -- we will want these to be the subsampled read file</li>
+<li>output directory</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>number of reads desired </li>
+<li>ncpu</li>
+</ul>
+<h4 id="part-2c-error-correct-reads">Part 2C - Error correct reads.</h4>
+<p>Upon viewing the <code>haphpipe ec_reads -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.</p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1 -- we will want these to be the trimmed read file</li>
+<li>fastq read 2 -- we will want these to be the trimmed read file</li>
+<li>output directory</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>ncpu</li>
+</ul>
+<h4 id="part-2d-de-novo-assembly">Part 2D - De novo assembly.</h4>
+<p>Upon viewing the <code>haphpipe assemble_denovo -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.</p>
+<p>Because we previously completed error correction. We will not want to include it here (i.e., we will invoke the option command <code>--no_error_correction</code>).</p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1 -- we will want these to be the error corrected reads</li>
+<li>fastq read 2 -- we will want these to be the error corrected reads</li>
+<li>output directory</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>ncpu</li>
+<li>no error correction option</li>
+</ul>
+<h4 id="part-2e-assemble-scaffold">Part 2E - Assemble scaffold.</h4>
+<p>Upon viewing the <code>haphpipe assemble_scaffold -h</code> we see that we need to provide fasta file containing assembled contigs, an output directory, name to append to scaffold sequence and reference fasta desired. There is an option to change the timming commands, but we'll keep default. </p>
+<p>Sample specific options:</p>
+<ul>
+<li>assembled contigs file</li>
+<li>output directory</li>
+<li>sequence name</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>reference fasta</li>
+</ul>
+<h4 id="part-2f-refine-assembly">Part 2F - Refine assembly.</h4>
+<p>Upon viewing the <code>haphpipe refine_assembly -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to refine, a sample ID and a maximum number of refinement steps, and number of CPUs desired.</p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1 -- we will want these to be the error corrected reads</li>
+<li>fastq read 2 -- we will want these to be the error corrected reads</li>
+<li>output directory</li>
+<li>reference fasta -- we will want this to be the sample's assembled scaffold</li>
+<li>Sample ID</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>ncpu</li>
+<li>maximum number of refinement steps (we'll do 3 for sake of simplicity and time)</li>
+</ul>
+<h4 id="part-2g-finalize-assembly">Part 2G - Finalize assembly.</h4>
+<p>Upon viewing the <code>haphpipe finalize_assembly -h</code> we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to finalize, a sample ID and a maximum number of refinement steps, and number of CPUs desired. We could replace the preset bowtie2 option, but we will leave it as default for this sample pipeline.</p>
+<p>Sample specific options:</p>
+<ul>
+<li>fastq read 1 -- we will want these to be the error corrected reads</li>
+<li>fastq read 2 -- we will want these to be the error corrected reads</li>
+<li>output directory</li>
+<li>reference fasta -- we will want this to be the sample's refined fasta sequence</li>
+<li>Sample ID</li>
+</ul>
+<p>Not sample specific options:</p>
+<ul>
+<li>ncpu</li>
+</ul>
+<h4 id="part-2h-gather-the-needed-initial-input-for-each-sample">Part 2H - Gather the needed initial input for each sample.</h4>
+<p>We need to gather the necessary files that we will need to input for each sample so that we can make a script that takes in input files. We know from the User Guide that we can look at the output/input file types and names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. Because each module has a standard output file name, we will only need to be specific about the input for the raw fastq files for each sample. Therefore we need:</p>
+<ol>
+<li>input raw fastq read 1</li>
+<li>input raw fastq read 2</li>
+<li>reference genome to scaffold against (this will be a covid19 reference) </li>
+<li>output directory for each sample</li>
+<li>sample name</li>
+</ol>
+<p>The other options we can code into the bash script for each module, since they will be the same for every sample in this analysis.</p>
+<h2 id="_4"><br/></h2>
+<h3 id="step-3-create-a-bash-script-for-each-module">Step 3 - Create a bash script for each module.</h3>
+<p>Now we will format a bash script for each module. </p>
+<h4 id="part-3a-input-options">Part 3A - Input options.</h4>
+<p>Because we have a list of needed input options (specified by the user), we need to make a bash command to take in the inputs. </p>
+<p>First, we will specify the script name. We can do this one of two ways. i) explicitly or 2) through a command.</p>
+<p>i) <code>SN='covid_genome'</code> # this sets the script name (SN variable) to covid_genome <br/>
+ii) <code>SN=$(basename $0)</code> # this sets the script name (SN variable) to whatever the script filename is. If the script's file name is <code>covid.sh</code> then it is set as that. If the file name is <code>this_is_file</code> it will be set as that.</p>
+<p>Because we are in charge of this script, we will explicitly set it.</p>
+<p>--
+Second, we want to set some input information for the user. </p>
+<p>We can do this as such:</p>
+<pre><code class="bash">read -r -d '' USAGE &lt;&lt;EOF
+USAGE:
+$SN [read1] [read2] [reference_fasta] [samp_id] &lt;outdir&gt;
+
+----- COVID19 Genome Assembly Pipeline -----
+
+This pipeline implements genome assembly using a denovo approach. Reads are
+error-corrected and used to refine the scaffolded assembly, with up to 3
+refinement steps. This pipeline is used as an example for advanced usage 
+- making own pipeline in the User Guide. 
+
+Input:
+read1:             Fastq file for read 1. May be compressed (.gz)
+read2:             Fastq file for read 2. May be compressed (.gz)
+reference_fasta:   Reference sequence (fasta)
+samp_id:           Sample ID
+outdir:            Output directory (default is [sample_dir]/$SN)
+
+EOF
+</code></pre>
+
+<p>--
+Third, we want to provide help information for the script. We can do that using the avoce code, which has been saved in the variable <code>$USAGE</code>. Therefore,  </p>
+<pre><code class="bash">#--- Read command line args and if arg is -h, provide the usage information
+[[ -n &quot;$1&quot; ]] &amp;&amp; [[ &quot;$1&quot; == '-h' ]] &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 0
+</code></pre>
+
+<p>If <code>pipeline.sh -h</code> is invoked here, then the output is:</p>
+<pre><code>USAGE:
+covid_genome_assembly [read1] [read2] [reference_fasta] [samp_id] &lt;outdir&gt;
+
+----- COVID19 Genome Assembly Pipeline -----
+
+This pipeline implements genome assembly using a denovo approach. Reads are
+error-corrected and used to refine the scaffolded assembly, with up to 3
+refinement steps. This pipeline is used as an example for advanced usage
+- making own pipeline in the User Guide.
+
+Input:
+read1:             Fastq file for read 1. May be compressed (.gz)
+read2:             Fastq file for read 2. May be compressed (.gz)
+reference_fasta:   Reference sequence (fasta)
+samp_id:           Sample ID
+outdir:            Output directory (default is [sample_dir]/covid_genome_assembly)
+</code></pre>
+
+<p>Note that this output looks identical to the information we put into <code>$USAGE</code> variable above in the second part of this section.</p>
+<p>--
+Forth, we want to read in the command with the provided input options. Because we are using a bash script, the position of the input files is imparative.</p>
+<pre><code class="bash">#--- Read command line args
+[[ -n &quot;$1&quot; ]] &amp;&amp; raw1=&quot;$1&quot;
+[[ -n &quot;$2&quot; ]] &amp;&amp; raw2=&quot;$2&quot;
+[[ -n &quot;$3&quot; ]] &amp;&amp; refFA=&quot;$3&quot;
+[[ -n &quot;$4&quot; ]] &amp;&amp; sampid=&quot;$4&quot;
+[[ -n &quot;$5&quot; ]] &amp;&amp; outdir=&quot;$5&quot;
+</code></pre>
+
+<p>--
+Fifth, we want to check that the input files are provided and are not empty. We also want to set the outdirectory.</p>
+<pre><code class="bash">#--- Check that files are provided and exist
+[[ -z ${raw1+x} ]] &amp;&amp; echo &quot;FAILED: read1 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw1&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw1 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${raw2+x} ]] &amp;&amp; echo &quot;FAILED: read2 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw2&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw2 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${refFA+x} ]] &amp;&amp; echo &quot;FAILED: refFA is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$refFA&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $refFA does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${sampid+x} ]] &amp;&amp; echo &quot;FAILED: sampid is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+
+#--- Set outdirectory
+[[ -z ${outdir+x} ]] &amp;&amp; outdir=$(dirname $raw1)/$SN
+mkdir -p $outdir
+</code></pre>
+
+<p>Sixth, we want to set the number of CPUs to use throughout the script.</p>
+<pre><code class="bash">#--- Determine CPUs to use
+# First examines NCPU environment variable, then nproc, finally sets to  1
+[[ -n &quot;$NCPU&quot; ]] &amp;&amp; ncpu=$NCPU
+[[ -z $ncpu ]] &amp;&amp; ncpu=$(nproc 2&gt; /dev/null)
+[[ -z $ncpu ]] &amp;&amp; ncpu=1
+</code></pre>
+
+<p>Seventh, we want to print out the variables and files. </p>
+<pre><code class="bash">echo &quot;[---$SN---] ($(date)) read1:             $raw1&quot;
+echo &quot;[---$SN---] ($(date)) read2:             $raw2&quot;
+echo &quot;[---$SN---] ($(date)) reference_fasta:   $refFA&quot;
+echo &quot;[---$SN---] ($(date)) samp_id:           $sampid&quot;
+echo &quot;[---$SN---] ($(date)) outdir:            $outdir&quot;
+echo &quot;[---$SN---] ($(date)) num CPU:           $ncpu&quot;
+</code></pre>
+
+<p>--
+Finally, because here at GWU CBI, we like to time everything, we include a line of code to start a timer and end the timer:</p>
+<pre><code class="bash">#--- Start the timer
+t1=$(date +&quot;%s&quot;)
+
+#### Put haphpipe module scripts here
+
+#---Complete job
+t2=$(date +&quot;%s&quot;)
+diff=$(($t2-$t1))
+echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed.&quot;
+echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
+
+</code></pre>
+
+<p>--
+After Part 3A, our pipeline file should read as such:</p>
+<pre><code class="bash">#!/usr/bin/env bash
+
+###############################################################################
+# This pipeline implements genome assembly using a denovo approach. Reads are
+# error-corrected and used to refine the scaffolded assembly, with up to 3
+# refinement steps. This pipeline is used as an example for advanced usage
+# - making own pipeline in the User Guide.
+###############################################################################
+SN='covid_genome_assembly'
+
+read -r -d '' USAGE &lt;&lt;EOF
+USAGE:
+$SN [read1] [read2] [reference_fasta] [samp_id] &lt;outdir&gt;
+
+----- COVID19 Genome Assembly Pipeline -----
+
+This pipeline implements genome assembly using a denovo approach. Reads are
+error-corrected and used to refine the scaffolded assembly, with up to 3
+refinement steps. This pipeline is used as an example for advanced usage
+- making own pipeline in the User Guide.
+
+Input:
+read1:             Fastq file for read 1. May be compressed (.gz)
+read2:             Fastq file for read 2. May be compressed (.gz)
+reference_fasta:   Reference sequence (fasta)
+samp_id:           Sample ID
+outdir:            Output directory (default is [sample_dir]/$SN)
+
+EOF
+
+#--- Read command line args and if arg is -h, provide the usage information
+[[ -n &quot;$1&quot; ]] &amp;&amp; [[ &quot;$1&quot; == '-h' ]] &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 0
+
+#--- Read command line args
+[[ -n &quot;$1&quot; ]] &amp;&amp; raw1=&quot;$1&quot;
+[[ -n &quot;$2&quot; ]] &amp;&amp; raw2=&quot;$2&quot;
+[[ -n &quot;$3&quot; ]] &amp;&amp; refFA=&quot;$3&quot;
+[[ -n &quot;$4&quot; ]] &amp;&amp; refGTF=&quot;$4&quot;
+[[ -n &quot;$5&quot; ]] &amp;&amp; sampid=&quot;$5&quot;
+[[ -n &quot;$6&quot; ]] &amp;&amp; outdir=&quot;$6&quot;
+
+#--- Check that files are provided and exist
+[[ -z ${raw1+x} ]] &amp;&amp; echo &quot;FAILED: read1 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw1&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw1 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${raw2+x} ]] &amp;&amp; echo &quot;FAILED: read2 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw2&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw2 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${refFA+x} ]] &amp;&amp; echo &quot;FAILED: refFA is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$refFA&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $refFA does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${refGTF+x} ]] &amp;&amp; echo &quot;FAILED: refGTF is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$refGTF&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $refGTF does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${sampid+x} ]] &amp;&amp; echo &quot;FAILED: sampid is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+
+#--- Set outdirectory
+[[ -z ${outdir+x} ]] &amp;&amp; outdir=$(dirname $raw1)/$SN
+mkdir -p $outdir
+
+#--- Determine CPUs to use
+# First examines NCPU environment variable, then nproc, finally sets to  1
+[[ -n &quot;$NCPU&quot; ]] &amp;&amp; ncpu=$NCPU
+[[ -z $ncpu ]] &amp;&amp; ncpu=$(nproc 2&gt; /dev/null)
+[[ -z $ncpu ]] &amp;&amp; ncpu=1
+
+
+echo &quot;[---$SN---] ($(date)) read1:             $raw1&quot;
+echo &quot;[---$SN---] ($(date)) read2:             $raw2&quot;
+echo &quot;[---$SN---] ($(date)) reference_fasta:   $refFA&quot;
+echo &quot;[---$SN---] ($(date)) reference_gtf:     $refGTF&quot;
+echo &quot;[---$SN---] ($(date)) samp_id:           $sampid&quot;
+echo &quot;[---$SN---] ($(date)) outdir:            $outdir&quot;
+echo &quot;[---$SN---] ($(date)) num CPU:           $ncpu&quot;
+
+#--- Start the timer
+t1=$(date +&quot;%s&quot;)
+
+#### Put haphpipe module scripts here
+
+#---Complete job
+t2=$(date +&quot;%s&quot;)
+diff=$(($t2-$t1))
+echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed.&quot;
+echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
+</code></pre>
+
+<h4 id="part-3b-sample-reads">Part 3B - Sample reads.</h4>
+<p>Now we will begin constructing bash scripts for each module.
+Each module will follow a similar trend. <br/></p>
+<ol>
+<li>We will set the stage name.</li>
+<li>We will echo stage name to terminal. </li>
+<li>We will check to make sure the files that are the output of the stage are not already present. If they are present, we will skip the stage and continue on (no need to repeat the stage).</li>
+<li>If the files are not present, we will complete the stage and call the command.</li>
+<li>If the command completes, we will print to terminal. If command fails, we will print that to terminal and quit the script. <br/></li>
+</ol>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. We have also decided to subsample the number of reads to 50,000 reads for each sample. <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>haphpipe sample_reads\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --nreads 50000\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+else
+    # this reads in the sample_reads command and saves it in the variable cmd
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe sample_reads\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --nreads 50000\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+</code></pre>
+
+<h4 id="part-3c-trim-reads">Part 3C - Trim reads.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. <br/></p>
+<p>Now, because we are doing trimming after the sampled reads module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (sample reads). Therefore, the input fastq files are named <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>haphpipe trim_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/sample_1.fastq\
+ --fq2 ${outdir}/sample_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe trim_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/sample_1.fastq\
+ --fq2 ${outdir}/sample_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3d-error-correct-reads">Part 3D - Error correct reads.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. <br/></p>
+<p>Now, because we are doing error correction after the trimming module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (trimmed reads). Therefore, the input fastq files are named <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input (just like the sampled reads in the previous step), so we have to list the path to the input fastq files. <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>haphpipe ec_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/trimmed_1.fastq\
+ --fq2 ${outdir}/trimmed_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe ec_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/trimmed_1.fastq\
+ --fq2 ${outdir}/trimmed_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3e-de-novo-assembly">Part 3E - De novo assembly.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>denovo_contigs.fna</code>. <br/></p>
+<p>Now, because we are doing denovo assembly after the error correction module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, remember we want to specify that we do NOT want to do another round of error correction.  <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>haphpipe assemble_denovo\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --no_error_correction\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/denovo_contigs.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_denovo\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --no_error_correction\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3f-assemble-scaffold">Part 3F - Assemble scaffold.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>scaffold_assembly.fa</code>. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/></p>
+<p>Now, because we are doing scaffold assembly after the denovo assembly module, we need to specify that the input file is the output contig file (<code>denovo_contigs.fna</code>). Again, remember that this file is now contained in the outdirectory specified by the input, so we have to list the path too. We also have to use our input reference fasta file and input sampleID from the script command. <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>haphpipe assemble_scaffold\
+ --contigs_fa ${outdir}/denovo_contigs.fna\
+ --ref_fa ${refFA}\
+ --seqname ${sampid}\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/scaffold_assembly.fa ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_scaffold\
+ --contigs_fa ${outdir}/denovo_contigs.fna\
+ --ref_fa ${refFA}\
+ --seqname ${sampid}\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3g-refine-assembly">Part 3G - Refine assembly.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>refined.fna</code>. <br/></p>
+<p>Now, because we are doing refining the assembly after the scaffold assembly module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>scaffold_assembly.fa</code> file from the previous scaffold assembly step (above), which is also located in the outdirectory.  <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>hp_refine_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/scaffold_assembly.fa\
+ --sample_id ${sampid}\
+ --max_step 5\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/refined.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_refine_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/scaffold_assembly.fa\
+ --sample_id ${sampid}\
+ --max_step 5\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3h-finalize-assembly">Part 3H - Finalize assembly.</h4>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput files for this stage are: <code>final.fna</code>, <code>final.bam</code>, <code>final.vcf.gz</code>. <br/></p>
+<p>Now, because we are doing finalizing the assembly after the refinement module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>refined.fna</code> file from the previous refinement step (above), which is also located in the outdirectory.  <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code>hp_finalize_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --sample_id ${sampid}\
+ --ref_fa ${outdir}/refined.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_finalize_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --sample_id ${sampid}\
+ --ref_fa ${outdir}/refined.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h4 id="part-3i-gather-all-the-individual-module-scripts-into-the-final-pipeline-script">Part 3I - Gather all the individual module scripts into the final pipeline script</h4>
+<p>For readable code, we will separate each module with <code>###</code> like so:</p>
+<pre><code class="bash">###############################################################################
+# Step #: description here
+###############################################################################
+
+insert code here ..
+</code></pre>
+
+<p>Once we concatenate all our code, we end up with this:</p>
+<pre><code class="bash">###############################################################################
+# Step 1: Sample Reads
+###############################################################################
+stage=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+else
+    # this reads in the sample_reads command and saves it in the variable cmd
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe sample_reads\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --nreads 50000\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 2: Trim Reads
+###############################################################################
+stage=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe trim_reads\
+ --ncpu $ncpu\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 3: Error correction using Spades
+###############################################################################
+stage=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe ec_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/trimmed_1.fastq\
+ --fq2 ${outdir}/trimmed_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 4: Denovo assembly
+###############################################################################
+stage=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/denovo_contigs.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_denovo\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --no_error_correction\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 5: Scaffold assembly
+###############################################################################
+stage=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/scaffold_assembly.fa ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_scaffold\
+ --contigs_fa ${outdir}/denovo_contigs.fna\
+ --ref_fa ${refFA}\
+ --seqname ${sampid}\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 5: Refine assembly
+###############################################################################
+stage=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/refined.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_refine_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/scaffold_assembly.fa\
+ --sample_id ${sampid}\
+ --max_step 5\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 5: Finalize assembly
+###############################################################################
+stage=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_finalize_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --sample_id ${sampid}\
+ --ref_fa ${outdir}/refined.fna\
+ ${quiet} --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+<h2 id="_5"><br/></h2>
+<h3 id="step-4-combine-both-the-input-code-and-bash-scripts-for-each-module-into-a-single-script">Step 4 - Combine both the input code and bash scripts for each module into a single script.</h3>
+<p>We named this script <code>covid_genome_assembly.sh</code> and the entire code is:</p>
+<pre><code class="bash">#!/usr/bin/env bash
+
+###############################################################################
+# This pipeline implements genome assembly using a denovo approach. Reads are
+# error-corrected and used to refine the scaffolded assembly, with up to 3
+# refinement steps. This pipeline is used as an example for advanced usage
+# - making own pipeline in the User Guide.
+###############################################################################
+SN='covid_genome_assembly'
+
+read -r -d '' USAGE &lt;&lt;EOF
+USAGE:
+$SN [read1] [read2] [reference_fasta] [samp_id] &lt;outdir&gt;
+
+----- COVID19 Genome Assembly Pipeline -----
+
+This pipeline implements genome assembly using a denovo approach. Reads are
+error-corrected and used to refine the scaffolded assembly, with up to 3
+refinement steps. This pipeline is used as an example for advanced usage
+- making own pipeline in the User Guide.
+
+Input:
+read1:             Fastq file for read 1. May be compressed (.gz)
+read2:             Fastq file for read 2. May be compressed (.gz)
+reference_fasta:   Reference sequence (fasta)
+samp_id:           Sample ID
+outdir:            Output directory (default is [sample_dir]/$SN)
+
+EOF
+
+#--- Read command line args and if arg is -h, provide the usage information
+[[ -n &quot;$1&quot; ]] &amp;&amp; [[ &quot;$1&quot; == '-h' ]] &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 0
+
+#--- Read command line args
+[[ -n &quot;$1&quot; ]] &amp;&amp; raw1=&quot;$1&quot;
+[[ -n &quot;$2&quot; ]] &amp;&amp; raw2=&quot;$2&quot;
+[[ -n &quot;$3&quot; ]] &amp;&amp; refFA=&quot;$3&quot;
+[[ -n &quot;$4&quot; ]] &amp;&amp; sampid=&quot;$4&quot;
+[[ -n &quot;$5&quot; ]] &amp;&amp; outdir=&quot;$5&quot;
+
+#--- Check that files are provided and exist
+[[ -z ${raw1+x} ]] &amp;&amp; echo &quot;FAILED: read1 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw1&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw1 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${raw2+x} ]] &amp;&amp; echo &quot;FAILED: read2 is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$raw2&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $raw2 does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${refFA+x} ]] &amp;&amp; echo &quot;FAILED: refFA is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+[[ ! -e &quot;$refFA&quot; ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) FAILED: file $refFA does not exist&quot; &amp;&amp; exit 1
+
+[[ -z ${sampid+x} ]] &amp;&amp; echo &quot;FAILED: sampid is not set&quot; &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 1
+
+#--- Set outdirectory
+[[ -z ${outdir+x} ]] &amp;&amp; outdir=$(dirname $raw1)/$SN
+mkdir -p $outdir
+
+#--- Determine CPUs to use
+# First examines NCPU environment variable, then nproc, finally sets to  1
+[[ -n &quot;$NCPU&quot; ]] &amp;&amp; ncpu=$NCPU
+[[ -z $ncpu ]] &amp;&amp; ncpu=$(nproc 2&gt; /dev/null)
+[[ -z $ncpu ]] &amp;&amp; ncpu=1
+
+
+echo &quot;[---$SN---] ($(date)) read1:             $raw1&quot;
+echo &quot;[---$SN---] ($(date)) read2:             $raw2&quot;
+echo &quot;[---$SN---] ($(date)) reference_fasta:   $refFA&quot;
+echo &quot;[---$SN---] ($(date)) samp_id:           $sampid&quot;
+echo &quot;[---$SN---] ($(date)) outdir:            $outdir&quot;
+echo &quot;[---$SN---] ($(date)) num CPU:           $ncpu&quot;
+
+#--- Start the timer
+t1=$(date +&quot;%s&quot;)
+
+###############################################################################
+# Step 1: Sample Reads
+###############################################################################
+stage=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+else
+    # this reads in the sample_reads command and saves it in the variable cmd
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe sample_reads\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --nreads 50000\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 2: Trim Reads
+###############################################################################
+stage=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe trim_reads\
+ --ncpu $ncpu\
+ --fq1 $raw1\
+ --fq2 $raw2\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 3: Error correction using Spades
+###############################################################################
+stage=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe ec_reads\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/trimmed_1.fastq\
+ --fq2 ${outdir}/trimmed_2.fastq\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 4: Denovo assembly
+###############################################################################
+stage=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/denovo_contigs.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_denovo\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --no_error_correction\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 5: Scaffold assembly
+###############################################################################
+stage=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/scaffold_assembly.fa ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe assemble_scaffold\
+ --contigs_fa ${outdir}/denovo_contigs.fna\
+ --ref_fa ${refFA}\
+ --seqname ${sampid}\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 5: Refine assembly
+###############################################################################
+stage=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/refined.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_refine_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/scaffold_assembly.fa\
+ --sample_id ${sampid}\
+ --max_step 5\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 5: Finalize assembly
+###############################################################################
+stage=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+hp_finalize_assembly\
+ --ncpu $ncpu\
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --sample_id ${sampid}\
+ --ref_fa ${outdir}/refined.fna\
+ ${quiet} --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+#### Put haphpipe module scripts here
+
+#---Complete job
+t2=$(date +&quot;%s&quot;)
+diff=$(($t2-$t1))
+echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed.&quot;
+echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
+</code></pre>
+
+<h3 id="step-4-executing-the-script">Step 4 - Executing the script.</h3>
+<p>Example to run:</p>
+<p><code>bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750</code></p>
+<p>Example to run in a loop over all the samples:</p>
+<pre><code class="bash">for sra in SRR11140744 SRR11140746 SRR11140748 SRR11140750; do
+    bash covid_genome_assembly.sh ${sra}/${sra}_1.fastq ${sra}/${sra}_2.fastq SARSCoV2.NC_045512.COVID19.fasta ${sra} covid_genome_assembly
+done
+</code></pre>
+
+<p>Directories should look like such after running this script:</p>
+<pre><code>.
+├── SRR11140744
+|   ├── SRR11140744_1.fastq
+|   ├── SRR11140744_2.fastq
+|   └── covid_genome_assembly
+|       ├── corrected_1.fastq
+|       ├── corrected_2.fastq
+|       ├── corrected_U.fastq
+|       ├── denovo_contigs.fna
+|       ├── denovo_summary.txt
+|       ├── haphpipe.out
+|       ├── final.bam
+|       ├── final.bam.bai
+|       ├── final_bt2.out
+|       ├── final.fna
+|       ├── final.vcf.gz
+|       ├── final.vcf.gz.tbi
+|       ├── refined.01.fna
+|       ├── refined_bt2.01.out
+|       ├── refined.fna
+|       ├── refined_bt2.out
+|       ├── refined_summary.out
+|       ├── sample_1.fastq
+|       ├── sample_2.fastq
+|       ├── scaffold_aligned.fa
+|       ├── scaffold_assembly.fa
+|       ├── scaffold_imputed.fa
+|       ├── scaffold_padded.out
+|       ├── trimmed_1.fastq
+|       ├── trimmed_2.fastq
+|       ├── trimmed_U.fastq
+|       └── trimmomatic_summary.out
+├── SRR11140746
+|   ├── SRR11140746_1.fastq
+|   ├── SRR11140746_2.fastq
+|   └── covid_genome_assembly
+....
+</code></pre>
               
             </div>
           </div>
