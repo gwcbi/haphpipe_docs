@@ -1,6 +1,6 @@
-### Making your own pipelines with Bash
+## Making your own pipelines with Bash
 
-This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly. 
+### This is an example of how to make your own pipeline with bash. This example uses four NGS samples for COVID-19 from NCBI and puts them through whole genome de novo assembly. 
 
 SRA accession numbers:
 [SRR11140744](https://www.ncbi.nlm.nih.gov/sra/SRR11140744)
@@ -11,8 +11,7 @@ SRA accession numbers:
 <br/>
 ---
 
-**Step 0 - Obtaining samples.**
-
+### Step 0 - Obtaining samples. 
 We will assume that you have downloaded the reads from NCBI or know how to use fastq-dump. We will show the fastq-dump command here that we used to download the files. _**This part is not included in the pipeline.**_
 
 ```bash
@@ -57,21 +56,19 @@ We also know we will need a reference genome to help scaffold the contigs. We ha
 <br/>
 ---
 
-**Step 1 - Evaluate which modules you want to use.**
-
+### Step 1 - Evaluate which modules you want to use.
 View all the module options using `haphpipe -h`. We have decided that we want to sample the reads (`sample_reads`), trim the reads (`trim_reads`), error correct the reads (`ec_reads`). We want to do genome de novo assembly, so we want to use `assemble_denovo` and `assemble_scaffold`. We then want to do refinement of the assembly (`refine_assembly`) and finalize the assembly (`finaliza_assembly`). 
 
 <br/>
 ---
 
-**Step 2 - Document files and options needed for each module.**
+### Step 2 - Document files and options needed for each module. 
 
 As we go through each module, we will take note of what we need and which input is specific for an individual sample (i.e., the input fastq reads will be different per sample, but we probably want the same number of reads for each sample.)
 
 We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.
 
-_Part 2A - Sample reads._
-
+#### Part 2A - Sample reads.
 Upon viewing the `haphpipe sample_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of reads desired.
 
 Sample specific options:
@@ -85,8 +82,7 @@ Not sample specific options:
 * number of reads desired 
 
 
-_Part 2B - Trim reads._
-
+#### Part 2B - Trim reads.
 Upon viewing the `haphpipe trim_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, number of reads, and number of CPUs desired. There is an option to change the timming commands, but we'll keep default. 
 
 Sample specific options:
@@ -101,8 +97,7 @@ Not sample specific options:
 * ncpu
 
 
-_Part 2C - Error correct reads._
-
+#### Part 2C - Error correct reads.
 Upon viewing the `haphpipe ec_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.
 
 Sample specific options:
@@ -116,8 +111,7 @@ Not sample specific options:
 * ncpu
 
 
-_Part 2D - De novo assembly._
-
+#### Part 2D - De novo assembly.
 Upon viewing the `haphpipe assemble_denovo -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.
 
 Because we previously completed error correction. We will not want to include it here (i.e., we will invoke the option command `--no_error_correction`).
@@ -134,8 +128,7 @@ Not sample specific options:
 * no error correction option
 
 
-_Part 2E - Assemble scaffold._
-
+#### Part 2E - Assemble scaffold.
 Upon viewing the `haphpipe assemble_scaffold -h` we see that we need to provide fasta file containing assembled contigs, an output directory, name to append to scaffold sequence and reference fasta desired. There is an option to change the timming commands, but we'll keep default. 
 
 Sample specific options:
@@ -149,8 +142,7 @@ Not sample specific options:
 * reference fasta
 
 
-_Part 2F - Refine assembly._
-
+#### Part 2F - Refine assembly.
 Upon viewing the `haphpipe refine_assembly -h` we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to refine, a sample ID and a maximum number of refinement steps, and number of CPUs desired.
 
 Sample specific options:
@@ -167,8 +159,7 @@ Not sample specific options:
 * maximum number of refinement steps (we'll do 3 for sake of simplicity and time)
 
 
-_Part 2G - Finalize assembly._
-
+#### Part 2G - Finalize assembly.
 Upon viewing the `haphpipe finalize_assembly -h` we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to finalize, a sample ID and a maximum number of refinement steps, and number of CPUs desired. We could replace the preset bowtie2 option, but we will leave it as default for this sample pipeline.
 
 Sample specific options:
@@ -184,7 +175,7 @@ Not sample specific options:
 * ncpu
 
 
-_Part 2H - Gather the needed initial input for each sample._
+#### Part 2H - Gather the needed initial input for each sample.
 We need to gather the necessary files that we will need to input for each sample so that we can make a script that takes in input files. We know from the User Guide that we can look at the output/input file types and names [here](https://gwcbi.github.io/haphpipe_docs/inout/). Because each module has a standard output file name, we will only need to be specific about the input for the raw fastq files for each sample. Therefore we need:
 
 1. input raw fastq read 1
@@ -198,12 +189,11 @@ The other options we can code into the bash script for each module, since they w
 <br/>
 ---
 
-**Step 3 - Create a bash script for each module.**
+### Step 3 - Create a bash script for each module.
 
 Now we will format a bash script for each module. 
 
-_Part 3A - Input options._
-
+#### Part 3A - Input options.
 Because we have a list of needed input options (specified by the user), we need to make a bash command to take in the inputs. 
 
 First, we will specify the script name. We can do this one of two ways. i) explicitly or 2) through a command.
@@ -433,8 +423,7 @@ echo "[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds 
 echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
 
-_Part 3B - Sample reads._
-
+#### Part 3B - Sample reads.
 Now we will begin constructing bash scripts for each module.
 Each module will follow a similar trend. <br/>
 
@@ -485,8 +474,8 @@ fi
 
 ```
 
-_Part 3C - Trim reads._
 
+#### Part 3C - Trim reads.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput names for this stage are: `trimmed_1.fastq` and `trimmed_2.fastq`. <br/>
 
 Now, because we are doing trimming after the sampled reads module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (sample reads). Therefore, the input fastq files are named `sample_1.fastq` and `sample_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. <br/>
@@ -528,8 +517,7 @@ fi
 ```
 
 
-_Part 3D - Error correct reads._
-
+#### Part 3D - Error correct reads.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput names for this stage are: `corrected_1.fastq` and `corrected_2.fastq`. <br/>
 
 Now, because we are doing error correction after the trimming module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (trimmed reads). Therefore, the input fastq files are named `trimmed_1.fastq` and `trimmed_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input (just like the sampled reads in the previous step), so we have to list the path to the input fastq files. <br/>
@@ -571,8 +559,7 @@ fi
 ```
 
 
-_Part 3E - De novo assembly._
-
+#### Part 3E - De novo assembly.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `denovo_contigs.fna`. <br/>
 
 Now, because we are doing denovo assembly after the error correction module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (error corrected reads). Therefore, the input fastq files are named `corrected_1.fastq` and `corrected_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, remember we want to specify that we do NOT want to do another round of error correction.  <br/>
@@ -616,8 +603,7 @@ fi
 ```
 
 
-_Part 3F - Assemble scaffold._
-
+#### Part 3F - Assemble scaffold.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `scaffold_assembly.fa`. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/>
 
 Now, because we are doing scaffold assembly after the denovo assembly module, we need to specify that the input file is the output contig file (`denovo_contigs.fna`). Again, remember that this file is now contained in the outdirectory specified by the input, so we have to list the path too. We also have to use our input reference fasta file and input sampleID from the script command. <br/>
@@ -659,8 +645,7 @@ fi
 ```
 
 
-_Part 3G - Refine assembly._
-
+#### Part 3G - Refine assembly.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `refined.fna`. <br/>
 
 Now, because we are doing refining the assembly after the scaffold assembly module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named `corrected_1.fastq` and `corrected_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the `scaffold_assembly.fa` file from the previous scaffold assembly step (above), which is also located in the outdirectory.  <br/>
@@ -707,8 +692,8 @@ EOF
 fi
 ```
 
-_Part 3H - Finalize assembly._
 
+#### Part 3H - Finalize assembly.
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput files for this stage are: `final.fna`, `final.bam`, `final.vcf.gz`. <br/>
 
 Now, because we are doing finalizing the assembly after the refinement module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named `corrected_1.fastq` and `corrected_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the `refined.fna` file from the previous refinement step (above), which is also located in the outdirectory.  <br/>
@@ -753,7 +738,7 @@ EOF
 fi
 ```
 
-_Part 3I - Gather all the individual module scripts into the final pipeline script._
+#### Part 3I - Gather all the individual module scripts into the final pipeline script
 
 For readable code, we will separate each module with `###` like so:
 
@@ -950,7 +935,7 @@ fi
 <br/>
 ---
 
-**Step 4 - Combine both the input code and bash scripts for each module into a single script.**
+### Step 4 - Combine both the input code and bash scripts for each module into a single script.
 
 We named this script `covid_genome_assembly.sh` and the entire code is:
 
@@ -1215,8 +1200,7 @@ echo "[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds 
 echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
 
-**Step 5 - Executing the script.**
-
+### Step 4 - Executing the script. 
 Example to run:
 
 `bash covid_genome_assembly.sh SRR11140750/SRR11140750_1.fastq SRR11140750/SRR11140750_2.fastq SARSCoV2.NC_045512.COVID19.fasta SRR11140750`
