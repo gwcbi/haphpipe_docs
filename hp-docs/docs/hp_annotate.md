@@ -114,7 +114,7 @@ _Example usage:_
 haphpipe summary_stats --dir_list demo_sra_list.txt --ph_list demo_sra_ph_list.txt --amplicons
 ```
 
-### * annotate_ from_ref*
+### *annotate_ from_ref*
 Annotate consensus sequence from reference annotation. Input is JSON file from _pairwise_align_ and reference GTF file. 
 
 
