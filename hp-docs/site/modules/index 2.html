@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Assemble - HAPHPIPE</title>
+  <title>Modules - HAPHPIPE</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Assemble";
-    var mkdocs_page_input_path = "hp_assemble.md";
+    var mkdocs_page_name = "Modules";
+    var mkdocs_page_input_path = "modules.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -63,36 +63,9 @@
     <a class="" href="../hp_reads/">Reads</a>
 	    </li>
           
-            <li class="toctree-l1 current">
+            <li class="toctree-l1">
 		
-    <a class="current" href="./">Assemble</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#assemble_denovo">assemble_denovo</a></li>
-    
-
-    <li class="toctree-l2"><a href="#assemble_amplicons">assemble_amplicons</a></li>
-    
-
-    <li class="toctree-l2"><a href="#assemble_scaffold">assemble_scaffold</a></li>
-    
-
-    <li class="toctree-l2"><a href="#align_reads">align_reads</a></li>
-    
-
-    <li class="toctree-l2"><a href="#call_variants">call_variants</a></li>
-    
-
-    <li class="toctree-l2"><a href="#vcf_to_consensus">vcf_to_consensus</a></li>
-    
-
-    <li class="toctree-l2"><a href="#refine_assembly">refine_assembly</a></li>
-    
-
-    <li class="toctree-l2"><a href="#finalize_assembly">finalize_assembly</a></li>
-    
-
-    </ul>
+    <a class="" href="../hp_assemble/">Assemble</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -162,7 +135,7 @@
     
       
     
-    <li>Assemble</li>
+    <li>Modules</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -172,15 +145,11 @@
           <div role="main">
             <div class="section">
               
-                <p>Stages in <em>hp_assemble</em> are designed to construct consensus sequence(s). Input reads (in FASTQ format) are assembled 
-using either denovo assembly or reference-based alignment. Resulting consensus can be further refined. Use -h after any command for a list of options.</p>
-<h3 id="assemble_denovo"><em>assemble_denovo</em></h3>
-<p>Assemble reads via de novo assembly using SPAdes (<a href="http://cab.spbu.ru/software/spades/">documentation</a>). Input is reads in FASTQ format. Output is contigs in FNA format.</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe assemble_denovo [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_assemble_denovo [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <code>denovo_contigs.fna</code> <br> <code>denovo_summary.txt</code></p>
+                <h2 id="hp_reads">hp_reads</h2>
+<p>Stages to manipulate reads. Use -h after any command for a list of options. </p>
+<h3 id="sample_reads">sample_reads</h3>
+<p>Subsample reads using seqtk (<a href="https://github.com/lh3/seqtk">seqtk documentation</a>).</p>
+<p><em>Output files:</em> <br> sample_1.fastq <br> sample_2.fastq</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -208,7 +177,310 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Sample Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--nreads</td>
+<td>Number of reads to sample. If greater than the number of reads in file, all reads will be sampled.</td>
+</tr>
+<tr>
+<td>--frac</td>
+<td>Fraction of reads to sample, between 0 and 1. Each read has [frac] probability of being sampled, so the number of sampled reads is not precisely [frac * number of reads].</td>
+</tr>
+<tr>
+<td>--seed</td>
+<td>Seed for random number generator.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr), default is False.</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Append console output to this file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run, default is False.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="trim_reads">trim_reads</h3>
+<p>Trim reads using Trimmomatic (<a href="https://github.com/timflutre/trimmomatic">Trimmomatic documentation</a>).</p>
+<p><em>Output files:</em> <br> trimmed_1.fastq <br> trimmed_2.fastq <br> trimmed_U.fastq <br> trimmomatic_summary.out</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--fq1</td>
+<td>Fastq file with read 1.</td>
+</tr>
+<tr>
+<td>--fq2</td>
+<td>Fastq file with read 2.</td>
+</tr>
+<tr>
+<td>--fqU</td>
+<td>Fastq file with unpaired reads.</td>
+</tr>
+<tr>
+<td>--outdir</td>
+<td>Output directory (default: current directory).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Trimmomatic Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--adapter_file</td>
+<td>Adapter file.</td>
+</tr>
+<tr>
+<td>--trimmers</td>
+<td>Trim commands for trimmomatic (default: ['LEADING:3', 'TRAILING:3', 'SLIDINGWINDOW:4:15', 'MINLEN:36']).</td>
+</tr>
+<tr>
+<td>--encoding</td>
+<td>Quality score encoding.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--ncpu</td>
+<td>Number of CPU to use (default: 1).</td>
+</tr>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr) (default: False).</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Append console output to this file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="join_reads">join_reads</h3>
+<p>Join reads using FLASH (<a href="https://github.com/dstreett/FLASH2">FLASH documentation</a>).</p>
+<p><em>Output files:</em> <br> joined.fastq <br> notjoined_1.fastq <br> notjoined_2.fastq</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--fq1</td>
+<td>Fastq file with read 1.</td>
+</tr>
+<tr>
+<td>--fq2</td>
+<td>Fastq file with read 2.</td>
+</tr>
+<tr>
+<td>--outdir</td>
+<td>Output directory (default: current directory).</td>
+</tr>
+</tbody>
+</table>
+<p><em>FLASH Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--min_overlap</td>
+<td>The minimum required overlap length between two reads to provide a confident overlap (default: 10).</td>
+</tr>
+<tr>
+<td>--max_overlap</td>
+<td>Maximum overlap length expected in approximately 90% of read pairs, longer overlaps are penalized.</td>
+</tr>
+<tr>
+<td>--allow_outies</td>
+<td>Also try combining read pairs in the "outie" orientation (default: False).</td>
+</tr>
+<tr>
+<td>--encoding</td>
+<td>Quality score encoding.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--ncpu</td>
+<td>Number of CPU to use (default: 1).</td>
+</tr>
+<tr>
+<td>--keep_tmp</td>
+<td>Keep temporary directory (default: False).</td>
+</tr>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr) (default: False).</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Append console output to this file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ec_reads">ec_reads</h3>
+<p>Error correct reads using spades (<a href="https://github.com/ablab/spades">Spades documentation</a>).</p>
+<p><em>Output files:</em> <br> corrected_1.fastq <br> corrected_2.fastq <br> corrected_U.fastq</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--fq1</td>
+<td>Fastq file with read 1.</td>
+</tr>
+<tr>
+<td>--fq2</td>
+<td>Fastq file with read 2.</td>
+</tr>
+<tr>
+<td>--fqU</td>
+<td>Fastq file with unpaired reads.</td>
+</tr>
+<tr>
+<td>--outdir</td>
+<td>Output directory (default: current directory).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--ncpu</td>
+<td>Number of CPU to use (default: 1).</td>
+</tr>
+<tr>
+<td>--keep_tmp</td>
+<td>Keep temporary directory (default: False).</td>
+</tr>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr) (default: False).</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Append console output to this file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run, default is False.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hp_assemble">hp_assemble</h2>
+<p>Stages to assemble consensus sequence(s). Use -h after any command for a list of options.</p>
+<h3 id="assemble_denovo">assemble_denovo</h3>
+<p>Assemble reads using denovo assembly.</p>
+<p><em>Output files:</em> <br> denovo_contigs.fna <br> denovo_summary.txt</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--fq1</td>
+<td>Fastq file with read 1.</td>
+</tr>
+<tr>
+<td>--fq2</td>
+<td>Fastq file with read 2.</td>
+</tr>
+<tr>
+<td>--fqU</td>
+<td>Fastq file with unpaired reads.</td>
+</tr>
+<tr>
+<td>--outdir</td>
+<td>Output directory (default: current directory).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Assembly Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -262,17 +534,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_denovo --fq1 corrected_1.fastq --fq2 corrected_2.fastq --outdir denovo_assembly --no_error_correction TRUE
-</code></pre>
-
-<h3 id="assemble_amplicons"><em>assemble_amplicons</em></h3>
-<p>Assemble contigs from de novo assembly using both a reference sequence and amplicon regions with MUMMER 3+ (<a href="http://mummer.sourceforge.net/manual/">documentation</a>). Input is contigs and reference sequence in FASTA format and amplicon regions in GTF format.</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe assemble_amplicons [OPTIONS] [SETTINGS] --contigs_fa &lt;FASTA&gt; --ref_fa &lt;FASTA&gt; --ref_gtf &lt;GTF&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_assemble_amplicons [OPTIONS] [SETTINGS] --contigs_fa &lt;FASTA&gt; --ref_fa &lt;FASTA&gt; --ref_gtf &lt;GTF&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <code>amplicon_assembly.fna</code></p>
+<h3 id="assemble_amplicons">assemble_amplicons</h3>
+<p>Assemble contigs using reference and amplicon regions.</p>
+<p><em>Output files:</em> <br> amplicon_assembly.fna</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -346,17 +610,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_amplicons --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta --ref_gtf HIV_B.K03455.HXB2.gtf
-</code></pre>
-
-<h3 id="assemble_scaffold"><em>assemble_scaffold</em></h3>
-<p>Scaffold contigs against a reference sequence with MUMMER 3+ (<a href="http://mummer.sourceforge.net/manual/">documentation</a>). Input is contigs in FASTA format and reference sequence in FASTA format. Output is scaffold assembly, alligned scaffold, imputed scaffold, and padded scaffold in FASTA format.</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe assemble_scaffold [OPTIONS] [SETTINGS] --contigs_fa &lt;FASTA&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_assemble_scaffold [OPTIONS] [SETTINGS] --contigs_fa &lt;FASTA&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <code>scaffold_aligned.fa</code> <br> <code>scaffold_assembly.fa</code> <br> <code>scaffold_imputed.fa</code> <br> <code>scaffold_padded.out</code></p>
+<h3 id="assemble_scaffold">assemble_scaffold</h3>
+<p>Scaffold contigs using reference sequence.</p>
+<p><em>Output files:</em> <br> scaffold_aligned.fa <br> scaffold_assembly.fa <br> scaffold_imputed.fa <br> scaffold_padded.out</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -380,7 +636,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Scaffold Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -422,17 +678,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_scaffold --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
-<h3 id="align_reads"><em>align_reads</em></h3>
-<p>Map reads to reference sequence (instead of running de novo assembly) using Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">documentation</a>) and Picard (<a href="https://broadinstitute.github.io/picard/">documentation</a>). Input is reads in FASTQ format and reference sequence in FASTA format. </p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe align_reads [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_align_reads [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <em>aligned.bam</em> <br> <em>aligned.bt2.out</em></p>
+<h3 id="align_reads">align_reads</h3>
+<p>Align reads to reference.</p>
+<p><em>Output files:</em> <br> aligned.bam <br> aligned.bt2.out</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -455,7 +703,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 <td>Fastq file with unpaired reads.</td>
 </tr>
 <tr>
-<td>--ref_fa</td>
+<td>--ref_fa.</td>
 <td>Reference fasta file.</td>
 </tr>
 <tr>
@@ -464,7 +712,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Alignment Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -530,17 +778,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe align_reads --fq1 corrected_1.fastq --fq2 corrected _2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
-<h3 id="call_variants"><em>call_variants</em></h3>
-<p>Variant calling from alignment using GATK (<a href="https://software.broadinstitute.org/gatk/download/archive">documentation</a>). Input is alignment file in BAM format and reference sequence in FASTA format (either reference from reference-based assembly or consensus final sequence from de novo assembly). Output is a Variant Call File (VCF) format file. </p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe call_variants [OPTIONS] [SETTINGS] --aln_bam &lt;BAM&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_call_variants [OPTIONS] [SETTINGS] --aln_bam &lt;BAM&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <em>variants.vcf.gz</em></p>
+<h3 id="call_variants">call_variants</h3>
+<p>Call variants.</p>
+<p><em>Output files:</em> <br> variants.vcf.gz</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -564,7 +804,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Variant Calling Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -618,17 +858,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe call_variants --aln_bam alignment.bam --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
-<h3 id="vcf_to_consensus"><em>vcf_to_consensus</em></h3>
-<p>Generate a consensus sequence from a VCF file. Input is a VCF file. Output is the consensus sequence in FASTA format. </p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe vcf_to_consensus [OPTIONS] [SETTINGS] --vcf &lt;FASTQ&gt; [--outdir] [--sampidx]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_vcf_to_consensus [OPTIONS] [SETTINGS] --vcf &lt;FASTQ&gt; [--outdir] [--sampidx]</code></p>
-<p><em>Output files:</em> <br> <em>consensus.fna</em></p>
+<h3 id="vcf_to_consensus">vcf_to_consensus</h3>
+<p>Create consensus sequence from VCF.</p>
+<p><em>Output files:</em> <br> consensus.fna</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -652,7 +884,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Variant Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -698,17 +930,9 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe vcf_to_consensus --vcf variants.vcf
-</code></pre>
-
-<h3 id="refine_assembly"><em>refine_assembly</em></h3>
-<p>Map reads to a denovo assembly or reference alignment. Assembly or alignment is iteratively updated. Input is reads in FASTQ format and reference sequence (assembly or reference alignment) in FASTA format. Output is refined assembly in FASTA format.</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe refine_assembly [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_refine_assembly [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><em>Output files:</em> <br> <em>refined.fna</em></p>
+<h3 id="refine_assembly">refine_assembly</h3>
+<p>Three step assembly refinement: align reads, call variants, and update reference.</p>
+<p><em>Output files:</em> <br> refined.fna</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
 <thead>
@@ -731,7 +955,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 <td>Fastq file with unpaired reads.</td>
 </tr>
 <tr>
-<td>--ref_fa</td>
+<td>--ref_fa.</td>
 <td>Reference fasta file.</td>
 </tr>
 <tr>
@@ -740,7 +964,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Refinement Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -802,16 +1026,8 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe refine_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
-<h3 id="finalize_assembly"><em>finalize_assembly</em></h3>
-<p>Finalize consensus, map reads to consensus, and call variants. Input is reads in FASTQ format and reference sequence in FASTA format. Output is finalized reference sequence, alignment, and variants (in FASTA, BAM, and VCF formats, respectively).</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe finalize_assembly [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hp_finalize_assembly [OPTIONS] [SETTINGS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; --fqU &lt;FASTQ&gt; --ref_fa &lt;FASTA&gt; [--outdir]</code></p>
+<h3 id="finalize_assembly">finalize_assembly</h3>
+<p>Finalize consensus sequence, align all reads to consensus, and call variants in dataset.</p>
 <p><em>Output files:</em> <br> final.fna <br> final.ban <br> final.vcf.gz</p>
 <p><em>Input/Output Arguments:</em> </p>
 <table>
@@ -844,7 +1060,7 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Options:</em></p>
+<p><em>Consensus Options:</em></p>
 <table>
 <thead>
 <tr>
@@ -894,22 +1110,168 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tr>
 </tbody>
 </table>
-<p><em>Example usage:</em></p>
-<pre><code>haphpipe finalize_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa refined.fna 
-</code></pre>
+<h2 id="hp_annotate">hp_annotate</h2>
+<p>Stages to annotate consensus sequence(s). Use -h after any command for a list of options.</p>
+<h3 id="pairwise_align">pairwise_align</h3>
+<p>Align amplicons to reference.</p>
+<p><em>Output files:</em> <br> 
+pairwise_aligned.json</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--amplicons_fa</td>
+<td>Fasta file with assembled amplicons.</td>
+</tr>
+<tr>
+<td>--ref_fa</td>
+<td>Reference fasta file.</td>
+</tr>
+<tr>
+<td>--ref_gtf</td>
+<td>GTF format file containing amplicon regions. Primary and alternate coding regions should be provided in the attribute field (for amino acid alignment).</td>
+</tr>
+<tr>
+<td>--outdir</td>
+<td>Output directory (default: False).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--keep_tmp</td>
+<td>Keep temporary directory (default: False).</td>
+</tr>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and stderr) (default: False).</td>
+</tr>
+<tr>
+<td>--logfile</td>
+<td>Append console output to this file.</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="extract_pairwise">extract_pairwise</h3>
+<p>Extract sequence regions from pairwise alignment.</p>
+<p><em>Output files:</em> <br> 
+stdout.fasta</p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--align_json</td>
+<td>JSON file describing alignment (output of <em>pairwise_align</em> stage).</td>
+</tr>
+<tr>
+<td>--outfile</td>
+<td>Output file (default: stdout).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--outfmt</td>
+<td>Format for output: nuc_fa, aln_fa, amp_gtf, ost, or prot_fa (default: nuc_fa).</td>
+</tr>
+<tr>
+<td>--refreg</td>
+<td>Reference region. String format is ref:start-stop. For example, the region string to extract pol when aligned to HXB2 is HIV_B.K03455.HXB2:2085-5096.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hp_annotate_from_ref">hp_annotate_from_ref</h3>
+<p>Extract sequence regions from pairwise alignment.</p>
+<p><em>Output files:</em> <br> </p>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--align_json</td>
+<td>JSON file describing alignment (output of <em>pairwise_align</em> stage).</td>
+</tr>
+<tr>
+<td>--ref_gtf</td>
+<td>GTF format file containing amplicon regions.</td>
+</tr>
+<tr>
+<td>--outfile</td>
+<td>Output file (default: stdout).</td>
+</tr>
+</tbody>
+</table>
+<p><em>Settings:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False).</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../hp_annotate/" class="btn btn-neutral float-right" title="Annotate">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-        <a href="../hp_reads/" class="btn btn-neutral" title="Reads"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -933,10 +1295,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../hp_reads/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../hp_annotate/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -199,7 +199,7 @@ Commands:
 ## Directory Structure
 
 Below is the recommended directory structure for using HAPHPIPE:
-![schematic](img/Directory_fig1_.png)
+![schematic](img/Directory_fig1.png)
 
 We recommend creating a separate directory for each sample, as well as a directory for reference files.
 

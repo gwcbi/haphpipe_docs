@@ -86,9 +86,6 @@
     <li class="toctree-l2"><a href="#multiple_align">multiple_align</a></li>
     
 
-    <li class="toctree-l2"><a href="#build_tree">build_tree</a></li>
-    
-
     </ul>
 	    </li>
           
@@ -154,7 +151,7 @@
           <div role="main">
             <div class="section">
               
-                <p><strong>hp_phylo</strong> includes phylogenomics stages.</p>
+                <p><strong>Phylo</strong> includes phylogenomics stages.</p>
 <h3 id="multiple_align"><em>multiple_align</em></h3>
 <p>Align consensus sequences using MAFFT (<a href="https://mafft.cbrc.jp/alignment/software/manual/manual.html">documentation</a>). Input can be a list of directories which contain <code>final.fna</code> files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the <code>final.fna</code> files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the <code>--alignall</code> option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the <code>--fastaonly</code> option.
@@ -397,17 +394,6 @@ Many options from MAFFT are available in this module. Please refer to the MAFFT 
 <p><em>Example usage:</em></p>
 <pre><code>haphpipe multiple_align --dir_list demo_sra_list.txt --ref_gtf HIV_B.K03455.HXB2.gtf --phylipout --logfile demo_multiple_align.log
 </code></pre>
-
-<h3 id="build_tree"><em>build_tree</em></h3>
-<p>Phylogeny reconstruction with RAxML (<a href="https://cme.h-its.org/exelixis/resource/download/NewManual.pdf">documentation</a>). Input is an alignment (FASTA or PHYLIP format). Output is a tree file (TRE format).</p>
-<p><strong>Usage:</strong></p>
-<p><code>haphpipe build_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs &lt;FASTA&gt; --output_name &lt;TXT&gt; [--outdir]</code></p>
-<p><strong>(or):</strong></p>
-<p><code>hpbuild_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs &lt;FASTA&gt; --output_name &lt;TXT&gt; [--outdir]</code></p>
-<p><em>Output files:</em></p>
-<p><em>Input/Output Arguments:</em> </p>
-<p><em>RAxML Options:</em></p>
-<p><em>Options:</em></p>
               
             </div>
           </div>

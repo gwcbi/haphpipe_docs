@@ -263,9 +263,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_denovo --fq1 corrected_1.fastq --fq2 corrected_2.fastq --outdir denovo_assembly --no_error_correction TRUE
-</code></pre>
-
 <h3 id="assemble_amplicons"><em>assemble_amplicons</em></h3>
 <p>Assemble contigs from de novo assembly using both a reference sequence and amplicon regions with MUMMER 3+ (<a href="http://mummer.sourceforge.net/manual/">documentation</a>). Input is contigs and reference sequence in FASTA format and amplicon regions in GTF format.</p>
 <p><strong>Usage:</strong></p>
@@ -347,9 +344,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_amplicons --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta --ref_gtf HIV_B.K03455.HXB2.gtf
-</code></pre>
-
 <h3 id="assemble_scaffold"><em>assemble_scaffold</em></h3>
 <p>Scaffold contigs against a reference sequence with MUMMER 3+ (<a href="http://mummer.sourceforge.net/manual/">documentation</a>). Input is contigs in FASTA format and reference sequence in FASTA format. Output is scaffold assembly, alligned scaffold, imputed scaffold, and padded scaffold in FASTA format.</p>
 <p><strong>Usage:</strong></p>
@@ -423,9 +417,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe assemble_scaffold --contigs_fa denovo_contigs.fa --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
 <h3 id="align_reads"><em>align_reads</em></h3>
 <p>Map reads to reference sequence (instead of running de novo assembly) using Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">documentation</a>) and Picard (<a href="https://broadinstitute.github.io/picard/">documentation</a>). Input is reads in FASTQ format and reference sequence in FASTA format. </p>
 <p><strong>Usage:</strong></p>
@@ -531,9 +522,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe align_reads --fq1 corrected_1.fastq --fq2 corrected _2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
 <h3 id="call_variants"><em>call_variants</em></h3>
 <p>Variant calling from alignment using GATK (<a href="https://software.broadinstitute.org/gatk/download/archive">documentation</a>). Input is alignment file in BAM format and reference sequence in FASTA format (either reference from reference-based assembly or consensus final sequence from de novo assembly). Output is a Variant Call File (VCF) format file. </p>
 <p><strong>Usage:</strong></p>
@@ -619,9 +607,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe call_variants --aln_bam alignment.bam --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
 <h3 id="vcf_to_consensus"><em>vcf_to_consensus</em></h3>
 <p>Generate a consensus sequence from a VCF file. Input is a VCF file. Output is the consensus sequence in FASTA format. </p>
 <p><strong>Usage:</strong></p>
@@ -699,9 +684,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe vcf_to_consensus --vcf variants.vcf
-</code></pre>
-
 <h3 id="refine_assembly"><em>refine_assembly</em></h3>
 <p>Map reads to a denovo assembly or reference alignment. Assembly or alignment is iteratively updated. Input is reads in FASTQ format and reference sequence (assembly or reference alignment) in FASTA format. Output is refined assembly in FASTA format.</p>
 <p><strong>Usage:</strong></p>
@@ -803,9 +785,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe refine_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa HIV_B.K03455.HXB2.fasta
-</code></pre>
-
 <h3 id="finalize_assembly"><em>finalize_assembly</em></h3>
 <p>Finalize consensus, map reads to consensus, and call variants. Input is reads in FASTQ format and reference sequence in FASTA format. Output is finalized reference sequence, alignment, and variants (in FASTA, BAM, and VCF formats, respectively).</p>
 <p><strong>Usage:</strong></p>
@@ -895,8 +874,6 @@ using either denovo assembly or reference-based alignment. Resulting consensus c
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code>haphpipe finalize_assembly --fq_1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa refined.fna 
-</code></pre>
               
             </div>
           </div>
