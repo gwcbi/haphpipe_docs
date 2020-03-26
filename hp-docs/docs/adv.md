@@ -218,6 +218,7 @@ ii) `SN=$(basename $0)` # this sets the script name (SN variable) to whatever th
 Because we are in charge of this script, we will explicitly set it.
 
 --
+
 Second, we want to set some input information for the user. 
 
 We can do this as such:
