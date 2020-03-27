@@ -213,7 +213,7 @@ HAPHPIPE is only available for Mac OSX or Linux platforms. We suggest the follow
 
 3. Run Linux in a virtual machine via [VirtualBox](https://www.virtualbox.org)
 
-*Reference Files*
+## Reference Files
 
 Several modules in HAPHPIPE use reference files: either a FASTA file containing a reference sequence or a GTF file denoting genome regions for amplicon assembly. With HIV data, we use
 the file `HIV_B.K03455.HXB2.fasta` as a reference whole-genome file, `HIV_B.K03455.HXB2.amplicons.fasta` for amplicon assembly, and `HIV_B.K03455.HXB2.gtf` as a GTF file. All three files are downloaded in the [demo module](https://gwcbi.github.io/haphpipe_docs/demos/).
