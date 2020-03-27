@@ -60,9 +60,7 @@ haphpipe_assemble_01 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq
 
 This pipeline implements reference-based mapping assembly. Reads are first trimmed (*trim_reads*) and error-corrected (*ec_reads*). The corrected reads are used as input for reference-based mapping assembly (*refine_assembly*) for up to five iterations. Lastly, the assembly is finalized (*finalize_assembly*) by mapping reads onto the refined reference sequence. The final output is a FASTA file with final consensus sequences, final VCF, and aligned BAM file.
 
-**(insert Figure 2 here)**
-
-To see the input information for Pipeline 1, use the `-h` option again like so:
+To see the input information for Pipeline 2, use the `-h` option again like so:
 `haphpipe_assemble_02 -h`, and it will show the output:
 
 ```
@@ -83,14 +81,14 @@ samp_id:           Sample ID
 outdir:            Output directory (default is sample_dir/haphpipe_assemble_02)
 ```
 
-General command to execute pipeline 1:
+General command to execute pipeline 2:
 ```
-haphpipe_assemble_02 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.amplicons fasta SRR8525886 SRR8525886
+haphpipe_assemble_02 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta samp
 ```
 
 Example command to run with demo samples:
 ```
-insert
+haphpipe_assemble_02 SRR8525886/SRR8525886_1.fastq SRR8525886/SRR8525886_2.fastq refs/HIV_B.K03455.HXB2.amplicons fasta SRR8525886 SRR8525886
 ```
 
 </br>
