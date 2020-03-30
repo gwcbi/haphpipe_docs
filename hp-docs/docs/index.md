@@ -9,7 +9,7 @@ In this User Guide, we assume basic familiarity with conda environments, basic b
 
 HAPHPIPE is intended only for Linux and Mac OS X platforms. If you are a Windows user, see this section on our [install page](https://gwcbi.github.io/haphpipe_docs/install/#windows-users). 
 
-This User Guide was developed jointly by undergraduate and graduate students to be accessible for users at all stages. Margaret C. Steiner, Keylie M. Gibson, Matthew L. Bendall, and Uzma Rentia all contributed to developing this User Guide and testing HAPHPIPE.
+This User Guide was developed jointly by undergraduate and graduate students to be accessible for users at all stages. Margaret C. Steiner, Keylie M. Gibson, Matthew L. Bendall, Uzma Rentia, and Pengfei Li all contributed to developing this User Guide and testing HAPHPIPE.
 
 See our protocol paper (link coming soon) for more information and this paper (link coming soon) for our validation study.
 

@@ -1,10 +1,6 @@
 Stages in *hp_assemble* are designed to construct consensus sequence(s). Input reads (in FASTQ format) are assembled 
 using either denovo assembly or reference-based alignment. Resulting consensus can be further refined. Use -h after any command for a list of options.
 
-*Reference Files*
-
-Several modules in this stage use reference files: either a FASTA file containing a reference sequence or a GTF file denoting genome regions for amplicon assembly. For example, with HIV data, we use
-the file `HIV_B.K03455.HXB2.fasta` as a reference whole-genome file, `HIV_B.K03455.HXB2.amplicons.fasta` for amplicon assembly, and `HIV_B.K03455.HXB2.gtf` as a GTF file. All three files are downloaded in the [demo module](https://gwcbi.github.io/haphpipe_docs/demos/).
 ### *assemble_denovo*
 Assemble reads via de novo assembly using SPAdes ([documentation](http://cab.spbu.ru/software/spades/)). Input is reads in FASTQ format. Output is contigs in FNA format.
 
