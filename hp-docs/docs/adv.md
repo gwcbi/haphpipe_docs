@@ -1278,3 +1278,153 @@ Directories should look like such after running this script:
 ```
 
 
+---
+
+**Step 6 - Optional inclusions: PredictHaplo, multiple alignment, and building a phylogenetic tree.**
+
+Here are some option modules to include within the pipeline. 
+
+_Adding PredictHaplo as a stage._
+
+If you desire PredictHaplo, you can either utilize the option `--interval_txt` or you can rerun the pipeline with this gtf file. It is easier for PredictHaplo to run on smaller regions than the entire genome like we implemented above.
+
+```
+$ cat SARSCoV2.NC_045512.COVID19.gtf
+SARSCoV2.NC_045512.COVID19	NCBI_refseq	amplicon	265	13482	.	+	0	name "orf1a";
+SARSCoV2.NC_045512.COVID19	NCBI_refseq	amplicon	21562	25383	.	+	0	name "surface";
+SARSCoV2.NC_045512.COVID19	NCBI_refseq	amplicon	26244	26471	.	+	0	name "envelope";
+```
+
+Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `PH0#.best*.fas`. <br/>
+
+We are doing this stage after the `finalize_assembly` stage,  doing refining the assembly after the scaffold assembly module. Therefore, the input fastq files are named `corrected_1.fastq` and `corrected_2.fastq`. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the `final.fna` file from the finalize assembly stage, which is also located in the outdirectory. <br/>
+
+We have to do loops for the PredictHaplo and parser stages because there are multiple haplotype regions.
+
+Now this in the input for the base haphpipe command for this stage:
+
+```
+hp_predict_haplo
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/final.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+```
+
+The entire stage's bash script is here:
+
+```bash
+stage="predict_haplo"
+echo -e "\n[---$SN---] ($(date)) Stage: $stage"
+
+for PH in ${outdir}/PH*; do
+    if [[ -e "${PH}" ]]; then
+        for PHbest in ${outdir}/PH*/*best*.fas; do
+            if [[ -e "${PHbest}" ]]; then
+                echo "[---$SN---] ($(date)) EXISTS: $stage $PHbest"
+            fi
+        done
+    else
+         read -r -d '' cmd <<EOF
+hp_predict_haplo
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/final.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+        echo -e "[---$SN---] ($(date)) $stage command:\n\n$cmd\n"
+        eval $cmd
+
+        [[ $? -eq 0 ]] && echo "[---$SN---] ($(date)) COMPLETED: $stage" || \
+            (  echo "[---$SN---] ($(date)) FAILED: $stage" && exit 1 )
+    fi
+done
+```
+
+*Following up PredictHaplo with ph_parser*
+
+In order to use the output from PredictHaplo (see description [here](https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser)), we need to run the `ph_parser` stage.
+
+```
+hp_ph_parser
+ --haplotypes_fa ${outdir}/${PH}/*best*.fas\
+ --prefix ${sampID}_${PH}\
+ --logfile ${outdir}/${PH}/haphpipe.out\
+ --outdir ${outdir}
+```
+
+Now we have to do a loop, because there are multiple regions (i.e., PH0# directories).
+
+The entire stage's bash script is here:
+
+```bash
+stage="ph_parser"
+echo -e "\n[---$SN---] ($(date)) Stage: $stage"
+
+for PH in ${outdir}/PH*/ph_haplotypes.fna; do
+    #if [[ -e "${PH}" ]]; then
+    #    echo "[---$SN---] ($(date)) EXISTS: $stage $PH"
+    #else
+        read -r -d '' cmd <<EOF
+hp_ph_parser
+ --haplotypes_fa $(dirname $PH)/*best*.fas\
+ --prefix ${sampID}_$(dirname $(basename $PH))\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir $(dirname $PH)
+EOF
+        echo -e "[---$SN---] ($(date)) $stage command:\n\n$cmd\n"
+        eval $cmd
+        
+        [[ $? -eq 0 ]] && echo "[---$SN---] ($(date)) COMPLETED: $stage" || \
+            (  echo "[---$SN---] ($(date)) FAILED: $stage" && exit 1 )
+    #fi
+done
+```
+
+
+*Adding multiple_align as a stage*
+
+Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `alignment.fasta`. <br/>
+
+We first need to make a text file that has a list of directories that contin `final.fna`. Because this is a genome assembly, we want to use the `--alignall` option to align the entire region and not use a GTF file. We also choose to output a phylip file using the option `--phyipout` <br/>
+
+Now this in the input for the base haphpipe command for this stage:
+
+```
+haphpipe multiple_align\
+ --ncpu $ncpu\
+ --dir_list dir_list.txt\
+ --phylipout\
+ --alignall\
+ --logfile haphpipe.out
+```
+
+The entire stage's bash script is here:
+
+```bash
+stage="multiple_align"
+echo -e "\n[---$SN---] ($(date)) Stage: $stage"
+
+if [[ -e $outdir/multiple_align/alignment.fasta ]] && [[ -e $outdir/multiple_align/alignment.phy ]]; then
+    echo "[---$SN---] ($(date)) EXISTS: $stage alignment.fasta,alignment.phy"
+else
+    read -r -d '' cmd <<EOF
+haphpipe multiple_align\
+ --ncpu $ncpu\
+ --dir_list dir_list.txt\
+ --phylipout\
+ --alignall\
+ --logfile haphpipe.out
+EOF
+    echo -e "[---$SN---] ($(date)) $stage command:\n\n$cmd\n"
+    eval $cmd
+
+    [[ $? -eq 0 ]] && echo "[---$SN---] ($(date)) COMPLETED: $stage" || \
+        (  echo "[---$SN---] ($(date)) FAILED: $stage" && exit 1 )
+fi
+```
+
+
+

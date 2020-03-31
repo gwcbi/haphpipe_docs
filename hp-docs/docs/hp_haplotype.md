@@ -10,7 +10,7 @@ Haplotype identification with PredictHaplo. Input is reads in FASTQ format and a
 
 **(or):**
 
-`hp_ predict_haplo [OPTIONS] [SETTINGS] --fq1 <FASTQ> --fq2 <FASTQ> --ref_fa <FASTA> --interval_txt [TXT] [--outdir]`
+`hp_predict_haplo [OPTIONS] [SETTINGS] --fq1 <FASTQ> --fq2 <FASTQ> --ref_fa <FASTA> --interval_txt [TXT] [--outdir]`
 
 *Output files:* <br> *best.fa*
 
