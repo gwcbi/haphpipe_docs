@@ -1393,7 +1393,7 @@ We first need to make a text file that has a list of directories that contin `fi
 Now this in the input for the base haphpipe command for this stage:
 
 ```bash
-haphpipe multiple_align\
+haphpipe multiple_align
  --ncpu $ncpu\
  --dir_list dir_list.txt\
  --phylipout\
