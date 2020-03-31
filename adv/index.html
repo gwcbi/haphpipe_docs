@@ -1371,7 +1371,7 @@ done
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>alignment.fasta</code>. <br/></p>
 <p>We first need to make a text file that has a list of directories that contin <code>final.fna</code>. Because this is a genome assembly, we want to use the <code>--alignall</code> option to align the entire region and not use a GTF file. We also choose to output a phylip file using the option <code>--phyipout</code> <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
-<pre><code class="bash">haphpipe multiple_align\
+<pre><code class="bash">haphpipe multiple_align
  --ncpu $ncpu\
  --dir_list dir_list.txt\
  --phylipout\
