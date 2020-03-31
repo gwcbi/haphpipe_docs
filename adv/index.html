@@ -1296,7 +1296,7 @@ SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    26244   26471   .   +   0   
 <p>We are doing this stage after the <code>finalize_assembly</code> stage,  doing refining the assembly after the scaffold assembly module. Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>final.fna</code> file from the finalize assembly stage, which is also located in the outdirectory. <br/></p>
 <p>We have to do loops for the PredictHaplo and parser stages because there are multiple haplotype regions.</p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
-<pre><code>hp_predict_haplo
+<pre><code class="bash">hp_predict_haplo
  --fq1 ${outdir}/corrected_1.fastq\
  --fq2 ${outdir}/corrected_2.fastq\
  --ref_fa ${outdir}/final.fna\
@@ -1335,7 +1335,7 @@ done
 
 <p><em>Following up PredictHaplo with ph_parser</em></p>
 <p>In order to use the output from PredictHaplo (see description <a href="https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser">here</a>), we need to run the <code>ph_parser</code> stage.</p>
-<pre><code>hp_ph_parser
+<pre><code class="bash">hp_ph_parser
  --haplotypes_fa ${outdir}/${PH}/*best*.fas\
  --prefix ${sampID}_${PH}\
  --logfile ${outdir}/${PH}/haphpipe.out\
@@ -1371,7 +1371,7 @@ done
 <p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>alignment.fasta</code>. <br/></p>
 <p>We first need to make a text file that has a list of directories that contin <code>final.fna</code>. Because this is a genome assembly, we want to use the <code>--alignall</code> option to align the entire region and not use a GTF file. We also choose to output a phylip file using the option <code>--phyipout</code> <br/></p>
 <p>Now this in the input for the base haphpipe command for this stage:</p>
-<pre><code>haphpipe multiple_align\
+<pre><code class="bash">haphpipe multiple_align\
  --ncpu $ncpu\
  --dir_list dir_list.txt\
  --phylipout\
