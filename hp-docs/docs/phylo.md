@@ -110,19 +110,19 @@ Phylogeny reconstruction with RAxML ([documentation](https://cme.h-its.org/exeli
 
 File   | Description |
 ---------|-------------|
-RaxML_info.exampleRun              | This file is written regardless of the command line option. It contains information about the model and algorithm used. If --InitialRearrangement is called, it will indicate the rearrangement setting used 
-RAxML_log.exampleRun               | This file prints out the time, likelihood value of the current tree, and number of the checkpoint file (if called) after each iteration of the search algorithm. Not generated in the case of multiple bootstraps. 
-RAxML_result.exampleRun            | Unless multiple bootstraps are executes, this file is written after each iteration of the search algorithm. It contians the final tree topology of the current run
-RAxML_parsimonyTree.exampleRun     | If a starting tree is not specified by --UserStartingTree, this file will contain the randomized parsimony starting tree
-RAxML_randomTree.exampleRun        | If --rand_starting_tree if called, this file will contain the completely random starting tree
-RAxML_checkpoint.exampleRun.checkpointNumber          | Generated if --print_intermediate_trees is called
-RAxML_bootstrap.exampleRun         | Consolidates final bootstrapped trees if called with --NumberofRuns
-RAxML_bipartitions.exampleRun      | Contain the input tree with confidence values at nodes if --algo_option is called
-RAxML_bipartitionsBranchLabels.exampleRun             | Support values are displayed as Newick branch labels rather than node labels
-AxML_bipartitionFrequencies.exampleRun                | If --algo_optio m is called, this file contains the pair-wise bipartition frequencies of all trees 
-RAxML_perSiteLLs.exampleRun        | This file contains contains the per–site log likelihood scores. Only generated if --algo_option g is called
-RAxML_bestTree.exampleRun          | Outputs the best-scoring ML tree
-RAxML_distances.exampleRun         | Contains the pair-wise ML-based distances between taxonpairs. This file is only generated when --algo_option x option is called.
+RaxML_info.build_tree.tre              | This file is written regardless of the command line option. It contains information about the model and algorithm used. If --InitialRearrangement is called, it will indicate the rearrangement setting used 
+RAxML_log.build_tree.tre               | This file prints out the time, likelihood value of the current tree, and number of the checkpoint file (if called) after each iteration of the search algorithm. Not generated in the case of multiple bootstraps. 
+RAxML_result.build_tree.tre            | Unless multiple bootstraps are executes, this file is written after each iteration of the search algorithm. It contians the final tree topology of the current run
+RAxML_parsimonyTree.build_tree.tre     | If a starting tree is not specified by --UserStartingTree, this file will contain the randomized parsimony starting tree
+RAxML_randomTree.build_tree.tre        | If --rand_starting_tree if called, this file will contain the completely random starting tree
+RAxML_checkpoint.build_tree.tre.checkpointNumber          | Generated if --print_intermediate_trees is called
+RAxML_bootstrap.build_tree.tre         | Consolidates final bootstrapped trees if called with --NumberofRuns
+RAxML_bipartitions.build_tree.tre      | Contain the input tree with confidence values at nodes if --algo_option is called
+RAxML_bipartitionsBranchLabels.build_tree.tre             | Support values are displayed as Newick branch labels rather than node labels
+AxML_bipartitionFrequencies.build_tree.tre                | If --algo_optio m is called, this file contains the pair-wise bipartition frequencies of all trees 
+RAxML_perSiteLLs.build_tree.tre        | This file contains contains the per–site log likelihood scores. Only generated if --algo_option g is called
+RAxML_bestTree.build_tree.tre          | Outputs the best-scoring ML tree
+RAxML_distances.build_tree.tre         | Contains the pair-wise ML-based distances between taxonpairs. This file is only generated when --algo_option x option is called.
 
 *Input/Output Arguments:* 
 
