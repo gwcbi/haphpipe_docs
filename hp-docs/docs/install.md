@@ -54,7 +54,7 @@ conda create -n haphpipe \
 Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:
 ```
 pip install --user <package name>
-````
+```
 
 __4. Activate the environment__
 
