@@ -1280,6 +1280,127 @@ done
 |   └── covid_genome_assembly
 ....
 </code></pre>
+
+<hr />
+<p><strong>Step 6 - Optional inclusions: PredictHaplo, multiple alignment, and building a phylogenetic tree.</strong></p>
+<p>Here are some option modules to include within the pipeline. </p>
+<p><em>Adding PredictHaplo as a stage.</em></p>
+<p>If you desire PredictHaplo, you can either utilize the option <code>--interval_txt</code> or you can rerun the pipeline with this gtf file. It is easier for PredictHaplo to run on smaller regions than the entire genome like we implemented above.</p>
+<pre><code>$ cat SARSCoV2.NC_045512.COVID19.gtf
+SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    265 13482   .   +   0   name &quot;orf1a&quot;;
+SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    21562   25383   .   +   0   name &quot;surface&quot;;
+SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    26244   26471   .   +   0   name &quot;envelope&quot;;
+</code></pre>
+
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>PH0#.best*.fas</code>. <br/></p>
+<p>We are doing this stage after the <code>finalize_assembly</code> stage,  doing refining the assembly after the scaffold assembly module. Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>final.fna</code> file from the finalize assembly stage, which is also located in the outdirectory. <br/></p>
+<p>We have to do loops for the PredictHaplo and parser stages because there are multiple haplotype regions.</p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code class="bash">hp_predict_haplo
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/final.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+for PH in ${outdir}/PH*; do
+    if [[ -e &quot;${PH}&quot; ]]; then
+        for PHbest in ${outdir}/PH*/*best*.fas; do
+            if [[ -e &quot;${PHbest}&quot; ]]; then
+                echo &quot;[---$SN---] ($(date)) EXISTS: $stage $PHbest&quot;
+            fi
+        done
+    else
+         read -r -d '' cmd &lt;&lt;EOF
+hp_predict_haplo
+ --fq1 ${outdir}/corrected_1.fastq\
+ --fq2 ${outdir}/corrected_2.fastq\
+ --ref_fa ${outdir}/final.fna\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+        echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+        eval $cmd
+
+        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+            (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    fi
+done
+</code></pre>
+
+<p><em>Following up PredictHaplo with ph_parser</em></p>
+<p>In order to use the output from PredictHaplo (see description <a href="https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser">here</a>), we need to run the <code>ph_parser</code> stage.</p>
+<pre><code class="bash">hp_ph_parser
+ --haplotypes_fa ${outdir}/${PH}/*best*.fas\
+ --prefix ${sampID}_${PH}\
+ --logfile ${outdir}/${PH}/haphpipe.out\
+ --outdir ${outdir}
+</code></pre>
+
+<p>Now we have to do a loop, because there are multiple regions (i.e., PH0# directories).</p>
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;ph_parser&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+for PH in ${outdir}/PH*/ph_haplotypes.fna; do
+    #if [[ -e &quot;${PH}&quot; ]]; then
+    #    echo &quot;[---$SN---] ($(date)) EXISTS: $stage $PH&quot;
+    #else
+        read -r -d '' cmd &lt;&lt;EOF
+hp_ph_parser
+ --haplotypes_fa $(dirname $PH)/*best*.fas\
+ --prefix ${sampID}_$(dirname $(basename $PH))\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir $(dirname $PH)
+EOF
+        echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+        eval $cmd
+
+        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+            (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    #fi
+done
+</code></pre>
+
+<p><em>Adding multiple_align as a stage</em></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>alignment.fasta</code>. <br/></p>
+<p>We first need to make a text file that has a list of directories that contin <code>final.fna</code>. Because this is a genome assembly, we want to use the <code>--alignall</code> option to align the entire region and not use a GTF file. We also choose to output a phylip file using the option <code>--phyipout</code> <br/></p>
+<p>Now this in the input for the base haphpipe command for this stage:</p>
+<pre><code class="bash">haphpipe multiple_align
+ --ncpu $ncpu\
+ --dir_list dir_list.txt\
+ --phylipout\
+ --alignall\
+ --logfile haphpipe.out
+</code></pre>
+
+<p>The entire stage's bash script is here:</p>
+<pre><code class="bash">stage=&quot;multiple_align&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e $outdir/multiple_align/alignment.fasta ]] &amp;&amp; [[ -e $outdir/multiple_align/alignment.phy ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage alignment.fasta,alignment.phy&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe multiple_align\
+ --ncpu $ncpu\
+ --dir_list dir_list.txt\
+ --phylipout\
+ --alignall\
+ --logfile haphpipe.out
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
               
             </div>
           </div>

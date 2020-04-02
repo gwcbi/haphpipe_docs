@@ -1303,7 +1303,7 @@ We have to do loops for the PredictHaplo and parser stages because there are mul
 
 Now this in the input for the base haphpipe command for this stage:
 
-```
+```bash
 hp_predict_haplo
  --fq1 ${outdir}/corrected_1.fastq\
  --fq2 ${outdir}/corrected_2.fastq\
@@ -1347,7 +1347,7 @@ done
 
 In order to use the output from PredictHaplo (see description [here](https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser)), we need to run the `ph_parser` stage.
 
-```
+```bash
 hp_ph_parser
  --haplotypes_fa ${outdir}/${PH}/*best*.fas\
  --prefix ${sampID}_${PH}\
@@ -1392,8 +1392,8 @@ We first need to make a text file that has a list of directories that contin `fi
 
 Now this in the input for the base haphpipe command for this stage:
 
-```
-haphpipe multiple_align\
+```bash
+haphpipe multiple_align
  --ncpu $ncpu\
  --dir_list dir_list.txt\
  --phylipout\
