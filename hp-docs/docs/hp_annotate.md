@@ -1,4 +1,4 @@
-*hp_annotate* includes stages to annotate consensus sequence(s). Use -h after any command for a list of options.
+*hp_description* includes stages to annotate and describe consensus sequence(s) and haplotypes. Use -h after any command for a list of options.
 
 ### *pairwise_align*
 Apply correct coordinate system to final sequence(s) to facilitate downstream analyses. Input is the final sequence file in FASTA format, a reference sequence in FASTA format, and a reference GFT file. Output is a JSON file to be used in _extract_pairwise_.

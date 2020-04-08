@@ -208,33 +208,24 @@ conda config --add channels conda-forge
 
 <p>Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:</p>
 <pre><code>pip install --user &lt;package name&gt;
-````
-
-__4. Activate the environment__
-
 </code></pre>
 
-<p>conda activate haphpipe</p>
-<pre><code>
-__5. Install GATK__
+<p><strong>4. Activate the environment</strong></p>
+<pre><code>conda activate haphpipe
+</code></pre>
 
-Due to license restrictions, bioconda cannot distribute
+<p><strong>5. Install GATK</strong></p>
+<p>Due to license restrictions, bioconda cannot distribute
 and install GATK directly. To fully install GATK, you must
 download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
-[https://software.broadinstitute.org/gatk/download/archive](https://software.broadinstitute.org/gatk/download/archive).
-
-Register the package using gatk3-register:
-
+<a href="https://software.broadinstitute.org/gatk/download/archive">https://software.broadinstitute.org/gatk/download/archive</a>.</p>
+<p>Register the package using gatk3-register:</p>
+<pre><code>gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
 </code></pre>
 
-<p>gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2</p>
-<pre><code>
-This will copy GATK into your conda environment.
-
-Alternatively, GATK may be installed directly on the command line with the following commands:
-
-```bash
-mkdir -p /path/to/gatk_dir
+<p>This will copy GATK into your conda environment.</p>
+<p>Alternatively, GATK may be installed directly on the command line with the following commands:</p>
+<pre><code class="bash">mkdir -p /path/to/gatk_dir
 wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&amp;version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
 gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 </code></pre>

@@ -4,7 +4,7 @@ nav:
 - Installation: install.md
 - Reads: hp_reads.md
 - Assemble: hp_assemble.md
-- Annotate: hp_annotate.md
+- Description: hp_annotate.md
 - Haplotype: hp_haplotype.md
 - Phylo: phylo.md
 - Example Pipelines: expipes.md
