@@ -17,6 +17,8 @@
 | **pairwise_align**     | FASTA files and <br> GTF file        | _.fna_ or <br> _.fasta_ or <br> _.fa_ and <br> _.gtf_ | JSON file                                                               | *pairwise_aligned.json*                                                                                 |
 | **extract_pairwise**   | JSON file from pairwise_align output | *.json*                                               | FASTA output with region extracted to standard out                      | *stdout.fasta*                                                                                          |
 | **annotate_from_ref**  | JSON file from pairwise_align output and GTF file | _.json_ and <br> _.gtf_              |(add) |(add) |
+| **summary_stats** | Direcoty lists for assembly and haplotype files (TXT) |  _.txt_ | Summary statistics (TXT and TSV) | *summary_stats.txt* <br> *summary_stats.tsv* <br> *PH_summary_stats.tsv*|
 | **multiple_align** | FASTA files and/or <br> directory list (TXT) <br> and GTF file | _.fna_ or <br> _.fasta_ or <br> _.fa_ and _.txt_ <br> and <br> _.gtf_ | FASTA alignment and sequence files separated by amplicons in GTF | *alignment_regionX.fasta*  <br> *all_sequences_regionX.fasta* |
-| **build_tree** | FASTA alignment files | _.fna_ or <br> _.fasta_ or <br> _.fa_ | RAxML output files | *RaxML_info.build_tree.tre* and RAxML tree files 
-| **summary_stats** | Direcoty lists for assembly and haplotype files (TXT) |  _.txt_ | Summary statistics (TXT and TSV) | *summary_stats.txt* <br> *summary_stats.tsv* <br> *PH_summary_stats.tsv*
+|**model_test** | FASTA or PHYLIP alignment file | _.fna_ or <br> _.fasta_ or <br> _.fa_ or <br> _.phy_ | Text file containing best-fit models |_modeltest_results.out_ |
+| **build_tree** | FASTA or PHYLIP alignment file | _.fna_ or <br> _.fasta_ or <br> _.fa_ | RAxML output files | *RaxML_info.build_tree.tre* and RAxML tree files |
+

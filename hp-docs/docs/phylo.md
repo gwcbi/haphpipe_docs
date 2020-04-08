@@ -1,7 +1,7 @@
 **hp_phylo** includes phylogenomics stages.
 
 ### *multiple_align*
-Align consensus sequences using MAFFT ([documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)). Input can be a list of directories which contain `final.fna` files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the `final.fna` files retreived before the alignment.
+Align consensus sequences using MAFFT ([documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)). Input can be a list of directories which contain `final.fna` and/or `ph_haplotypes.fna` files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the `final.fna` and/or `ph_haplotypes.fna` files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the `--alignall` option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the `--fastaonly` option.
 Alignments are by default outputted as FASTA files, although PHYLIP (`--phylipout`) or CLUSTAL (`--clustalout`) output options are also available.
 Many options from MAFFT are available in this module. Please refer to the MAFFT documentation above for information about these options.
@@ -23,7 +23,7 @@ Note: MAFFT stores intermediate files in a temporary directory located in /tmp. 
 Option   | Description 
 ---------|-------------
 --seqs SEQS |           FASTA file with sequences to be aligned
-  --dir_list DIR_LIST |   List of directories which include a final.fna file,one on each line
+  --dir_list DIR_LIST |   List of directories which include either a final.fna or ph_haplotypes.fna file, one on each line
   --ref_gtf REF_GTF |    Reference GTF file
   --out_align OUT_ALIGN | Name for alignment file
   --nuc |                Assume nucleotide (default: False)
@@ -93,9 +93,68 @@ _Example usage:_
 haphpipe multiple_align --dir_list demo_sra_list.txt --ref_gtf HIV_B.K03455.HXB2.gtf --phylipout --logfile demo_multiple_align.log
 ```
 
+
+### *model_test*
+Select the best-fit model of evolution from an alignment file using ModelTest-NG ([documentation](https://github.com/ddarriba/modeltest/wiki)). Input is an alignment in FASTA or PHYLIP format. Output is ModelTest-NG results (text file) containing information for the best performing models.
+
+**Usage:**
+
+`haphpipe model_test [ModelTest-NG OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> [--outdir]`
+
+**(or):**
+
+`hp_model_test [ModelTest-NG OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> [--outdir]`
+
+*Output files:* ModelTest-NG output file (`modeltest_results.out`).
+
+*Input/Output Arguments:* 
+
+Option   | Description |
+---------|-------------|
+--seqs SEQS |   Alignment in FASTA or PHYLIP format
+--outname | Name for output file
+--outdir OUTDIR    |   Output directory
+
+
+*ModelTest-NG Options:*
+
+Option   | Description |
+---------|-------------|
+--data_type|Data type: nt or aa (default: nt)
+--partitions|Partitions file
+--seed|Seed for random number generator
+--topology TOPOLOGY|Starting topology: ml, mp, fixed-ml-jc, fixed-ml-gtr, fixed-mp, random, or user (default: ml)
+--utree|User-defined starting tree
+--force| Force output overriding (default: False)
+--asc_bias ASC_BIAS|Ascertainment bias correction: lewis, felsenstein, or stamatakis
+--frequencies FREQUENCIES|Candidate model frequencies: e (estimated) or f (fixed)
+--het HET| Set rate heterogeneity: u (uniform), i (invariant sites +I), g (gamma +G), or f (bothinvariant sites and gamma +I+G)
+--models MODELS |  Text file with candidate models, one per line
+--schemes SCHEMES|Number of predefined DNA substitution schemes evaluated: 3, 5, 7, 11, or 203
+--template TEMPLATE|Set candidate models according to a specified tool: raxml, phyml, mrbayes, or paup
+
+*Options:*
+
+Option   | Description |
+---------|-------------|
+--ncpu NCPU      |     Number of CPU to use (default: 1)|
+  --quiet          |     Do not write output to console (silence stdout and  stderr) (default: False)|
+  --logfile LOGFILE  |   Name for log file (output)|
+  --debug             |  Print commands but do not run (default: False)|
+--keep_tmp|Keep temporary directory (default: False)  
+
+_Example usage:_
+
+
+```
+haphpipe model_test --seqs multiple_align/alignment.fasta
+```
+
+
+
 ### *build_tree*
 Phylogeny reconstruction with RAxML ([documentation](https://cme.h-its.org/exelixis/resource/download/NewManual.pdf)). Input is an alignment (FASTA or PHYLIP format). Output is a tree file (TRE format).
-
+Please see the RAxML documentation for a full description of RAxML options. For convenience, we have included an option `--run_full_analysis` which will automatically find the best maximum likelihood tree, complete bootstrapping, and then merge output together for a final tree.
 
 **Usage:**
 
@@ -129,13 +188,14 @@ Option   | Description |
 ---------|-------------|
   --seqs SEQS                  |  Input alignment in PHYLIP or FASTA format|
   --output_name NAME |  Run name for trees (default: build_tree.tre)|
-  --model MODEL             |  Substitution Model (default: GTRGAMMA)|
+  --model MODEL             |  Substitution Model (default: GTRGAMMAIX)|
   --outdir OUTDIR              |  Output directory (default: .)|
  
 *RAxML Options:*
 
 Option   | Description 
 ---------|-------------
+--run_full_analysis | Run bootstrap search and find best ML tree |
   --outgroup                  |  outgrpup for tree|
   --parsimony_seed            |  Parsimony Random Seed|
   --wgtFile                   |  Column weight file name to assign individual weights to each column of the alignment|
@@ -216,5 +276,5 @@ _Example usage:_
 
 
 ```
-haphpipe build_tree --seqs multiple_align/alignment.fasta --RapidBootstrapNumSeed 12345 --parsimony_seed 12345 --NumberofRuns 100
+haphpipe build_tree --seqs multiple_align/alignment.fasta --run_full_analysis
 ```
