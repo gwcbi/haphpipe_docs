@@ -74,6 +74,7 @@ As we go through each module, we will take note of what we need and which input 
 We know all modules have the option for a logfile. We'll include that in the bash scripting, but don't need to make notes of a logfile for each module.
 
 --
+
 _Part 2A - Sample reads._
 
 Upon viewing the `haphpipe sample_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of reads desired.
@@ -89,6 +90,7 @@ Not sample specific options:
 * number of reads desired 
 
 --
+
 _Part 2B - Trim reads._
 
 Upon viewing the `haphpipe trim_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, number of reads, and number of CPUs desired. There is an option to change the timming commands, but we'll keep default. 
@@ -105,6 +107,7 @@ Not sample specific options:
 * ncpu
 
 --
+
 _Part 2C - Error correct reads._
 
 Upon viewing the `haphpipe ec_reads -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.
@@ -120,6 +123,7 @@ Not sample specific options:
 * ncpu
 
 --
+
 _Part 2D - De novo assembly._
 
 Upon viewing the `haphpipe assemble_denovo -h` we see that we need to provide fastq reads 1 and 2, an output directory, and number of CPUs desired.
@@ -138,6 +142,7 @@ Not sample specific options:
 * no error correction option
 
 --
+
 _Part 2E - Assemble scaffold._
 
 Upon viewing the `haphpipe assemble_scaffold -h` we see that we need to provide fasta file containing assembled contigs, an output directory, name to append to scaffold sequence and reference fasta desired. There is an option to change the timming commands, but we'll keep default. 
@@ -153,6 +158,7 @@ Not sample specific options:
 * reference fasta
 
 --
+
 _Part 2F - Refine assembly._
 
 Upon viewing the `haphpipe refine_assembly -h` we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to refine, a sample ID and a maximum number of refinement steps, and number of CPUs desired.
@@ -171,6 +177,7 @@ Not sample specific options:
 * maximum number of refinement steps (we'll do 3 for sake of simplicity and time)
 
 --
+
 _Part 2G - Finalize assembly._
 
 Upon viewing the `haphpipe finalize_assembly -h` we see that we need to provide fastq reads 1 and 2, an output directory, a reference sequence to finalize, a sample ID and a maximum number of refinement steps, and number of CPUs desired. We could replace the preset bowtie2 option, but we will leave it as default for this sample pipeline.
@@ -188,6 +195,7 @@ Not sample specific options:
 * ncpu
 
 --
+
 _Part 2H - Gather the needed initial input for each sample._
 
 We need to gather the necessary files that we will need to input for each sample so that we can make a script that takes in input files. We know from the User Guide that we can look at the output/input file types and names [here](https://gwcbi.github.io/haphpipe_docs/inout/). Because each module has a standard output file name, we will only need to be specific about the input for the raw fastq files for each sample. Therefore we need:
@@ -209,6 +217,7 @@ The other options we can code into the bash script for each module, since they w
 Now we will format a bash script for each module. 
 
 --
+
 _Part 3A - Input options._
 
 Because we have a list of needed input options (specified by the user), we need to make a bash command to take in the inputs. 
@@ -439,6 +448,7 @@ echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
 
 --
+
 _Part 3B - Sample reads._
 
 Now we will begin constructing bash scripts for each module.
@@ -492,6 +502,7 @@ fi
 ```
 
 --
+
 _Part 3C - Trim reads._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput names for this stage are: `trimmed_1.fastq` and `trimmed_2.fastq`. <br/>
@@ -535,6 +546,7 @@ fi
 ```
 
 --
+
 _Part 3D - Error correct reads._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput names for this stage are: `corrected_1.fastq` and `corrected_2.fastq`. <br/>
@@ -578,6 +590,7 @@ fi
 ```
 
 --
+
 _Part 3E - De novo assembly._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `denovo_contigs.fna`. <br/>
@@ -623,6 +636,7 @@ fi
 ```
 
 --
+
 _Part 3F - Assemble scaffold._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `scaffold_assembly.fa`. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/>
@@ -666,6 +680,7 @@ fi
 ```
 
 --
+
 _Part 3G - Refine assembly._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `refined.fna`. <br/>
@@ -715,6 +730,7 @@ fi
 ```
 
 --
+
 _Part 3H - Finalize assembly._
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput files for this stage are: `final.fna`, `final.bam`, `final.vcf.gz`. <br/>
@@ -762,6 +778,7 @@ fi
 ```
 
 --
+
 _Part 3I - Gather all the individual module scripts into the final pipeline script._
 
 For readable code, we will separate each module with `###` like so:
@@ -1292,6 +1309,7 @@ Directories should look like such after running this script:
 Here are some option modules to include within the pipeline. 
 
 --
+
 _Adding PredictHaplo as a stage._
 
 If you desire PredictHaplo, you can either utilize the option `--interval_txt` or you can rerun the pipeline with this gtf file. It is easier for PredictHaplo to run on smaller regions than the entire genome like we implemented above.
@@ -1352,6 +1370,7 @@ done
 ```
 
 --
+
 *Following up PredictHaplo with ph_parser*
 
 In order to use the output from PredictHaplo (see description [here](https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser)), we need to run the `ph_parser` stage.
@@ -1393,6 +1412,7 @@ done
 ```
 
 --
+
 *Adding multiple_align as a stage*
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `alignment.fasta`. <br/>
@@ -1436,6 +1456,7 @@ fi
 ```
 
 --
+
 *Adding model_test as a stage*
 
 Remember, you can find the output file names [here](https://gwcbi.github.io/haphpipe_docs/inout/). The ouput name for this stage is `modeltest_results.out`. <br/>
