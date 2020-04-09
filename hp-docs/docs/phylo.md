@@ -184,84 +184,69 @@ RAxML_distances.build_tree.tre         | Contains the pair-wise ML-based distanc
 
 *Input/Output Arguments:* 
 
-Option   | Description |
----------|-------------|
-  --seqs SEQS                  |  Input alignment in PHYLIP or FASTA format|
-  --output_name NAME |  Run name for trees (default: build_tree.tre)|
-  --model MODEL             |  Substitution Model (default: GTRGAMMAIX)|
-  --outdir OUTDIR              |  Output directory (default: .)|
+Option   | RAxML Equivalent |Description |
+---------|------------------|----        |
+  --seqs SEQS        | -s          |  Input alignment in PHYLIP or FASTA format|
+  --output_name NAME | -n          |  Run name for trees (default: build_tree.tre)|
+  --model MODEL      | -m          |  Substitution Model (default: GTRGAMMAIX)|
+  --outdir OUTDIR    | -w          |  Output directory (default: .)|
  
 *RAxML Options:*
 
-Option   | Description 
----------|-------------
+Option   | RAxML Equivalent |Description |
+---------|------------------|----        |
 --run_full_analysis | Run bootstrap search and find best ML tree |
-  --outgroup                  |  outgrpup for tree|
-  --parsimony_seed            |  Parsimony Random Seed|
-  --wgtFile                   |  Column weight file name to assign individual weights to each column of the alignment|
-  --secsub                    |  Specify secondary structure substitution models, must also include file defining the secondary structure |
-  --bootstrap                 |  bootstrapRandomNumberSeed for non-parametric bootstrapping|
-  --wgtFile                   |  Column weight file name to assign individual weights to each column of the alignment|
-  --secsub                    |  Specify secondary structure substitution models, must also include file defining the secondary structure |
-  --bootstrap_threshold       | Threshold for bootstopping criteria|
-  --numCat                    | Number of distinct rate categories for RAxML when model of rate heterogeneity is set to CAT|
-  --rand_starting_tree        | ML optimization from random starting tree|
-  --convergence_criterion     |ML search convergence criterion|
-  --likelihoodEpsilon         | Set model optimization precision in log likelihood units for final optimization of tree topology|
-  --excludeFileName           | File contains specifications of alignment positions to be excluded|
-  --algo_option               | Select what kind of algorithm RAxML shall execute|
-  --cat_model                 | Enable ML tree searches under CAT model for very large trees|
-  --groupingFile              | File name of a multifurcating constraint tree|
-  --placementThreshold        | Threshold value for ML­based evolutionary placement algorithm heuristics|
-  --disable_pattern_compression | Disable pattern compression|
-  --InitialRearrangement      | Radius for pruned sub-tree re-insertion|
-  --posteriori                | posteriori bootstopping analysis|
-  --print_intermediate_trees  | Print out a couple of intermediate trees|
-  --majorityrule              | Compute majority rule consensus tree|
-  --print_branch_length       | Bootstrapped trees should be printed with branch lengths|
-  --ICTCmetrics               | Compute the TC and IC metrics on a consensus tree|
-  --partition_branch_length   | Switch on estimation of individual per­partition branch lengths|
-  --disable_check             | Disable check for completely undetermined sequence in alignment|
-  --AAmodel                   | Specify the file name of a user­defined AA (Protein) substitution model|
-  --multiplemodelFile         | Specify the file name which contains the assignment of models to alignment partitions for multiple models of substitution|
-  --binarytree                | Specify the file name of a binary constraint tree|
-  --BinaryParameterFile       | Specify the file name of a binary model parameter file that has previously been generated with RAxML using the ­f e tree evaluation option.|
-  --SecondaryStructure        | Specify the name of a secondary structure file|
-  --UserStartingTree          | Specifies a user starting tree file name which must be in Newick format|
-  --median_GAMMA              | Use the median for the discrete approximation of the GAMMA model of rateheterogeneity|
-  --implement_SEV             | Try to save memory by using SEV­based implementation|
-  --version_info              | Display version information|
-  --rate_heterogeneity        | Disable rate heterogeneity among site model and use one without rate heterogeneity instead|
-  --directory                 | Full directory of output file|
-  --window                    | Sliding window size for leave­one­out site­specific placement bias algorithm|
-  --RapidBootstrapNumSeed     | Specify an integer number (random seed) and turn on rapid bootstrapping|
-  --random_addition           | RAxML will only do a randomized stepwise addition order parsimony tree reconstruction without performing any additional SPRs|
-  --starting_tree             | Only for computing parsimony|
-  --quartetGroupingFileName   | Pass a quartet grouping file name defining four groups from which to draw quartets|
-  --multipleTreeFile          | Specify the file name of a file containing multiple trees e.g. from a bootstrap that shall be used to draw bipartition values onto a tree provided with ­t.|
-  --NumberofRuns              | Specify the number of alternative runs on distinct starting trees|
-  --mesquite                  | Print output files that can be parsed by Mesquite|
-  --silent                    | Disables printout of warnings related to identical sequences and entirely undetermined sites in the alignment|
-  --noseqcheck                | Disables checking the input MSA for identical sequences and entirely undetermined sites|
-  --nobfgs                    | Disables automatic usage of BFGS method to optimize GTR rates on unpartitioned DNA datasets|
-  --asccorrlewis              | The standard correction by Paul Lewis|
-  --asccorrfelsenstein        | A correction introduced by Joe Felsenstein|
-  --asccorrstamatakis         | A correction introduced by Stamatakis|
-  --flagcheck                 | RAxML will only check if all command line flags specifed are available|
-  --autoprotml                | When using automatic protein model selection you can chose the criterion for selecting these models|
-  --autoprotbic               | When using automatic protein model selection you can chose the criterion for selecting these models|
-  --autoprotaic'              | When using automatic protein model selection you can chose the criterion for selecting these models|
-  --autoprotaicc              | When using automatic protein model selection you can chose the criterion for selecting these models|
-  --epaPlaceNum               | Specify the number of potential placements you want to keep for each read in the EPA algorithm|
-  --epaProbThreshold          | Specify a percent threshold for including potential placements of a read depending on the maximum placement weight for this read|
-  --epaLikelihood             | Specify an accumulated likelihood weight threshold|
-  --JC69                      | Specify that all DNA partitions will evolve under the Jukes­Cantor model|
-  --K80                       | Specify that all DNA partitions will evolve under the K80 model|
-  --HKY85                     | Specify that all DNA partitions will evolve under the HKY85 model|
-  --BootstrapPerm             | Specify the number of permutations to be conducted for the bootstopping/bootstrap convergence test; minimum 100|
-  --quartetswithoutreplacement | Specify that quartets are randomly subsampled, but without replacement|
-  --printidenticalsequences    | Specify that RAxML shall automatically generate a .reduced alignment with all undetermined columns removed')|
-  --option_help                | Display Help|
+  --outgroup                  | -o  | outgrpup for tree|
+  --parsimony_seed            | -p  | Parsimony Random Seed|
+  --wgtFile                   | -a  | Column weight file name to assign individual weights to each column of the alignment|
+  --secsub                    | -A  | Specify secondary structure substitution models, must also include file defining the secondary structure |
+  --bootstrap                 | -b  | bootstrapRandomNumberSeed for non-parametric bootstrapping|
+  --bootstrap_threshold       | -B  | Threshold for bootstopping criteria|
+  --numCat                    | -c  | Number of distinct rate categories for RAxML when model of rate heterogeneity is set to CAT|
+  --rand_starting_tree        | -d  | ML optimization from random starting tree|
+  --convergence_criterion     | -D  | ML search convergence criterion|
+  --likelihoodEpsilon         | -e  | Set model optimization precision in log likelihood units for final optimization of tree topology|
+  --excludeFileName           | -E  | File contains specifications of alignment positions to be excluded|
+  --algo_option               | -f  | Select what kind of algorithm RAxML shall execute|
+  --cat_model                 | -F  | Enable ML tree searches under CAT model for very large trees|
+  --groupingFile              | -g  | File name of a multifurcating constraint tree|
+  --placementThreshold        | -G  | Threshold value for ML­based evolutionary placement algorithm heuristics|
+  --disable_pattern_compression | -H |Disable pattern compression|
+  --InitialRearrangement      | -i  | Radius for pruned sub-tree re-insertion|
+  --posteriori                | -I  | posteriori bootstopping analysis|
+  --print_intermediate_trees  | -j  | Print out a couple of intermediate trees|
+  --majorityrule              | -J  | Compute majority rule consensus tree|
+  --print_branch_length       | -k  | Bootstrapped trees should be printed with branch lengths|
+  --ICTCmetrics               | -L  | Compute the TC and IC metrics on a consensus tree|
+  --partition_branch_length   | -M  | Switch on estimation of individual per­partition branch lengths|
+  --disable_check             | -O  | Disable check for completely undetermined sequence in alignment|
+  --AAmodel                   | -P  | Specify the file name of a user­defined AA (Protein) substitution model|
+  --multiplemodelFile         | -q  | Specify the file name which contains the assignment of models to alignment partitions for multiple models of substitution|
+  --binarytree                | -r  | Specify the file name of a binary constraint tree|
+  --BinaryParameterFile       | -R  | Specify the file name of a binary model parameter file that has previously been generated with RAxML using the ­f e tree evaluation option.|
+  --SecondaryStructure        | -S  | Specify the name of a secondary structure file|
+  --UserStartingTree          | -t  | Specifies a user starting tree file name which must be in Newick format|
+  --median_GAMMA              | -u  | Use the median for the discrete approximation of the GAMMA model of rateheterogeneity|
+  --version_info              | -v  | Display version information|
+  --rate_heterogeneity        | -V  | Disable rate heterogeneity among site model and use one without rate heterogeneity instead|
+  --directory                 | -w  | Full directory of output file|
+  --window                    | -W  | Sliding window size for leave­one­out site­specific placement bias algorithm|
+  --RapidBootstrapNumSeed     | -x  | Specify an integer number (random seed) and turn on rapid bootstrapping|
+  --random_addition           | -X  | RAxML will only do a randomized stepwise addition order parsimony tree reconstruction without performing any additional SPRs|
+  --starting_tree             | -y  | Only for computing parsimony|
+  --quartetGroupingFileName   | -Y  | Pass a quartet grouping file name defining four groups from which to draw quartets|
+  --multipleTreeFile          | -z  | Specify the file name of a file containing multiple trees e.g. from a bootstrap that shall be used to draw bipartition values onto a tree provided with ­t.|
+  --NumberofRuns              | -N  | Specify the number of alternative runs on distinct starting trees|
+  --mesquite                  | --mesquite                   | Print output files that can be parsed by Mesquite|
+  --silent                    | --silent                     | Disables printout of warnings related to identical sequences and entirely undetermined sites in the alignment|
+  --noseqcheck                | --no-seq-check               | Disables checking the input MSA for identical sequences and entirely undetermined sites|
+  --nobfgs                    | --no-bfgs                    | Disables automatic usage of BFGS method to optimize GTR rates on unpartitioned DNA datasets|
+  --epaPlaceNum               | ­­epa­keep­placements=       | Specify the number of potential placements you want to keep for each read in the EPA algorithm|
+  --epaProbThreshold          | ­­epa­prob­threshold=        | Specify a percent threshold for including potential placements of a read depending on the maximum placement weight for this read|
+  --epaLikelihood             | ­­epa­accumulated­threshold= | Specify an accumulated likelihood weight threshold|
+  --HKY85                     | --HKY85                      | Specify that all DNA partitions will evolve under the HKY85 model|
+  --BootstrapPerm             | ­­bootstop­perms=            | Specify the number of permutations to be conducted for the bootstopping/bootstrap convergence test; minimum 100|
+  --option_help               | -h                           | Display Help|
 
 *Options:*
 
