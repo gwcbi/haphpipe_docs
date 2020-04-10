@@ -25,7 +25,208 @@ Now, we will use the *model_test* stage to determine the best-fit evolutionary m
 haphpipe model_test --seqs hp_multiple_align/alignment_region00.fasta --run_id alignment_region00 --template raxml
 ```
 
-The ModelTest output will be written to a file called `modeltest_results.out` and a summary of all the best models will be written to `modeltest_results_summary.tsv`.
+The ModelTest output will be written to a file called `modeltest_results.out` and a summary of all the best models will be written to `modeltest_results_summary.tsv`. Examples of both are below.
+
+<details>
+  <summary>ModelTest-NG Output</summary>
+  
+  ```
+  --------------------------------------------------------------------------------
+ModelTest-NG vx.y.z
+
+Input data:
+  MSA:        multiple_align/alignment.fasta
+  Tree:       Maximum likelihood
+    file:           -
+  #taxa:            6
+  #sites:           1975
+  #patterns:        114
+  Max. thread mem:  0 MB
+
+Output:
+  Log:           /var/folders/lv/dqdkd8957_3fv6yxsyfsvn0r0000gn/T/tmpHP_model_testud4sc4ya/samp12_modeltest_results.log
+  Starting tree: /var/folders/lv/dqdkd8957_3fv6yxsyfsvn0r0000gn/T/tmpHP_model_testud4sc4ya/samp12_modeltest_results.tree
+  Results:       /var/folders/lv/dqdkd8957_3fv6yxsyfsvn0r0000gn/T/tmpHP_model_testud4sc4ya/samp12_modeltest_results.out
+
+Selection options:
+  # dna schemes:      11
+  # dna models:       88
+  include model parameters:
+    Uniform:         true
+    p-inv (+I):      true
+    gamma (+G):      true
+    both (+I+G):     true
+    free rates (+R): false
+    fixed freqs:     true
+    estimated freqs: true
+    #categories:     4
+  gamma rates mode:   mean
+  asc bias:           none
+  epsilon (opt):      0.01
+  epsilon (par):      0.05
+  keep branches:      false
+
+Additional options:
+  verbosity:        very low
+  threads:          1/6
+  RNG seed:         12345
+  subtree repeats:  enabled
+--------------------------------------------------------------------------------
+
+BIC       model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  HKY                4     -5380.7535     10860.1551         0.0000    0.7049
+       2  TrN                5     -5378.2013     10862.6391         2.4839    0.2036
+       3  TPM1uf             5     -5379.8699     10865.9763         5.8211    0.0384
+       4  TPM3uf             5     -5380.7175     10867.6716         7.5164    0.0164
+       5  HKY+G4             5     -5380.8440     10867.9246         7.7694    0.0145
+       6  HKY+I              5     -5381.4917     10869.2200         9.0648    0.0076
+       7  TIM3               6     -5378.1637     10870.1523         9.9971    0.0048
+       8  TrN+G4             6     -5378.3069     10870.4387        10.2836    0.0041
+       9  TPM2uf+G4          6     -5378.9908     10871.8064        11.6512    0.0021
+      10  TrN+I              6     -5379.0181     10871.8610        11.7059    0.0020
+--------------------------------------------------------------------------------
+Best model according to BIC
+---------------------------
+Model:              HKY
+lnL:                -5380.7535
+Frequencies:        0.3695 0.1709 0.2219 0.2377
+Subst. Rates:       1.0000 2.4741 1.0000 1.0000 2.4741 1.0000 
+Inv. sites prop:    -
+Gamma shape:        -
+Score:              10860.1551
+Weight:             0.7049
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.0100
+Gamma:              0.0216
+Gamma-Inv:          0.0002
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.0215
+Alpha:              94.2337
+Alpha-P.Inv:        91.7960
+P.Inv-Alpha:        0.0214
+Frequencies:        0.3700 0.1702 0.2226 0.2372 
+
+Commands:
+  > phyml  -i multiple_align/alignment.fasta -m 010010 -f m -v 0 -a 0 -c 1 -o tlr
+  > raxmlHPC-SSE3 -s multiple_align/alignment.fasta -c 1 -m GTRCATX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa multiple_align/alignment.fasta --model HKY
+  > paup -s multiple_align/alignment.fasta
+  > iqtree -s multiple_align/alignment.fasta -m HKY
+
+AIC       model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  TrN                5     -5378.2013     10784.4026         0.0000    0.2246
+       2  TIM2+G4            7     -5376.4972     10784.9944         0.5919    0.1671
+       3  TIM3               6     -5378.1637     10786.3274         1.9249    0.0858
+       4  TIM2+I             7     -5377.2570     10786.5141         2.1115    0.0782
+       5  TrN+G4             6     -5378.3069     10786.6138         2.2113    0.0744
+       6  TIM1+G4            7     -5377.3549     10786.7098         2.3073    0.0709
+       7  HKY                4     -5380.7535     10787.5069         3.1044    0.0476
+       8  TPM1uf             5     -5379.8699     10787.7398         3.3372    0.0423
+       9  TPM2uf+G4          6     -5378.9908     10787.9815         3.5790    0.0375
+      10  TrN+I              6     -5379.0181     10788.0362         3.6336    0.0365
+--------------------------------------------------------------------------------
+Best model according to AIC
+---------------------------
+Model:              TrN
+lnL:                -5378.2013
+Frequencies:        0.3720 0.1679 0.2249 0.2352
+Subst. Rates:       1.0000 2.2008 1.0000 1.0000 3.1065 1.0000 
+Inv. sites prop:    -
+Gamma shape:        -
+Score:              10784.4026
+Weight:             0.2246
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.1262
+Gamma:              0.3943
+Gamma-Inv:          0.0384
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.0216
+Alpha:              93.2595
+Alpha-P.Inv:        94.4193
+P.Inv-Alpha:        0.0216
+Frequencies:        0.3718 0.1684 0.2238 0.2359 
+
+Commands:
+  > phyml  -i multiple_align/alignment.fasta -m 010020 -f m -v 0 -a 0 -c 1 -o tlr
+  > raxmlHPC-SSE3 -s multiple_align/alignment.fasta -c 1 -m GTRCATX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa multiple_align/alignment.fasta --model TrN
+  > paup -s multiple_align/alignment.fasta
+  > iqtree -s multiple_align/alignment.fasta -m TrN
+
+AICc      model              K            lnL          score          delta    weight
+--------------------------------------------------------------------------------
+       1  TrN                5     -5378.2013     10784.4026         0.0000    0.2246
+       2  TIM2+G4            7     -5376.4972     10784.9944         0.5919    0.1671
+       3  TIM3               6     -5378.1637     10786.3274         1.9249    0.0858
+       4  TIM2+I             7     -5377.2570     10786.5141         2.1115    0.0782
+       5  TrN+G4             6     -5378.3069     10786.6138         2.2113    0.0744
+       6  TIM1+G4            7     -5377.3549     10786.7098         2.3073    0.0709
+       7  HKY                4     -5380.7535     10787.5069         3.1044    0.0476
+       8  TPM1uf             5     -5379.8699     10787.7398         3.3372    0.0423
+       9  TPM2uf+G4          6     -5378.9908     10787.9815         3.5790    0.0375
+      10  TrN+I              6     -5379.0181     10788.0362         3.6336    0.0365
+--------------------------------------------------------------------------------
+Best model according to AICc
+---------------------------
+Model:              TrN
+lnL:                -5378.2013
+Frequencies:        0.3720 0.1679 0.2249 0.2352
+Subst. Rates:       1.0000 2.2008 1.0000 1.0000 3.1065 1.0000 
+Inv. sites prop:    -
+Gamma shape:        -
+Score:              10784.4026
+Weight:             0.2246
+---------------------------
+Parameter importances
+---------------------------
+P.Inv:              0.1262
+Gamma:              0.3943
+Gamma-Inv:          0.0384
+Frequencies:        1.0000
+---------------------------
+Model averaged estimates
+---------------------------
+P.Inv:              0.0216
+Alpha:              93.2595
+Alpha-P.Inv:        94.4193
+P.Inv-Alpha:        0.0216
+Frequencies:        0.3718 0.1684 0.2238 0.2359 
+
+Commands:
+  > phyml  -i multiple_align/alignment.fasta -m 010020 -f m -v 0 -a 0 -c 1 -o tlr
+  > raxmlHPC-SSE3 -s multiple_align/alignment.fasta -c 1 -m GTRCATX -n EXEC_NAME -p PARSIMONY_SEED
+  > raxml-ng --msa multiple_align/alignment.fasta --model TrN
+  > paup -s multiple_align/alignment.fasta
+  > iqtree -s multiple_align/alignment.fasta -m TrN
+Done
+
+  ```
+  
+</details>
+
+<details>
+  <summary>ModelTest-NG Output</summary>
+  
+```
+File	Criteria	Best Model
+multiple_align/alignment.fasta	BIC	HKY
+multiple_align/alignment.fasta	AIC	TrN
+multiple_align/alignment.fasta	AICc	TrN
+```
+  
+</details>
 
 **Step 3: Build a Tree**
 
@@ -34,7 +235,7 @@ Now, we will use *build_tree* to build our tree! You should use the best model o
 haphpipe build_tree --seqs hp_multiple_align/alignment_region00.fasta --run_full_analysis --model GTRGAMMAX
 ```
 
-The output will be written to a new directory, `hp_build_tree`. The best tree file from RAxML will be outputted as `RAxML_bestTree.build_tree.tre`. This tree can then be annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
+The output will be written to a new directory, `hp_build_tree`. The best tree file from RAxML will be outputted as `RAxML_bipartitionsBranchLabels.build_tree.tre`. This tree can then be annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
 
 **Phylogenomics Pipelines**
 

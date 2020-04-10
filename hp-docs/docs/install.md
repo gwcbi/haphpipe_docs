@@ -142,7 +142,7 @@ make
 If a `segfault` error occurs during the _hp_predict_haplo_ stage, this is **not** a characteristic of HAPHPIPE but rather that of PredictHaplo. Sometimes, we have luck if we just rerun the code again or move to an interactive CPU node. We are unsure what causes this error, and we only see it between the local and global reconstruction phases in PredictHaplo.
 
 
-## Quick start
+## Quick-Start
 
 __1. Activate haphpipe__
 
@@ -219,7 +219,9 @@ Several modules in HAPHPIPE use reference files: either a FASTA file containing 
 the file `HIV_B.K03455.HXB2.fasta` as a reference whole-genome file, `HIV_B.K03455.HXB2.amplicons.fasta` for amplicon assembly, and `HIV_B.K03455.HXB2.gtf` as a GTF file. All three files are downloaded in the [demo module](https://gwcbi.github.io/haphpipe_docs/demos/).
 The contents of each file are below.
 
-`HIV_B.K03455.HXB2.fasta`
+<details>
+  <summary>`HIV_B.K03455.HXB2.fasta`</summary>
+
 ```
 >HIV_B.K03455.HXB2
 TGGAAGGGCTAATTCACTCCCAACGAAGACAAGATATCCTTGATCTGTGGATCTACCACACACAAGGCTACTTCCCTGATTAGCAGAACTACACACCAGG
@@ -322,7 +324,11 @@ GCTTAAGCCTCAATAAAGCTTGCCTTGAGTGCTTCAAGTAGTGTGTGCCCGTCTGTTGTGTGACTCTGGTAACTAGAGAT
 GTGTGGAAAATCTCTAGCA
 ```
 
-`HIV_B.K03455.HXB2.amplicons.fasta`
+<details>
+
+<details>
+  <summary>`HIV_B.K03455.HXB2.amplicons.fasta`</summary>
+
 ```
 >ref|HIV_B.K03455.HXB2|reg|PRRT|
 CCCTCAGGTCACTCTTTGGCAACGACCCCTCGTCACAATAAAGATAGGGGGGCAACTAAAGGAAGCTCTATTAGATACAG
@@ -384,9 +390,15 @@ AAAGCAATGTATGCCCCTCCCATCAGTGGACAAATTAGATGTTCATCAAATATTACAGGGCTGCTATTAACAAGAGATGG
 TGGTAATAGCAACAATGAGTCCGAGATCTTCAGACCTGGAGGAGGAGATATGAGGGACAATTGGAGAAGTGAATTATATA
 AATATAAAGTAGTAAAAATTGAACCATTAGGAGTAGCACCCACCAAGGCAAAGAGAAGAGTGGTGCAGAGAGAAAAAAGA
 ```
-`HIV_B.K03455.HXB2.gtf`
+</details>
+
+<details>
+  <summary>`HIV_B.K03455.HXB2.gtf`</summary>
+
+
 ```
 HIV_B.K03455.HXB2	LANL	amplicon	2252	3869	.	+	2	name "PRRT"; primary_cds "2252-2549"; alt_cds "2550-3869";
 HIV_B.K03455.HXB2	LANL	amplicon	4230	5093	.	+	0	name "INT"; primary_cds "2085-5096"; alt_cds "5098-5619";
 HIV_B.K03455.HXB2	LANL	amplicon	6225	7757	.	+	1	name "gp120"; primary_cds "6225-8795"; alt_cds "5831-6223";
 ```
+<details>
