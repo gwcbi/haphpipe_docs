@@ -220,7 +220,7 @@ the file `HIV_B.K03455.HXB2.fasta` as a reference whole-genome file, `HIV_B.K034
 The contents of each file are below.
 
 <details>
-  <summary>`HIV_B.K03455.HXB2.fasta`</summary>
+  <summary>HIV_B.K03455.HXB2.fasta</summary>
 ```
 >HIV_B.K03455.HXB2
 TGGAAGGGCTAATTCACTCCCAACGAAGACAAGATATCCTTGATCTGTGGATCTACCACACACAAGGCTACTTCCCTGATTAGCAGAACTACACACCAGG
@@ -326,7 +326,7 @@ GTGTGGAAAATCTCTAGCA
 
 
 <details>
-  <summary>`HIV_B.K03455.HXB2.amplicons.fasta`</summary>
+  <summary>HIV_B.K03455.HXB2.amplicons.fasta</summary>
 ```
 >ref|HIV_B.K03455.HXB2|reg|PRRT|
 CCCTCAGGTCACTCTTTGGCAACGACCCCTCGTCACAATAAAGATAGGGGGGCAACTAAAGGAAGCTCTATTAGATACAG
@@ -391,7 +391,7 @@ AATATAAAGTAGTAAAAATTGAACCATTAGGAGTAGCACCCACCAAGGCAAAGAGAAGAGTGGTGCAGAGAGAAAAAAGA
 </details>
 
 <details>
-  <summary>`HIV_B.K03455.HXB2.gtf`</summary>
+  <summary>HIV_B.K03455.HXB2.gtf</summary>
 
 ```
 HIV_B.K03455.HXB2	LANL	amplicon	2252	3869	.	+	2	name "PRRT"; primary_cds "2252-2549"; alt_cds "2550-3869";
