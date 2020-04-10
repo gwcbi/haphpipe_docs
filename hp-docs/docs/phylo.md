@@ -31,7 +31,7 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
   <summary>ModelTest-NG Output</summary>
   
   ```
-	  --------------------------------------------------------------------------------
+	--------------------------------------------------------------------------------
 	ModelTest-NG vx.y.z
 
 	Input data:
