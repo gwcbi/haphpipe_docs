@@ -213,11 +213,9 @@ Commands:
 Done
 
   ```
-  
 </details>
-
 <details>
-  <summary>ModelTest-NG Output</summary>
+  <summary>ModelTest-NG Output Summary</summary>
   
 ```
 File	Criteria	Best Model
@@ -225,7 +223,6 @@ multiple_align/alignment.fasta	BIC	HKY
 multiple_align/alignment.fasta	AIC	TrN
 multiple_align/alignment.fasta	AICc	TrN
 ```
-  
 </details>
 
 **Step 3: Build a Tree**
