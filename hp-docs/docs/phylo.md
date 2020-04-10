@@ -226,6 +226,9 @@ multiple_align/alignment.fasta	AICc	TrN
 </details>
 <br>
 
+
+
+
 **Step 3: Build a Tree**
 
 Now, we will use *build_tree* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTRGAMMAX). The `--run_full_analysis` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
