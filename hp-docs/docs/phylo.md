@@ -30,7 +30,7 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
 <details>
   <summary>ModelTest-NG Output</summary>
   
-  ```
+```
 	--------------------------------------------------------------------------------
 	ModelTest-NG vx.y.z
 
@@ -212,7 +212,7 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
 	  > iqtree -s multiple_align/alignment.fasta -m TrN
 	Done
 
-  ```
+```
 </details>
 <details>
   <summary>ModelTest-NG Output Summary</summary>
