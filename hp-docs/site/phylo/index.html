@@ -600,24 +600,29 @@ Please see the RAxML documentation for a full description of RAxML options. For 
 <thead>
 <tr>
 <th>Option</th>
+<th>RAxML Equivalent</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>--seqs SEQS</td>
+<td>-s</td>
 <td>Input alignment in PHYLIP or FASTA format</td>
 </tr>
 <tr>
 <td>--output_name NAME</td>
+<td>-n</td>
 <td>Run name for trees (default: build_tree.tre)</td>
 </tr>
 <tr>
 <td>--model MODEL</td>
+<td>-m</td>
 <td>Substitution Model (default: GTRGAMMAIX)</td>
 </tr>
 <tr>
 <td>--outdir OUTDIR</td>
+<td>-w</td>
 <td>Output directory (default: .)</td>
 </tr>
 </tbody>
@@ -627,6 +632,7 @@ Please see the RAxML documentation for a full description of RAxML options. For 
 <thead>
 <tr>
 <th>Option</th>
+<th>RAxML Equivalent</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -634,269 +640,261 @@ Please see the RAxML documentation for a full description of RAxML options. For 
 <tr>
 <td>--run_full_analysis</td>
 <td>Run bootstrap search and find best ML tree</td>
+<td></td>
 </tr>
 <tr>
 <td>--outgroup</td>
+<td>-o</td>
 <td>outgrpup for tree</td>
 </tr>
 <tr>
 <td>--parsimony_seed</td>
+<td>-p</td>
 <td>Parsimony Random Seed</td>
 </tr>
 <tr>
 <td>--wgtFile</td>
+<td>-a</td>
 <td>Column weight file name to assign individual weights to each column of the alignment</td>
 </tr>
 <tr>
 <td>--secsub</td>
+<td>-A</td>
 <td>Specify secondary structure substitution models, must also include file defining the secondary structure</td>
 </tr>
 <tr>
 <td>--bootstrap</td>
+<td>-b</td>
 <td>bootstrapRandomNumberSeed for non-parametric bootstrapping</td>
 </tr>
 <tr>
-<td>--wgtFile</td>
-<td>Column weight file name to assign individual weights to each column of the alignment</td>
-</tr>
-<tr>
-<td>--secsub</td>
-<td>Specify secondary structure substitution models, must also include file defining the secondary structure</td>
-</tr>
-<tr>
 <td>--bootstrap_threshold</td>
+<td>-B</td>
 <td>Threshold for bootstopping criteria</td>
 </tr>
 <tr>
 <td>--numCat</td>
+<td>-c</td>
 <td>Number of distinct rate categories for RAxML when model of rate heterogeneity is set to CAT</td>
 </tr>
 <tr>
 <td>--rand_starting_tree</td>
+<td>-d</td>
 <td>ML optimization from random starting tree</td>
 </tr>
 <tr>
 <td>--convergence_criterion</td>
+<td>-D</td>
 <td>ML search convergence criterion</td>
 </tr>
 <tr>
 <td>--likelihoodEpsilon</td>
+<td>-e</td>
 <td>Set model optimization precision in log likelihood units for final optimization of tree topology</td>
 </tr>
 <tr>
 <td>--excludeFileName</td>
+<td>-E</td>
 <td>File contains specifications of alignment positions to be excluded</td>
 </tr>
 <tr>
 <td>--algo_option</td>
+<td>-f</td>
 <td>Select what kind of algorithm RAxML shall execute</td>
 </tr>
 <tr>
 <td>--cat_model</td>
+<td>-F</td>
 <td>Enable ML tree searches under CAT model for very large trees</td>
 </tr>
 <tr>
 <td>--groupingFile</td>
+<td>-g</td>
 <td>File name of a multifurcating constraint tree</td>
 </tr>
 <tr>
 <td>--placementThreshold</td>
+<td>-G</td>
 <td>Threshold value for ML­based evolutionary placement algorithm heuristics</td>
 </tr>
 <tr>
 <td>--disable_pattern_compression</td>
+<td>-H</td>
 <td>Disable pattern compression</td>
 </tr>
 <tr>
 <td>--InitialRearrangement</td>
+<td>-i</td>
 <td>Radius for pruned sub-tree re-insertion</td>
 </tr>
 <tr>
 <td>--posteriori</td>
+<td>-I</td>
 <td>posteriori bootstopping analysis</td>
 </tr>
 <tr>
 <td>--print_intermediate_trees</td>
+<td>-j</td>
 <td>Print out a couple of intermediate trees</td>
 </tr>
 <tr>
 <td>--majorityrule</td>
+<td>-J</td>
 <td>Compute majority rule consensus tree</td>
 </tr>
 <tr>
 <td>--print_branch_length</td>
+<td>-k</td>
 <td>Bootstrapped trees should be printed with branch lengths</td>
 </tr>
 <tr>
 <td>--ICTCmetrics</td>
+<td>-L</td>
 <td>Compute the TC and IC metrics on a consensus tree</td>
 </tr>
 <tr>
 <td>--partition_branch_length</td>
+<td>-M</td>
 <td>Switch on estimation of individual per­partition branch lengths</td>
 </tr>
 <tr>
 <td>--disable_check</td>
+<td>-O</td>
 <td>Disable check for completely undetermined sequence in alignment</td>
 </tr>
 <tr>
 <td>--AAmodel</td>
+<td>-P</td>
 <td>Specify the file name of a user­defined AA (Protein) substitution model</td>
 </tr>
 <tr>
 <td>--multiplemodelFile</td>
+<td>-q</td>
 <td>Specify the file name which contains the assignment of models to alignment partitions for multiple models of substitution</td>
 </tr>
 <tr>
 <td>--binarytree</td>
+<td>-r</td>
 <td>Specify the file name of a binary constraint tree</td>
 </tr>
 <tr>
 <td>--BinaryParameterFile</td>
+<td>-R</td>
 <td>Specify the file name of a binary model parameter file that has previously been generated with RAxML using the ­f e tree evaluation option.</td>
 </tr>
 <tr>
 <td>--SecondaryStructure</td>
+<td>-S</td>
 <td>Specify the name of a secondary structure file</td>
 </tr>
 <tr>
 <td>--UserStartingTree</td>
+<td>-t</td>
 <td>Specifies a user starting tree file name which must be in Newick format</td>
 </tr>
 <tr>
 <td>--median_GAMMA</td>
+<td>-u</td>
 <td>Use the median for the discrete approximation of the GAMMA model of rateheterogeneity</td>
 </tr>
 <tr>
-<td>--implement_SEV</td>
-<td>Try to save memory by using SEV­based implementation</td>
-</tr>
-<tr>
 <td>--version_info</td>
+<td>-v</td>
 <td>Display version information</td>
 </tr>
 <tr>
 <td>--rate_heterogeneity</td>
+<td>-V</td>
 <td>Disable rate heterogeneity among site model and use one without rate heterogeneity instead</td>
 </tr>
 <tr>
 <td>--directory</td>
+<td>-w</td>
 <td>Full directory of output file</td>
 </tr>
 <tr>
 <td>--window</td>
+<td>-W</td>
 <td>Sliding window size for leave­one­out site­specific placement bias algorithm</td>
 </tr>
 <tr>
 <td>--RapidBootstrapNumSeed</td>
+<td>-x</td>
 <td>Specify an integer number (random seed) and turn on rapid bootstrapping</td>
 </tr>
 <tr>
 <td>--random_addition</td>
+<td>-X</td>
 <td>RAxML will only do a randomized stepwise addition order parsimony tree reconstruction without performing any additional SPRs</td>
 </tr>
 <tr>
 <td>--starting_tree</td>
+<td>-y</td>
 <td>Only for computing parsimony</td>
 </tr>
 <tr>
 <td>--quartetGroupingFileName</td>
+<td>-Y</td>
 <td>Pass a quartet grouping file name defining four groups from which to draw quartets</td>
 </tr>
 <tr>
 <td>--multipleTreeFile</td>
+<td>-z</td>
 <td>Specify the file name of a file containing multiple trees e.g. from a bootstrap that shall be used to draw bipartition values onto a tree provided with ­t.</td>
 </tr>
 <tr>
 <td>--NumberofRuns</td>
+<td>-N</td>
 <td>Specify the number of alternative runs on distinct starting trees</td>
 </tr>
 <tr>
+<td>--mesquite</td>
 <td>--mesquite</td>
 <td>Print output files that can be parsed by Mesquite</td>
 </tr>
 <tr>
 <td>--silent</td>
+<td>--silent</td>
 <td>Disables printout of warnings related to identical sequences and entirely undetermined sites in the alignment</td>
 </tr>
 <tr>
 <td>--noseqcheck</td>
+<td>--no-seq-check</td>
 <td>Disables checking the input MSA for identical sequences and entirely undetermined sites</td>
 </tr>
 <tr>
 <td>--nobfgs</td>
+<td>--no-bfgs</td>
 <td>Disables automatic usage of BFGS method to optimize GTR rates on unpartitioned DNA datasets</td>
 </tr>
 <tr>
-<td>--asccorrlewis</td>
-<td>The standard correction by Paul Lewis</td>
-</tr>
-<tr>
-<td>--asccorrfelsenstein</td>
-<td>A correction introduced by Joe Felsenstein</td>
-</tr>
-<tr>
-<td>--asccorrstamatakis</td>
-<td>A correction introduced by Stamatakis</td>
-</tr>
-<tr>
-<td>--flagcheck</td>
-<td>RAxML will only check if all command line flags specifed are available</td>
-</tr>
-<tr>
-<td>--autoprotml</td>
-<td>When using automatic protein model selection you can chose the criterion for selecting these models</td>
-</tr>
-<tr>
-<td>--autoprotbic</td>
-<td>When using automatic protein model selection you can chose the criterion for selecting these models</td>
-</tr>
-<tr>
-<td>--autoprotaic'</td>
-<td>When using automatic protein model selection you can chose the criterion for selecting these models</td>
-</tr>
-<tr>
-<td>--autoprotaicc</td>
-<td>When using automatic protein model selection you can chose the criterion for selecting these models</td>
-</tr>
-<tr>
 <td>--epaPlaceNum</td>
+<td>­­epa­keep­placements=</td>
 <td>Specify the number of potential placements you want to keep for each read in the EPA algorithm</td>
 </tr>
 <tr>
 <td>--epaProbThreshold</td>
+<td>­­epa­prob­threshold=</td>
 <td>Specify a percent threshold for including potential placements of a read depending on the maximum placement weight for this read</td>
 </tr>
 <tr>
 <td>--epaLikelihood</td>
+<td>­­epa­accumulated­threshold=</td>
 <td>Specify an accumulated likelihood weight threshold</td>
 </tr>
 <tr>
-<td>--JC69</td>
-<td>Specify that all DNA partitions will evolve under the Jukes­Cantor model</td>
-</tr>
-<tr>
-<td>--K80</td>
-<td>Specify that all DNA partitions will evolve under the K80 model</td>
-</tr>
-<tr>
+<td>--HKY85</td>
 <td>--HKY85</td>
 <td>Specify that all DNA partitions will evolve under the HKY85 model</td>
 </tr>
 <tr>
 <td>--BootstrapPerm</td>
+<td>­­bootstop­perms=</td>
 <td>Specify the number of permutations to be conducted for the bootstopping/bootstrap convergence test; minimum 100</td>
 </tr>
 <tr>
-<td>--quartetswithoutreplacement</td>
-<td>Specify that quartets are randomly subsampled, but without replacement</td>
-</tr>
-<tr>
-<td>--printidenticalsequences</td>
-<td>Specify that RAxML shall automatically generate a .reduced alignment with all undetermined columns removed')</td>
-</tr>
-<tr>
 <td>--option_help</td>
+<td>-h</td>
 <td>Display Help</td>
 </tr>
 </tbody>

@@ -1,5 +1,45 @@
 **hp_phylo** includes phylogenomics stages.
 
+### Phylo Quick-Start 
+
+HAPHPIPE includes three stages for phylogenomics: *multiple_align*, *model_test*, and *build_tree*. These three stages are sufficient to turn your consensus and/or haplotype sequences from the other stages into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the stages to create a tree from HIV _pol_ consensus sequences. 
+
+**Step 1: Alignment**
+
+After running either of the assembly pipelines, `final.fna` files will be located in directories named `./<SampleID>/haphpipe_assemble_0[1|2]`. For the *multiple_align* stage, we need to create a list of all of these directories. We can do so easily with one command (shown for `haphpipe_assemble_01` output:
+```
+ls -d ./SRR*/haphpipe_assemble_01 > ./dir_list.txt
+```
+
+Now, we will align all of these `final.fna` files:
+```
+haphpipe multiple_align --dir_list dir_list.txt --ref_gtf refs/HIV_B.K03455.HXB2.gtf 
+```
+
+The output will be located in a new directory, `hp_multiple_align`. The alignment of _pol_ sequences is the file `alignment_region00.fasta`.
+
+**Step 2: Model Selection**
+
+Now, we will use the *model_test* stage to determine the best-fit evolutionary model for our data. This is an input to the tree building stage. We will use this command to generate best-fit models available in RAxML:
+```
+haphpipe model_test --seqs hp_multiple_align/alignment_region00.fasta --run_id alignment_region00 --template raxml
+```
+
+The ModelTest output will be written to a file called `modeltest_results.out` and a summary of all the best models will be written to `modeltest_results_summary.tsv`.
+
+**Step 3: Build a Tree**
+
+Now, we will use *build_tree* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTRGAMMAX). The `--run_full_analysis` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
+```
+haphpipe build_tree --seqs hp_multiple_align/alignment_region00.fasta --run_full_analysis --model GTRGAMMAX
+```
+
+The output will be written to a new directory, `hp_build_tree`. The best tree file from RAxML will be outputted as `RAxML_bestTree.build_tree.tre`. This tree can then be annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
+
+**Phylogenomics Pipelines**
+
+For users who would like to build a full pipeline to run assembly and phylogenetics stages in one go, we recommend adapting the demo pipeline (`haphpipe_demo`) for this purpose. See the [demo page](https://gwcbi.github.io/haphpipe_docs/demos/) for more details.
+
 ### *multiple_align*
 Align consensus sequences using MAFFT ([documentation](https://mafft.cbrc.jp/alignment/software/manual/manual.html)). Input can be a list of directories which contain `final.fna` and/or `ph_haplotypes.fna` files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the `final.fna` and/or `ph_haplotypes.fna` files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the `--alignall` option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the `--fastaonly` option.
