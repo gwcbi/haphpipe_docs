@@ -83,6 +83,9 @@
     <a class="current" href="./">Phylo</a>
     <ul class="subnav">
             
+    <li class="toctree-l2"><a href="#phylo-quick-start">Phylo Quick-Start</a></li>
+    
+
     <li class="toctree-l2"><a href="#multiple_align">multiple_align</a></li>
     
 
@@ -107,7 +110,7 @@
           
             <li class="toctree-l1">
 		
-    <a class="" href="../demos/">Demos</a>
+    <a class="" href="../demos/">Demo</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -158,6 +161,32 @@
             <div class="section">
               
                 <p><strong>hp_phylo</strong> includes phylogenomics stages.</p>
+<h3 id="phylo-quick-start">Phylo Quick-Start</h3>
+<p>HAPHPIPE includes three stages for phylogenomics: <em>multiple_align</em>, <em>model_test</em>, and <em>build_tree</em>. These three stages are sufficient to turn your consensus and/or haplotype sequences from the other stages into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the stages to create a tree from HIV <em>pol</em> consensus sequences. </p>
+<p><strong>Step 1: Alignment</strong></p>
+<p>After running either of the assembly pipelines, <code>final.fna</code> files will be located in directories named <code>./&lt;SampleID&gt;/haphpipe_assemble_0[1|2]</code>. For the <em>multiple_align</em> stage, we need to create a list of all of these directories. We can do so easily with one command (shown for <code>haphpipe_assemble_01</code> output:</p>
+<pre><code>ls -d ./SRR*/haphpipe_assemble_01 &gt; ./dir_list.txt
+</code></pre>
+
+<p>Now, we will align all of these <code>final.fna</code> files:</p>
+<pre><code>haphpipe multiple_align --dir_list dir_list.txt --ref_gtf refs/HIV_B.K03455.HXB2.gtf 
+</code></pre>
+
+<p>The output will be located in a new directory, <code>hp_multiple_align</code>. The alignment of <em>pol</em> sequences is the file <code>alignment_region00.fasta</code>.</p>
+<p><strong>Step 2: Model Selection</strong></p>
+<p>Now, we will use the <em>model_test</em> stage to determine the best-fit evolutionary model for our data. This is an input to the tree building stage. We will use this command to generate best-fit models available in RAxML:</p>
+<pre><code>haphpipe model_test --seqs hp_multiple_align/alignment_region00.fasta --run_id alignment_region00 --template raxml
+</code></pre>
+
+<p>The ModelTest output will be written to a file called <code>modeltest_results.out</code> and a summary of all the best models will be written to <code>modeltest_results_summary.tsv</code>.</p>
+<p><strong>Step 3: Build a Tree</strong></p>
+<p>Now, we will use <em>build_tree</em> to build our tree! You should use the best model outputted in <em>model_test</em> for the <code>--model</code> argument (here we are using GTRGAMMAX). The <code>--run_full_analysis</code> option will automatically run a full maximum likelihood &amp; bootstrapping analysis for us:</p>
+<pre><code>haphpipe build_tree --seqs hp_multiple_align/alignment_region00.fasta --run_full_analysis --model GTRGAMMAX
+</code></pre>
+
+<p>The output will be written to a new directory, <code>hp_build_tree</code>. The best tree file from RAxML will be outputted as <code>RAxML_bestTree.build_tree.tre</code>. This tree can then be annotated in programs such as <a href="http://tree.bio.ed.ac.uk/software/figtree/">FigTree</a> or <a href="https://itol.embl.de">iTOL</a>.</p>
+<p><strong>Phylogenomics Pipelines</strong></p>
+<p>For users who would like to build a full pipeline to run assembly and phylogenetics stages in one go, we recommend adapting the demo pipeline (<code>haphpipe_demo</code>) for this purpose. See the <a href="https://gwcbi.github.io/haphpipe_docs/demos/">demo page</a> for more details.</p>
 <h3 id="multiple_align"><em>multiple_align</em></h3>
 <p>Align consensus sequences using MAFFT (<a href="https://mafft.cbrc.jp/alignment/software/manual/manual.html">documentation</a>). Input can be a list of directories which contain <code>final.fna</code> and/or <code>ph_haplotypes.fna</code> files or a fasta file, or both (in which case the sequences in the FASTA file are combined with the <code>final.fna</code> and/or <code>ph_haplotypes.fna</code> files retreived before the alignment.
 Sequences will be separated by amplicons using a supplied GTF file before alignment (unless the <code>--alignall</code> option is specified). This module may also be used to separate files by amplicons (without aligning) by specifying the <code>--fastaonly</code> option.
