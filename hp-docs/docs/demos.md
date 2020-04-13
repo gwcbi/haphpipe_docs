@@ -242,8 +242,7 @@ haphpipe_demo
 
 ### Running Demo Interactively
 
-#### The demo pipeline bash script: `haphpipe_demo`
-
+The demo pipeline bash script:
 
 <details>
   <summary>haphpipe_demo</summary>
@@ -967,6 +966,8 @@ echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
 </details>
 
+<br/>
+
 
 The structure of this interactive demo is such:
 One sample (SRR8525886) will be used an example, and the single bash command for each step will be shown. 
@@ -1005,7 +1006,7 @@ haphpipe_assemble_02 \
 
 (if PredictHaplo is installed) Step 3a: Run PredictHaplo 
 
-```
+```bash
 haphpipe predict_haplo\
  --fq1 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_1.fastq \
  --fq2 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_2.fastq \
@@ -1018,7 +1019,7 @@ Step 3b: Run PredictHaplo Parser for each amplicon region
 
 Individually:
 
-```
+```bash
 # PH01
 haphpipe ph_parser \
  --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT/PH*.best_*.fas \
@@ -1044,7 +1045,7 @@ haphpipe ph_parser \
 
 Or you can run ph_parser in a loop for all the haplotype regions:
 
-```
+```bash
 for ph in haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH*; do
    haphpipe ph_parser \
    --haplotypes_fa ${ph}/PH*.best_*.fas \
@@ -1061,7 +1062,7 @@ Step 5: Run multiple sequence alignment using MAFFT.
 
 Make a file with a list of directories containing the `final.fna` files and the `ph_haplotype.fna`:
 
-```
+```bash
 ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 > haphpipe_demo/dir_list.txt &&\
 ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* >> haphpipe_demo/dir_list.txt
 ```
@@ -1071,7 +1072,7 @@ If PredictHaplo was not installed, you only need the first line:
 
 Now, run `multiple_align`
 
-```
+```bash
 haphpipe multiple_align \
  --ncpu 1 \
  --dir_list haphpipe_demo/dir_list.txt \
@@ -1083,7 +1084,7 @@ haphpipe multiple_align \
 
 Step 6: Estimate best-fit model of evolution using ModelTest-NG
 
-```
+```bash
 # Region00 - this is amplicon PRRT
 haphpipe model_test \ 
  --seqs alignment_region00.fasta \
@@ -1114,7 +1115,7 @@ haphpipe model_test \
 
 Step 7: Build a phylogenetic tree for each region using RAXML. The models can be changed according to the output of ModelTest (step 6 - above). Here we just show with model GTRGAMMAX.
 
-```
+```bash
 # Region00 - this is amplicon PRRT
 haphpipe build_tree \
  --run_full_analysis \
@@ -1135,7 +1136,8 @@ haphpipe build_tree \
 ```
 
 If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.
-```
+
+```bash
 # Region02 - this is amplicon gp120
 haphpipe model_test \ 
  --seqs alignment_region02.fasta \
