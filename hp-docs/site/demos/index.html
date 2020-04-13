@@ -102,7 +102,7 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#description-of-data-used">Description of Data used</a></li>
+            <li><a class="toctree-l3" href="#description-of-data-used">Description of data used</a></li>
         
         </ul>
     
@@ -203,8 +203,9 @@
 <li>Buid a phylogenetic tree with RAxML</li>
 </ol>
 <p>We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running <code>haphpipe_assemble_02</code>.  </p>
+<p>If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. </p>
 <hr />
-<h4 id="description-of-data-used">Description of Data used</h4>
+<h4 id="description-of-data-used">Description of data used</h4>
 <p><strong>Accession numbers:</strong>
 SRR8525886, SRR8525933, SRR8525938, SRR8525939,and SRR8525940</p>
 <p>These data were first presented in this <a href="https://journals.plos.org/plosone/article/file?type=printable&amp;id=10.1371/journal.pone.0214820">paper</a>. The SRA project data can be found <a href="https://www.ncbi.nlm.nih.gov/pubmed/30964884?dopt=Abstract">here</a>. This data was a part of a cohort study. The viral samples were amplified for three gene regions: <em>PRRT</em>, <em>int</em>, and <em>env</em>. This data was analyzed using HAPHPIPE and PredictHaplo in this <a href="https://www.ncbi.nlm.nih.gov/pubmed/32029767">paper</a>. Results will vary from this 2020 cross-sectional study because here, for the demo, we only use 10,000 reads for each of these 5 samples compared to the study which uses all the available NGS reads.</p>
@@ -301,6 +302,7 @@ Demo was run with --refonly. References are now in outdirectory: $outdir_name/ha
 
 </details>
 
+<p><br/></p>
 <p>If the entire demo is run (i.e., no use of <code>--refonly</code>) then these are <em>all</em> the files for output <strong><em>if</em> PredictHaplo is installed.</strong></p>
 <details>
   <summary>Directory structure with PH</summary>
@@ -1153,7 +1155,7 @@ One sample (SRR8525886) will be used an example, and the single bash command for
 </code></pre>
 
 <p>(if PredictHaplo is installed) Step 3a: Run PredictHaplo </p>
-<pre><code>haphpipe predict_haplo\
+<pre><code class="bash">haphpipe predict_haplo\
  --fq1 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_1.fastq \
  --fq2 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_2.fastq \
  --ref_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/final.fna \
@@ -1163,7 +1165,7 @@ One sample (SRR8525886) will be used an example, and the single bash command for
 
 <p>Step 3b: Run PredictHaplo Parser for each amplicon region</p>
 <p>Individually:</p>
-<pre><code># PH01
+<pre><code class="bash"># PH01
 haphpipe ph_parser \
  --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT/PH*.best_*.fas \
  --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
@@ -1187,7 +1189,7 @@ haphpipe ph_parser \
 </code></pre>
 
 <p>Or you can run ph_parser in a loop for all the haplotype regions:</p>
-<pre><code>for ph in haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH*; do
+<pre><code class="bash">for ph in haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH*; do
    haphpipe ph_parser \
    --haplotypes_fa ${ph}/PH*.best_*.fas \
    --logfile $(dirname $ph)/haphpipe_PH.out \
@@ -1199,14 +1201,14 @@ done
 <p>Step 4: Rerun steps 1-3 for all samples, make sure to replace the accession number.</p>
 <p>Step 5: Run multiple sequence alignment using MAFFT.</p>
 <p>Make a file with a list of directories containing the <code>final.fna</code> files and the <code>ph_haplotype.fna</code>:</p>
-<pre><code>ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 &gt; haphpipe_demo/dir_list.txt &amp;&amp;\
+<pre><code class="bash">ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 &gt; haphpipe_demo/dir_list.txt &amp;&amp;\
 ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* &gt;&gt; haphpipe_demo/dir_list.txt
 </code></pre>
 
 <p>If PredictHaplo was not installed, you only need the first line:
 <code>ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 &gt; haphpipe_demo/dir_list.txt</code></p>
 <p>Now, run <code>multiple_align</code></p>
-<pre><code>haphpipe multiple_align \
+<pre><code class="bash">haphpipe multiple_align \
  --ncpu 1 \
  --dir_list haphpipe_demo/dir_list.txt \
  --ref_gtf haphpipe_demo/refs/HIV_B.K03455.HXB2.gtf \
@@ -1216,7 +1218,7 @@ ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* &gt;&gt; haphpipe_demo/dir_li
 </code></pre>
 
 <p>Step 6: Estimate best-fit model of evolution using ModelTest-NG</p>
-<pre><code># Region00 - this is amplicon PRRT
+<pre><code class="bash"># Region00 - this is amplicon PRRT
 haphpipe model_test \ 
  --seqs alignment_region00.fasta \
  --run_id alignment_region00 \
@@ -1245,7 +1247,7 @@ haphpipe model_test \
 </code></pre>
 
 <p>Step 7: Build a phylogenetic tree for each region using RAXML. The models can be changed according to the output of ModelTest (step 6 - above). Here we just show with model GTRGAMMAX.</p>
-<pre><code># Region00 - this is amplicon PRRT
+<pre><code class="bash"># Region00 - this is amplicon PRRT
 haphpipe build_tree \
  --run_full_analysis \
  --seqs alignment_region00.fasta \
@@ -1265,7 +1267,7 @@ haphpipe build_tree \
 </code></pre>
 
 <p>If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.</p>
-<pre><code># Region02 - this is amplicon gp120
+<pre><code class="bash"># Region02 - this is amplicon gp120
 haphpipe model_test \ 
  --seqs alignment_region02.fasta \
  --run_id alignment_region02.tre \

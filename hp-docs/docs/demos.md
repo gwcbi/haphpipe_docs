@@ -26,9 +26,18 @@ These are the steps completed in the demo:
 
 We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running `haphpipe_assemble_02`.  
 
+
+fastq-dump common error:
+
+```
+
+```
+
+If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. 
+
 ---
 
-#### Description of Data used
+#### Description of data used
 
 **Accession numbers:**
 SRR8525886, SRR8525933, SRR8525938, SRR8525939,and SRR8525940
@@ -137,6 +146,9 @@ haphpipe_demo
 ....
 ```
 </details>
+
+
+<br/>
 
 If the entire demo is run (i.e., no use of `--refonly`) then these are *all* the files for output **_if_ PredictHaplo is installed.**
 
@@ -990,7 +1002,7 @@ fastq-dump --outdir haphpipe_demo/SRR8525886 \
  --accession SRR8525886
 ```
 
-Reminder that the above code is the same as (without the `\`) - the `\` just make it more visually readable than on one big line like so.
+Reminder that the above code is the same as this command on a single line - the `\` just makes it more visually readable.
 `fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886`
 
 Step 2: Run `haphpipe_assemble_02`
