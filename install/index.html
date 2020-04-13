@@ -235,9 +235,9 @@ gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 <pre><code>pip install git+git://github.com/gwcbi/haphpipe.git
 </code></pre>
 
-<p>Upon completion of the installation, you can test it to ensure the repository has been installed completely and correctly by running haphpipe -h (in quick start). Once HAPHPIPE is installed and performing correctly, there is no need to install it again; simply activate the conda environment when needed by executing <code>conda activate haphpipe</code>. If a new version is released in the future, HAPHPIPE can be updated by running the command line <code>pip install --upgrade git+git://github.com/gwcbi/haphpipe.git</code>. At any point, the <code>-h</code> option that follows any HAPHPIPE stage will output a help message that provides a description of the stage and the desired input(s) and output(s).</p>
+<p>Upon completion of the installation, you can test it to ensure the repository has been installed completely and correctly by running haphpipe -h (in quick start). Once HAPHPIPE is installed and performing correctly, there is no need to install it again; simply activate the conda environment when needed by executing <code>conda activate haphpipe</code>. If a new version is released in the future, HAPHPIPE can be updated by running the command line <code>pip install --upgrade git+git://github.com/gwcbi/haphpipe.git</code>. At any point, the <code>-h</code> option that follows any HAPHPIPE module will output a help message that provides a description of the module and the desired input(s) and output(s).</p>
 <h2 id="predicthaplo-installation-instructions">PredictHaplo Installation Instructions</h2>
-<p>Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype stages (<em>hp_predict_haplo</em> and <em>hp_ph_parser</em>).</p>
+<p>Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype modules (<em>hp_predict_haplo</em> and <em>hp_ph_parser</em>).</p>
 <p>Here is how the GW CBI team installed PredictHaplo onto our HPC, which has a slurm scheduling system and uses Lua module files.</p>
 <p>We cannot help with the installation of this software, but have provided the code that we used here to install PredictHaplo onto our system. Please see <a href="https://bmda.dmi.unibas.ch/software.html">their website</a> for contact information if needed.</p>
 <p>This module loads predicthaplo onto GWU's HPC - Colonial One. </p>
@@ -271,7 +271,7 @@ make
 </code></pre>
 
 <p><br/></p>
-<p>If a <code>segfault</code> error occurs during the <em>hp_predict_haplo</em> stage, this is <strong>not</strong> a characteristic of HAPHPIPE but rather that of PredictHaplo. Sometimes, we have luck if we just rerun the code again or move to an interactive CPU node. We are unsure what causes this error, and we only see it between the local and global reconstruction phases in PredictHaplo.</p>
+<p>If a <code>segfault</code> error occurs during the <em>hp_predict_haplo</em> module, this is <strong>not</strong> a characteristic of HAPHPIPE but rather that of PredictHaplo. Sometimes, we have luck if we just rerun the code again or move to an interactive CPU node. We are unsure what causes this error, and we only see it between the local and global reconstruction phases in PredictHaplo.</p>
 <h2 id="quick-start">Quick-Start</h2>
 <p><strong>1. Activate haphpipe</strong></p>
 <p>Make sure you have conda running.
