@@ -1,4 +1,4 @@
-*hp_haplotype* includes haplotype assembly stages. HAPHPIPE implements PredictHaplo ([paper](https://www.ncbi.nlm.nih.gov/pubmed/26355517)), although other haplotype reconstruction programs can be utilized outside of HAPHPIPE using the final output of HAPHPIPE, typically with the final consensus sequence (FASTA) file, reads (raw, trimmed, and/or corrected), and/or final alignment (BAM) file as input.
+**hp_haplotype** includes haplotype assembly stages. HAPHPIPE implements PredictHaplo ([paper](https://www.ncbi.nlm.nih.gov/pubmed/26355517)), although other haplotype reconstruction programs can be utilized outside of HAPHPIPE using the final output of HAPHPIPE, typically with the final consensus sequence (FASTA) file, reads (raw, trimmed, and/or corrected), and/or final alignment (BAM) file as input.
 Use -h after any command for a list of options. 
 
 _Note:_ PredictHaplo is not compatable with read files including read IDs (.1 and .2 appended at the end of read names for read 1 and read 2, respectively). If your file has read IDs, use the following commands to create new files with the read IDs taken out before running PredictHaplo:
