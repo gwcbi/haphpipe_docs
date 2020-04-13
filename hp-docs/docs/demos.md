@@ -967,3 +967,184 @@ echo "[---$SN---] ($(date)) $SN COMPLETE."
 ```
 </details>
 
+
+The structure of this interactive demo is such:
+One sample (SRR8525886) will be used an example, and the single bash command for each step will be shown. 
+
+Step 0: Get the reference data needed for this interactive demo.
+```bash
+hp_demo --refonly
+```
+
+
+
+Step 1: Pull sample data from SRA with fastq-dump.
+
+```bash
+fastq-dump --outdir haphpipe_demo/SRR8525886 \
+ --split-files \
+ --origfmt \
+ --minSpotId 30000 \
+ --maxSpotId 40000 \
+ --accession SRR8525886
+```
+
+Reminder that the above code is the same as (without the `\`) - the `\` just make it more visually readable than on one big line like so.
+`fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886`
+
+Step 2: Run `haphpipe_assemble_02`
+
+```bash
+haphpipe_assemble_02 \
+ haphpipe_demo/SRR8525886/SRR8525886_1.fastq \
+ haphpipe_demo/SRR8525886/SRR8525886_2.fastq \
+ haphpipe_demo/refs/HIV_B.K03455.HXB2.amplicons.fasta \
+ SRR8525886 \
+ haphpipe_demo/SRR8525886/haphpipe_assemble_02
+```
+
+(if PredictHaplo is installed) Step 3a: Run PredictHaplo 
+
+```
+haphpipe predict_haplo\
+ --fq1 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_1.fastq \
+ --fq2 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_2.fastq \
+ --ref_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/final.fna \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02
+```
+
+Step 3b: Run PredictHaplo Parser for each amplicon region
+
+Individually:
+
+```
+# PH01
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT \
+ --prefix ${sra}_PH01_PRRT
+
+# PH02 
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH02_INT/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH02_INT \
+ --prefix SRR8525886_PH02_INT
+
+
+# PH03 
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH03_gp120/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH03_gp120 \
+ --prefix SRR8525886_PH03_gp120
+```
+
+Or you can run ph_parser in a loop for all the haplotype regions:
+
+```
+for ph in haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH*; do
+   haphpipe ph_parser \
+   --haplotypes_fa ${ph}/PH*.best_*.fas \
+   --logfile $(dirname $ph)/haphpipe_PH.out \
+   --outdir ${ph} \
+   --prefix SRR8525886_$(basename $ph)
+done
+```
+
+
+Step 4: Rerun steps 1-3 for all samples, make sure to replace the accession number.
+
+Step 5: Run multiple sequence alignment using MAFFT.
+
+Make a file with a list of directories containing the `final.fna` files and the `ph_haplotype.fna`:
+
+```
+ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 > haphpipe_demo/dir_list.txt &&\
+ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* >> haphpipe_demo/dir_list.txt
+```
+
+If PredictHaplo was not installed, you only need the first line:
+`ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 > haphpipe_demo/dir_list.txt`
+
+Now, run `multiple_align`
+
+```
+haphpipe multiple_align \
+ --ncpu 1 \
+ --dir_list haphpipe_demo/dir_list.txt \
+ --ref_gtf haphpipe_demo/refs/HIV_B.K03455.HXB2.gtf \
+ --logfile haphpipe.out \
+ --phylipout \
+ --outdir haphpipe_demo
+```
+
+Step 6: Estimate best-fit model of evolution using ModelTest-NG
+
+```
+# Region00 - this is amplicon PRRT
+haphpipe model_test \ 
+ --seqs alignment_region00.fasta \
+ --run_id alignment_region00 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+
+# Region01 - this is amplicon INT
+haphpipe model_test \ 
+ --seqs alignment_region01.fasta \
+ --run_id alignment_region01 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+
+# Region02 - this is amplicon gp120
+haphpipe model_test \ 
+ --seqs alignment_region02.fasta \
+ --run_id alignment_region02 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+```
+
+Step 7: Build a phylogenetic tree for each region using RAXML. The models can be changed according to the output of ModelTest (step 6 - above). Here we just show with model GTRGAMMAX.
+
+```
+# Region00 - this is amplicon PRRT
+haphpipe build_tree \
+ --run_full_analysis \
+ --seqs alignment_region00.fasta \
+ --output_name alignment_region00.tre \
+ --model GTRGAMMAX\
+ --logfile haphpipe_demo/haphpipe.out\
+ --outdir haphpipe_demo
+
+# Region01 - this is amplicon INT
+haphpipe build_tree \
+ --run_full_analysis \
+ --seqs alignment_region01.fasta \
+ --output_name alignment_region01.tre \
+ --model GTRGAMMAX\
+ --logfile haphpipe_demo/haphpipe.out\
+ --outdir haphpipe_demo
+```
+
+If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.
+```
+# Region02 - this is amplicon gp120
+haphpipe model_test \ 
+ --seqs alignment_region02.fasta \
+ --run_id alignment_region02.tre \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+```
+
+
+
