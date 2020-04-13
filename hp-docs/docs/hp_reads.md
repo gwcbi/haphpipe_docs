@@ -1,4 +1,4 @@
-*hp_reads* involves cleaning up the raw read sequences, as well as other processing steps. Modules to manipulate reads. Use -h after any command for a list of options. 
+The Reads stage involves cleaning up the raw read sequences, as well as other processing steps. Modules to manipulate reads. Use -h after any command for a list of options. 
 
 
 ### *sample_reads*

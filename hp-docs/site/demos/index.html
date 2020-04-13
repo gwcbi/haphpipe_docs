@@ -203,6 +203,10 @@
 <li>Buid a phylogenetic tree with RAxML</li>
 </ol>
 <p>We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running <code>haphpipe_assemble_02</code>.  </p>
+<p>fastq-dump common error:</p>
+<pre><code>
+</code></pre>
+
 <p>If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. </p>
 <hr />
 <h4 id="description-of-data-used">Description of data used</h4>
@@ -1143,7 +1147,7 @@ One sample (SRR8525886) will be used an example, and the single bash command for
  --accession SRR8525886
 </code></pre>
 
-<p>Reminder that the above code is the same as (without the <code>\</code>) - the <code>\</code> just make it more visually readable than on one big line like so.
+<p>Reminder that the above code is the same as this command on a single line - the <code>\</code> just makes it more visually readable.
 <code>fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886</code></p>
 <p>Step 2: Run <code>haphpipe_assemble_02</code></p>
 <pre><code class="bash">haphpipe_assemble_02 \

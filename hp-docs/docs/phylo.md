@@ -1,12 +1,12 @@
-**hp_phylo** includes phylogenomics stages.
+This stage includes phylogenomics stages.
 
 ### Phylo Quick-Start 
 
-HAPHPIPE includes three stages for phylogenomics: *multiple_align*, *model_test*, and *build_tree*. These three stages are sufficient to turn your consensus and/or haplotype sequences from the other stages into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the stages to create a tree from HIV _pol_ consensus sequences. 
+HAPHPIPE includes three modules for phylogenomics: *multiple_align*, *model_test*, and *build_tree*. These three modules are sufficient to turn your consensus and/or haplotype sequences from the other modules into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the modules to create a tree from HIV _pol_ consensus sequences. 
 
 **Step 1: Alignment**
 
-After running either of the assembly pipelines, `final.fna` files will be located in directories named `./<SampleID>/haphpipe_assemble_0[1|2]`. For the *multiple_align* stage, we need to create a list of all of these directories. We can do so easily with one command (shown for `haphpipe_assemble_01` output:
+After running either of the assembly pipelines, `final.fna` files will be located in directories named `./<SampleID>/haphpipe_assemble_0[1|2]`. For the *multiple_align* module, we need to create a list of all of these directories. We can do so easily with one command (shown for `haphpipe_assemble_01` output:
 ```
 ls -d ./SRR*/haphpipe_assemble_01 > ./dir_list.txt
 ```
@@ -20,7 +20,7 @@ The output will be located in a new directory, `hp_multiple_align`. The alignmen
 
 **Step 2: Model Selection**
 
-Now, we will use the *model_test* stage to determine the best-fit evolutionary model for our data. This is an input to the tree building stage. We will use this command to generate best-fit models available in RAxML:
+Now, we will use the *model_test* module to determine the best-fit evolutionary model for our data. This is an input to the tree building module. We will use this command to generate best-fit models available in RAxML:
 ```
 haphpipe model_test --seqs hp_multiple_align/alignment_region00.fasta --run_id alignment_region00 --template raxml
 ```

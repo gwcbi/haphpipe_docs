@@ -1,4 +1,4 @@
-*hp_description* includes stages to annotate and describe consensus sequence(s) and haplotypes. Use -h after any command for a list of options.
+The Description stage includes modules to annotate and describe consensus sequence(s) and haplotypes. Use -h after any command for a list of options.
 
 ### *pairwise_align*
 Apply correct coordinate system to final sequence(s) to facilitate downstream analyses. Input is the final sequence file in FASTA format, a reference sequence in FASTA format, and a reference GFT file. Output is a JSON file to be used in _extract_pairwise_.
@@ -56,7 +56,7 @@ stdout.fasta
 
 Option        | Description
 --------------|-------------
---align_json  | JSON file describing alignment (output of _pairwise_align_ stage).
+--align_json  | JSON file describing alignment (output of _pairwise_align_ module).
 --outfile     | Output file (default: stdout).
 
 *Options:*

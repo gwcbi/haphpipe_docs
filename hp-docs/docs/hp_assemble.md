@@ -1,4 +1,4 @@
-Stages in *hp_assemble* are designed to construct consensus sequence(s). Input reads (in FASTQ format) are assembled 
+The assembly stage is designed to construct consensus sequence(s). Input reads (in FASTQ format) are assembled 
 using either denovo assembly or reference-based alignment. Resulting consensus can be further refined. Use -h after any command for a list of options.
 
 ### *assemble_denovo*

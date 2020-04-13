@@ -94,11 +94,11 @@ __6. Install HAPHPIPE__
 pip install git+git://github.com/gwcbi/haphpipe.git
 ```
 
-Upon completion of the installation, you can test it to ensure the repository has been installed completely and correctly by running haphpipe -h (in quick start). Once HAPHPIPE is installed and performing correctly, there is no need to install it again; simply activate the conda environment when needed by executing `conda activate haphpipe`. If a new version is released in the future, HAPHPIPE can be updated by running the command line `pip install --upgrade git+git://github.com/gwcbi/haphpipe.git`. At any point, the `-h` option that follows any HAPHPIPE stage will output a help message that provides a description of the stage and the desired input(s) and output(s).
+Upon completion of the installation, you can test it to ensure the repository has been installed completely and correctly by running haphpipe -h (in quick start). Once HAPHPIPE is installed and performing correctly, there is no need to install it again; simply activate the conda environment when needed by executing `conda activate haphpipe`. If a new version is released in the future, HAPHPIPE can be updated by running the command line `pip install --upgrade git+git://github.com/gwcbi/haphpipe.git`. At any point, the `-h` option that follows any HAPHPIPE module will output a help message that provides a description of the module and the desired input(s) and output(s).
 
 ## PredictHaplo Installation Instructions
 
-Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype stages (_hp_predict_haplo_ and _hp_ph_parser_).
+Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype modules (_hp_predict_haplo_ and _hp_ph_parser_).
 
 Here is how the GW CBI team installed PredictHaplo onto our HPC, which has a slurm scheduling system and uses Lua module files.
 
@@ -139,7 +139,7 @@ make
 
 <br/>
 
-If a `segfault` error occurs during the _hp_predict_haplo_ stage, this is **not** a characteristic of HAPHPIPE but rather that of PredictHaplo. Sometimes, we have luck if we just rerun the code again or move to an interactive CPU node. We are unsure what causes this error, and we only see it between the local and global reconstruction phases in PredictHaplo.
+If a `segfault` error occurs during the _hp_predict_haplo_ module, this is **not** a characteristic of HAPHPIPE but rather that of PredictHaplo. Sometimes, we have luck if we just rerun the code again or move to an interactive CPU node. We are unsure what causes this error, and we only see it between the local and global reconstruction phases in PredictHaplo.
 
 
 ## Quick-Start
