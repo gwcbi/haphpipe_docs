@@ -433,6 +433,9 @@ echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
 <p>After Part 3A, our pipeline file should read as such:</p>
+<details>
+  <summary>Code for beginning of pipeline</summary>
+
 <pre><code class="bash">#!/usr/bin/env bash
 
 ###############################################################################
@@ -520,19 +523,22 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
+</details>
+
+<p><br></p>
 <p>--</p>
 <p><em>Part 3B - Sample reads.</em></p>
 <p>Now we will begin constructing bash scripts for each module.
 Each module will follow a similar trend. <br/></p>
 <ol>
-<li>We will set the stage name.</li>
-<li>We will echo stage name to terminal. </li>
-<li>We will check to make sure the files that are the output of the stage are not already present. If they are present, we will skip the stage and continue on (no need to repeat the stage).</li>
-<li>If the files are not present, we will complete the stage and call the command.</li>
+<li>We will set the module name.</li>
+<li>We will echo module name to terminal. </li>
+<li>We will check to make sure the files that are the output of the module are not already present. If they are present, we will skip the module and continue on (no need to repeat the module).</li>
+<li>If the files are not present, we will complete the module and call the command.</li>
 <li>If the command completes, we will print to terminal. If command fails, we will print that to terminal and quit the script. <br/></li>
 </ol>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. We have also decided to subsample the number of reads to 50,000 reads for each sample. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this module are: <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. We have also decided to subsample the number of reads to 50,000 reads for each sample. <br/></p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>haphpipe sample_reads\
  --fq1 $raw1\
  --fq2 $raw2\
@@ -541,13 +547,13 @@ Each module will follow a similar trend. <br/></p>
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;sample_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
-# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+# if the sampled files are present, skip this module. Otherwise, call sample_reads
 if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module sample_1.fastq, sample_2.fastq&quot;
 else
     # this reads in the sample_reads command and saves it in the variable cmd
     read -r -d '' cmd &lt;&lt;EOF
@@ -558,20 +564,20 @@ haphpipe sample_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3C - Trim reads.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this module are: <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. <br/></p>
 <p>Now, because we are doing trimming after the sampled reads module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (sample reads). Therefore, the input fastq files are named <code>sample_1.fastq</code> and <code>sample_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>haphpipe trim_reads\
  --ncpu $ncpu\
  --fq1 ${outdir}/sample_1.fastq\
@@ -580,12 +586,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;trim_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module trimmed_1.fastq,trimmed_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe trim_reads\
@@ -595,19 +601,19 @@ haphpipe trim_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3D - Error correct reads.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this stage are: <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput names for this module are: <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. <br/></p>
 <p>Now, because we are doing error correction after the trimming module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (trimmed reads). Therefore, the input fastq files are named <code>trimmed_1.fastq</code> and <code>trimmed_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input (just like the sampled reads in the previous step), so we have to list the path to the input fastq files. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>haphpipe ec_reads\
  --ncpu $ncpu\
  --fq1 ${outdir}/trimmed_1.fastq\
@@ -616,12 +622,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;ec_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module corrected_1.fastq,corrected_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe ec_reads\
@@ -631,19 +637,19 @@ haphpipe ec_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3E - De novo assembly.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>denovo_contigs.fna</code>. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>denovo_contigs.fna</code>. <br/></p>
 <p>Now, because we are doing denovo assembly after the error correction module, we need to change the input fastq reads for this module to be the fastq reads output from the previous step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, remember we want to specify that we do NOT want to do another round of error correction.  <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>haphpipe assemble_denovo\
  --ncpu $ncpu\
  --fq1 ${outdir}/corrected_1.fastq\
@@ -653,12 +659,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;assemble_denovo&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/denovo_contigs.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module denovo_contigs.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_denovo\
@@ -669,19 +675,19 @@ haphpipe assemble_denovo\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3F - Assemble scaffold.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>scaffold_assembly.fa</code>. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>scaffold_assembly.fa</code>. There are other outputs, but we focus on this one for further use in the refinement and finalize modules. <br/></p>
 <p>Now, because we are doing scaffold assembly after the denovo assembly module, we need to specify that the input file is the output contig file (<code>denovo_contigs.fna</code>). Again, remember that this file is now contained in the outdirectory specified by the input, so we have to list the path too. We also have to use our input reference fasta file and input sampleID from the script command. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>haphpipe assemble_scaffold\
  --contigs_fa ${outdir}/denovo_contigs.fna\
  --ref_fa ${refFA}\
@@ -690,12 +696,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;assemble_scaffold&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/scaffold_assembly.fa ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module scaffold_assembly.fa&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_scaffold\
@@ -705,19 +711,19 @@ haphpipe assemble_scaffold\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3G - Refine assembly.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>refined.fna</code>. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>refined.fna</code>. <br/></p>
 <p>Now, because we are doing refining the assembly after the scaffold assembly module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>scaffold_assembly.fa</code> file from the previous scaffold assembly step (above), which is also located in the outdirectory.  <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>hp_refine_assembly\
  --ncpu $ncpu\
  --fq1 ${outdir}/corrected_1.fastq\
@@ -729,12 +735,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;refine_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/refined.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module refined.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_refine_assembly\
@@ -747,19 +753,19 @@ hp_refine_assembly\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
 <p>--</p>
 <p><em>Part 3H - Finalize assembly.</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput files for this stage are: <code>final.fna</code>, <code>final.bam</code>, <code>final.vcf.gz</code>. <br/></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput files for this module are: <code>final.fna</code>, <code>final.bam</code>, <code>final.vcf.gz</code>. <br/></p>
 <p>Now, because we are doing finalizing the assembly after the refinement module, we need to change the input fastq reads for this module to be the fastq reads output from the error correction step (error corrected reads). Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>refined.fna</code> file from the previous refinement step (above), which is also located in the outdirectory.  <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code>hp_finalize_assembly\
  --ncpu $ncpu\
  --fq1 ${outdir}/corrected_1.fastq\
@@ -770,12 +776,12 @@ fi
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;finalize_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<pre><code class="bash">module=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module final.fna,final.bam,final.vcf.gz&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_finalize_assembly\
@@ -787,11 +793,11 @@ hp_finalize_assembly\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
@@ -806,15 +812,18 @@ insert code here ..
 </code></pre>
 
 <p>Once we concatenate all our code, we end up with this:</p>
+<details>
+  <summary>code with all modules</summary>
+
 <pre><code class="bash">###############################################################################
 # Step 1: Sample Reads
 ###############################################################################
-stage=&quot;sample_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
-# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+# if the sampled files are present, skip this module. Otherwise, call sample_reads
 if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module sample_1.fastq, sample_2.fastq&quot;
 else
     # this reads in the sample_reads command and saves it in the variable cmd
     read -r -d '' cmd &lt;&lt;EOF
@@ -825,21 +834,21 @@ haphpipe sample_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 2: Trim Reads
 ###############################################################################
-stage=&quot;trim_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module trimmed_1.fastq,trimmed_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe trim_reads\
@@ -849,21 +858,21 @@ haphpipe trim_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 3: Error correction using Spades
 ###############################################################################
-stage=&quot;ec_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module corrected_1.fastq,corrected_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe ec_reads\
@@ -873,21 +882,21 @@ haphpipe ec_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 4: Denovo assembly
 ###############################################################################
-stage=&quot;assemble_denovo&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/denovo_contigs.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module denovo_contigs.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_denovo\
@@ -898,21 +907,21 @@ haphpipe assemble_denovo\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 5: Scaffold assembly
 ###############################################################################
-stage=&quot;assemble_scaffold&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/scaffold_assembly.fa ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module scaffold_assembly.fa&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_scaffold\
@@ -922,22 +931,22 @@ haphpipe assemble_scaffold\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 
 ###############################################################################
 # Step 5: Refine assembly
 ###############################################################################
-stage=&quot;refine_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/refined.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module refined.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_refine_assembly\
@@ -950,21 +959,21 @@ hp_refine_assembly\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 5: Finalize assembly
 ###############################################################################
-stage=&quot;finalize_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module final.fna,final.bam,final.vcf.gz&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_finalize_assembly\
@@ -976,18 +985,23 @@ hp_finalize_assembly\
  ${quiet} --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
-<p><br/></p>
+</details>
+
+<p><br></p>
 <hr />
 <p><strong>Step 4 - Combine both the input code and bash scripts for each module into a single script.</strong></p>
 <p>We named this script <code>covid_genome_assembly.sh</code> and the entire code is:</p>
+<details>
+  <summary>`covid_genome_assembly.sh`</summary>
+
 <pre><code class="bash">#!/usr/bin/env bash
 
 ###############################################################################
@@ -1064,12 +1078,12 @@ t1=$(date +&quot;%s&quot;)
 ###############################################################################
 # Step 1: Sample Reads
 ###############################################################################
-stage=&quot;sample_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;sample_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
-# if the sampled files are present, skip this stage. Otherwise, call sample_reads
+# if the sampled files are present, skip this module. Otherwise, call sample_reads
 if [[ -e $outdir/sample_1.fastq &amp;&amp; -e ${outdir}/sample_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage sample_1.fastq, sample_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module sample_1.fastq, sample_2.fastq&quot;
 else
     # this reads in the sample_reads command and saves it in the variable cmd
     read -r -d '' cmd &lt;&lt;EOF
@@ -1080,21 +1094,21 @@ haphpipe sample_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 2: Trim Reads
 ###############################################################################
-stage=&quot;trim_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;trim_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/trimmed_1.fastq &amp;&amp; -e ${outdir}/trimmed_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage trimmed_1.fastq,trimmed_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module trimmed_1.fastq,trimmed_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe trim_reads\
@@ -1104,21 +1118,21 @@ haphpipe trim_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 3: Error correction using Spades
 ###############################################################################
-stage=&quot;ec_reads&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;ec_reads&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/corrected_1.fastq &amp;&amp; -e $outdir/corrected_2.fastq ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module corrected_1.fastq,corrected_2.fastq&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe ec_reads\
@@ -1128,21 +1142,21 @@ haphpipe ec_reads\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 4: Denovo assembly
 ###############################################################################
-stage=&quot;assemble_denovo&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;assemble_denovo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/denovo_contigs.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage denovo_contigs.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module denovo_contigs.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_denovo\
@@ -1153,21 +1167,21 @@ haphpipe assemble_denovo\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 5: Scaffold assembly
 ###############################################################################
-stage=&quot;assemble_scaffold&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;assemble_scaffold&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/scaffold_assembly.fa ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage scaffold_assembly.fa&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module scaffold_assembly.fa&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe assemble_scaffold\
@@ -1177,22 +1191,22 @@ haphpipe assemble_scaffold\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 
 ###############################################################################
 # Step 5: Refine assembly
 ###############################################################################
-stage=&quot;refine_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;refine_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/refined.fna ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage refined.fna&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module refined.fna&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_refine_assembly\
@@ -1205,21 +1219,21 @@ hp_refine_assembly\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 ###############################################################################
 # Step 5: Finalize assembly
 ###############################################################################
-stage=&quot;finalize_assembly&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+module=&quot;finalize_assembly&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e ${outdir}/final.fna &amp;&amp; -e ${outdir}/final.bam &amp;&amp; -e ${outdir}/final.vcf.gz ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage final.fna,final.bam,final.vcf.gz&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module final.fna,final.bam,final.vcf.gz&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 hp_finalize_assembly\
@@ -1231,11 +1245,11 @@ hp_finalize_assembly\
  ${quiet} --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 
 
@@ -1248,6 +1262,9 @@ echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) sec
 echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
 </code></pre>
 
+</details>
+
+<p><br></p>
 <hr />
 <p><strong>Step 5 - Executing the script.</strong></p>
 <p>Example to run:</p>
@@ -1259,6 +1276,9 @@ done
 </code></pre>
 
 <p>Directories should look like such after running this script:</p>
+<details>
+  <summary>Directory structure </summary>
+
 <pre><code>.
 ├── SRR11140744
 |   ├── SRR11140744_1.fastq
@@ -1298,11 +1318,14 @@ done
 ....
 </code></pre>
 
+</details>
+
+<p><br></p>
 <hr />
 <p><strong>Step 6 - Optional inclusions: PredictHaplo, multiple alignment, and building a phylogenetic tree.</strong></p>
 <p>Here are some option modules to include within the pipeline. </p>
 <p>--</p>
-<p><em>Adding PredictHaplo as a stage.</em></p>
+<p><em>Adding PredictHaplo as a module.</em></p>
 <p>If you desire PredictHaplo, you can either utilize the option <code>--interval_txt</code> or you can rerun the pipeline with this gtf file. It is easier for PredictHaplo to run on smaller regions than the entire genome like we implemented above.</p>
 <pre><code>$ cat SARSCoV2.NC_045512.COVID19.gtf
 SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    265 13482   .   +   0   name &quot;orf1a&quot;;
@@ -1310,10 +1333,10 @@ SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    21562   25383   .   +   0   
 SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    26244   26471   .   +   0   name &quot;envelope&quot;;
 </code></pre>
 
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>PH0#.best*.fas</code>. <br/></p>
-<p>We are doing this stage after the <code>finalize_assembly</code> stage,  doing refining the assembly after the scaffold assembly module. Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>final.fna</code> file from the finalize assembly stage, which is also located in the outdirectory. <br/></p>
-<p>We have to do loops for the PredictHaplo and parser stages because there are multiple haplotype regions.</p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>PH0#.best*.fas</code>. <br/></p>
+<p>We are doing this module after the <code>finalize_assembly</code> module,  doing refining the assembly after the scaffold assembly module. Therefore, the input fastq files are named <code>corrected_1.fastq</code> and <code>corrected_2.fastq</code>. Also remember that these files are now contained in the outdirectory specified by the input, so we have to list the path to the input fastq files. Finally, we need to specify that the input reference file is the <code>final.fna</code> file from the finalize assembly module, which is also located in the outdirectory. <br/></p>
+<p>We have to do loops for the PredictHaplo and parser modules because there are multiple haplotype regions.</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code class="bash">hp_predict_haplo
  --fq1 ${outdir}/corrected_1.fastq\
  --fq2 ${outdir}/corrected_2.fastq\
@@ -1322,15 +1345,18 @@ SARSCoV2.NC_045512.COVID19  NCBI_refseq amplicon    26244   26471   .   +   0   
  --outdir ${outdir}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;predict_haplo&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<details>
+  <summary>predict_haplo module</summary>
+
+<pre><code class="bash">module=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 for PH in ${outdir}/PH*; do
     if [[ -e &quot;${PH}&quot; ]]; then
         for PHbest in ${outdir}/PH*/*best*.fas; do
             if [[ -e &quot;${PHbest}&quot; ]]; then
-                echo &quot;[---$SN---] ($(date)) EXISTS: $stage $PHbest&quot;
+                echo &quot;[---$SN---] ($(date)) EXISTS: $module $PHbest&quot;
             fi
         done
     else
@@ -1342,18 +1368,21 @@ hp_predict_haplo
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}
 EOF
-        echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+        echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
         eval $cmd
 
-        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-            (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+            (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
     fi
 done
 </code></pre>
 
+</details>
+
+<p><br></p>
 <p>--</p>
 <p><em>Following up PredictHaplo with ph_parser</em></p>
-<p>In order to use the output from PredictHaplo (see description <a href="https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser">here</a>), we need to run the <code>ph_parser</code> stage.</p>
+<p>In order to use the output from PredictHaplo (see description <a href="https://gwcbi.github.io/haphpipe_docs/hp_haplotype/#ph_parser">here</a>), we need to run the <code>ph_parser</code> module.</p>
 <pre><code class="bash">hp_ph_parser
  --haplotypes_fa ${outdir}/${PH}/*best*.fas\
  --prefix ${sampID}_${PH}\
@@ -1362,13 +1391,16 @@ done
 </code></pre>
 
 <p>Now we have to do a loop, because there are multiple regions (i.e., PH0# directories).</p>
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;ph_parser&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<details>
+  <summary>ph_parser module</summary>
+
+<pre><code class="bash">module=&quot;ph_parser&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 for PH in ${outdir}/PH*/ph_haplotypes.fna; do
     #if [[ -e &quot;${PH}&quot; ]]; then
-    #    echo &quot;[---$SN---] ($(date)) EXISTS: $stage $PH&quot;
+    #    echo &quot;[---$SN---] ($(date)) EXISTS: $module $PH&quot;
     #else
         read -r -d '' cmd &lt;&lt;EOF
 hp_ph_parser
@@ -1377,20 +1409,23 @@ hp_ph_parser
  --logfile ${outdir}/haphpipe.out\
  --outdir $(dirname $PH)
 EOF
-        echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+        echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
         eval $cmd
 
-        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-            (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+            (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
     #fi
 done
 </code></pre>
 
+</details>
+
+<p><br></p>
 <p>--</p>
-<p><em>Adding multiple_align as a stage</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>alignment.fasta</code>. <br/></p>
+<p><em>Adding multiple_align as a module</em></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>alignment.fasta</code>. <br/></p>
 <p>We first need to make a text file that has a list of directories that contin <code>final.fna</code>. Because this is a genome assembly, we want to use the <code>--alignall</code> option to align the entire region and not use a GTF file. We also choose to output a phylip file using the option <code>--phyipout</code>. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code class="bash">haphpipe multiple_align
  --ncpu $ncpu\
  --dir_list dir_list.txt\
@@ -1399,12 +1434,15 @@ done
  --logfile haphpipe.out
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;multiple_align&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<details>
+  <summary>multiple_align module</summary>
 
-if [[ -e $outdir/multiple_align/alignment.fasta ]] &amp;&amp; [[ -e $outdir/multiple_align/alignment.phy ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage alignment.fasta,alignment.phy&quot;
+<pre><code class="bash">module=&quot;multiple_align&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
+
+if [[ -e $outdir/hp_multiple_align/alignment.fasta ]] &amp;&amp; [[ -e $outdir/hp_multiple_align/alignment.phy ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module alignment.fasta,alignment.phy&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe multiple_align\
@@ -1414,21 +1452,24 @@ haphpipe multiple_align\
  --alignall\
  --logfile haphpipe.out
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
 
+</details>
+
+<p><br></p>
 <p>--</p>
-<p><em>Adding model_test as a stage</em></p>
-<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this stage is <code>modeltest_results.out</code>. <br/></p>
+<p><em>Adding model_test as a module</em></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>modeltest_results.out</code>. <br/></p>
 <p>The input will be the alignment file from <code>multiple_align</code>. We'll also give the output an id of <code>covid19_genome</code> so the output file will be <code>covid19_genome_modeltest_results.out</code>. We will also chose the template of the output as raxml, since the next module <code>build_tree</code> uses RAxML. <br/></p>
-<p>Now this in the input for the base haphpipe command for this stage:</p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
 <pre><code class="bash">haphpipe model_test
- --seqs alignment.fasta\
+ --seqs ${outdir}/hp_multiple_align/alignment.fasta\
  --run_id covid_genome\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}\
@@ -1436,29 +1477,82 @@ fi
  --ncpu ${ncpu}
 </code></pre>
 
-<p>The entire stage's bash script is here:</p>
-<pre><code class="bash">stage=&quot;model_test&quot;
-echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+<p>The entire module's bash script is here:</p>
+<details>
+  <summary>model_test module</summary>
+
+<pre><code class="bash">module=&quot;model_test&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
 
 if [[ -e $outdir/covid19_genome_modeltest_results.out ]]; then
-    echo &quot;[---$SN---] ($(date)) EXISTS: $stage covid19_genome_modeltest_results.out&quot;
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module covid19_genome_modeltest_results.out&quot;
 else
     read -r -d '' cmd &lt;&lt;EOF
 haphpipe model_test
- --seqs alignment.fasta\
+ --seqs ${outdir}/hp_multiple_align/alignment.fasta\
  --run_id covid_genome\
  --logfile ${outdir}/haphpipe.out\
  --outdir ${outdir}\
  --template raxml\
  --ncpu ${ncpu}
 EOF
-    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
     eval $cmd
 
-    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
-        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
 fi
 </code></pre>
+
+</details>
+
+<p><br></p>
+<p>--</p>
+<p><em>Adding build_tree as a module</em></p>
+<p>Remember, you can find the output file names <a href="https://gwcbi.github.io/haphpipe_docs/inout/">here</a>. The ouput name for this module is <code>modeltest_results.out</code>. <br/></p>
+<p>The input will be the alignment file from <code>multiple_align</code>. We'll also give the output an id of <code>covid19_genome</code> so the output file will be <code>covid19_genome_modeltest_results.out</code>. <br/></p>
+<p>Now this in the input for the base haphpipe command for this module:</p>
+<pre><code class="bash">haphpipe build_tree
+ --run_full_analysis\
+ --seqs ${outdir}/hp_multiple_align/alignment.fasta\
+ --run_id covid_genome.tre\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}\
+ --model GTRCATX
+
+</code></pre>
+
+<p>The entire module's bash script is here:</p>
+<details>
+  <summary>build_tree module</summary>
+
+<pre><code class="bash">module=&quot;model_test&quot;
+echo -e &quot;\n[---$SN---] ($(date)) module: $module&quot;
+
+if [[ -e $outdir/hp_build_tree/RAxML_bipartitionsBranchLabels.covid_genome.tre ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $module RAxML_bipartitionsBranchLabels.covid_genome.tre&quot;
+else
+    read -r -d '' cmd &lt;&lt;EOF
+haphpipe build_tree
+ --run_full_analysis\
+ --seqs ${outdir}/hp_multiple_align/alignment.fasta\
+ --run_id covid_genome.tre\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}\
+ --model GTRCATX
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $module command:\n\n$cmd\n&quot;
+    eval $cmd
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $module&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $module&quot; &amp;&amp; exit 1 )
+fi
+</code></pre>
+
+</details>
+
+<p><br></p>
+<p>Finally, the tree file <code>RAxML_bipartitionsBranchLabels.covid_genome.tre</code> can be viewed in and annotated in programs such as <a href="http://tree.bio.ed.ac.uk/software/figtree/">FigTree</a> or <a href="https://itol.embl.de">iTOL</a>.</p>
               
             </div>
           </div>

@@ -102,7 +102,7 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#description-of-data-used">Description of Data used</a></li>
+            <li><a class="toctree-l3" href="#description-of-data-used">Description of data used</a></li>
         
         </ul>
     
@@ -203,8 +203,13 @@
 <li>Buid a phylogenetic tree with RAxML</li>
 </ol>
 <p>We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running <code>haphpipe_assemble_02</code>.  </p>
+<p>fastq-dump common error:</p>
+<pre><code>
+</code></pre>
+
+<p>If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. </p>
 <hr />
-<h4 id="description-of-data-used">Description of Data used</h4>
+<h4 id="description-of-data-used">Description of data used</h4>
 <p><strong>Accession numbers:</strong>
 SRR8525886, SRR8525933, SRR8525938, SRR8525939,and SRR8525940</p>
 <p>These data were first presented in this <a href="https://journals.plos.org/plosone/article/file?type=printable&amp;id=10.1371/journal.pone.0214820">paper</a>. The SRA project data can be found <a href="https://www.ncbi.nlm.nih.gov/pubmed/30964884?dopt=Abstract">here</a>. This data was a part of a cohort study. The viral samples were amplified for three gene regions: <em>PRRT</em>, <em>int</em>, and <em>env</em>. This data was analyzed using HAPHPIPE and PredictHaplo in this <a href="https://www.ncbi.nlm.nih.gov/pubmed/32029767">paper</a>. Results will vary from this 2020 cross-sectional study because here, for the demo, we only use 10,000 reads for each of these 5 samples compared to the study which uses all the available NGS reads.</p>
@@ -301,6 +306,7 @@ Demo was run with --refonly. References are now in outdirectory: $outdir_name/ha
 
 </details>
 
+<p><br/></p>
 <p>If the entire demo is run (i.e., no use of <code>--refonly</code>) then these are <em>all</em> the files for output <strong><em>if</em> PredictHaplo is installed.</strong></p>
 <details>
   <summary>Directory structure with PH</summary>
@@ -1141,7 +1147,7 @@ One sample (SRR8525886) will be used an example, and the single bash command for
  --accession SRR8525886
 </code></pre>
 
-<p>Reminder that the above code is the same as (without the <code>\</code>) - the <code>\</code> just make it more visually readable than on one big line like so.
+<p>Reminder that the above code is the same as this command on a single line - the <code>\</code> just makes it more visually readable.
 <code>fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886</code></p>
 <p>Step 2: Run <code>haphpipe_assemble_02</code></p>
 <pre><code class="bash">haphpipe_assemble_02 \
