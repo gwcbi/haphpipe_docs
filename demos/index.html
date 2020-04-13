@@ -100,12 +100,27 @@
             
     <li class="toctree-l2"><a href="#demo-module">Demo Module</a></li>
     
+        <ul>
+        
+            <li><a class="toctree-l3" href="#description-of-data-used">Description of Data used</a></li>
+        
+        </ul>
+    
 
     <li class="toctree-l2"><a href="#running-demo-automatically">Running Demo Automatically</a></li>
     
         <ul>
         
             <li><a class="toctree-l3" href="#output-files">Output files</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#running-demo-interactively">Running Demo Interactively</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#the-demo-pipeline-bash-script-haphpipe_demo">The demo pipeline bash script: haphpipe_demo</a></li>
         
         </ul>
     
@@ -163,13 +178,50 @@
                 <h3 id="demo-module">Demo Module</h3>
 <p>After successful installation, the demo dataset can be run to ensure HAPHPIPE is installed and set up correctly. </p>
 <p>These are the steps completed in the demo:</p>
+<ol>
+<li>Download Sample SRR8525886 using fastq-dump<ol>
+<li>Run <code>haphpipe_assemble_02</code></li>
+<li>If PredictHaplo is installed, run PredictHaplo</li>
+</ol>
+</li>
+<li>Download Sample SRR8525933 using fastq-dump<ol>
+<li>Run <code>haphpipe_assemble_02</code></li>
+<li>If PredictHaplo is installed, run PredictHaplo</li>
+</ol>
+</li>
+<li>Download Sample SRR8525938 using fastq-dump<ol>
+<li>Run <code>haphpipe_assemble_02</code></li>
+<li>If PredictHaplo is installed, run PredictHaplo</li>
+</ol>
+</li>
+<li>Download Sample SRR8525939 using fastq-dump<ol>
+<li>Run <code>haphpipe_assemble_02</code></li>
+<li>If PredictHaplo is installed, run PredictHaplo</li>
+</ol>
+</li>
+<li>Download Sample SRR8525940 using fastq-dump<ol>
+<li>Run <code>haphpipe_assemble_02</code></li>
+<li>If PredictHaplo is installed, run PredictHaplo</li>
+</ol>
+</li>
+<li>Run multiple sequence alignment with MAFFT</li>
+<li>Run ModelTest with modeltest-NG</li>
+<li>Buid a phylogenetic tree with RAxML</li>
+</ol>
+<p>We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running <code>haphpipe_assemble_02</code>.  </p>
+<hr />
+<h4 id="description-of-data-used">Description of Data used</h4>
+<p><strong>Accession numbers:</strong>
+SRR8525886, SRR8525933, SRR8525938, SRR8525939,and SRR8525940</p>
+<p>These data were first presented in this <a href="https://journals.plos.org/plosone/article/file?type=printable&amp;id=10.1371/journal.pone.0214820">paper</a>. The SRA project data can be found <a href="https://www.ncbi.nlm.nih.gov/pubmed/30964884?dopt=Abstract">here</a>. This data was a part of a cohort study. The viral samples were amplified for three gene regions: <em>PRRT</em>, <em>int</em>, and <em>env</em>. This data was analyzed using HAPHPIPE and PredictHaplo in this <a href="https://www.ncbi.nlm.nih.gov/pubmed/32029767">paper</a>. Results will vary from this 2020 cross-sectional study because here, for the demo, we only use 10,000 reads for each of these 5 samples compared to the study which uses all the available NGS reads.</p>
+<hr />
 <h3 id="running-demo-automatically">Running Demo Automatically</h3>
 <p>Running the demo is simple and requires a single command:
 <code>hp_demo</code> or <code>haphpipe demo</code></p>
 <p>A specific outdirectory can be specified by:
 <code>hp_demo --outdir $outdir_name</code></p>
-<p>The output of the entire demo is as such
-<a href="">put fig here</a></p>
+<p>The output of the entire demo is as such</p>
+<p><img alt="schematic" src="../img/Demo_directory_fig3.png" /></p>
 <p>If running the entire demo is not desired, this command can be executed to just pull the references included in HAPHPIPE into the directory that is specified (default outdir is <code>.</code>).</p>
 <p><code>hp_demo --refonly</code></p>
 <p>Output on the terminal is as such, and the three HIV reference files are located in the subdirectory <code>refs</code>. See the <a href="https://gwcbi.github.io/haphpipe_docs/install/#reference-files">User Guide</a> for more information regarding these reference files.</p>
@@ -181,6 +233,9 @@ Demo was run with --refonly. References are now in outdirectory: $outdir_name/ha
 <hr />
 <h4 id="output-files">Output files</h4>
 <p>If the entire demo is run (i.e., no use of <code>--refonly</code>) then these are <em>all</em> the files for output <strong><em>if</em> PredictHaplo is <em>NOT</em> installed</strong>. The files are listed for a single sample as example, not all 5 samples. The other files from <code>multiple_align</code>, <code>model_test</code>, and <code>build_tree</code> are all listed.</p>
+<details>
+  <summary>Directory structure without PH</summary>
+
 <pre><code>haphpipe_demo
 ├── SRR8525886
 |   ├── SRR8525886_1.fastq
@@ -250,7 +305,12 @@ Demo was run with --refonly. References are now in outdirectory: $outdir_name/ha
 ....
 </code></pre>
 
+</details>
+
 <p>If the entire demo is run (i.e., no use of <code>--refonly</code>) then these are <em>all</em> the files for output <strong><em>if</em> PredictHaplo is installed.</strong></p>
+<details>
+  <summary>Directory structure with PH</summary>
+
 <pre><code>haphpipe_demo
 ├── SRR8525886
 |   ├── SRR8525886_1.fastq
@@ -342,6 +402,882 @@ Demo was run with --refonly. References are now in outdirectory: $outdir_name/ha
 |   ├── sample#_2.fastq
 |   └── haphpipe_assemble_02
 ....
+</code></pre>
+
+</details>
+
+<hr />
+<h3 id="running-demo-interactively">Running Demo Interactively</h3>
+<h4 id="the-demo-pipeline-bash-script-haphpipe_demo">The demo pipeline bash script: <code>haphpipe_demo</code></h4>
+<details>
+  <summary>haphpipe_demo</summary>
+
+<pre><code class="bash">#!/usr/bin/env bash
+
+###############################################################################
+# Demo pipeline implementing amplicon assembly using a reference-based approach
+#(haphpipe_assemble_02). Reads are error-corrected and used to refine
+# the initial assembly, with up to 5 refinement steps. PredictHaplo runs if it
+# is loaded, and multiple sequence alignment is conducted with the final.fna
+# (and haplotypes if there).
+###############################################################################
+SN=$(basename $0)
+
+
+read -r -d '' USAGE &lt;&lt;EOF
+USAGE:
+$SN &lt;outdir&gt;
+
+----- HAPHPIPE demo -----
+
+This demo implements amplicon assembly using a reference-based approach. Five SRA
+samples are pulled with fastq-dump, assembled with haphpipe_assemble_02,
+multiple aligned and a phylogeny estimated. If PredictHaplo is installed,
+haplotypes are also predicted followed by MSA and a phylogeny estimated.
+
+outdir:            Output directory (default is demo)
+
+EOF
+
+#--- Read command line args
+[[ -n &quot;$1&quot; ]] &amp;&amp; [[ &quot;$1&quot; == '-h' ]] &amp;&amp; echo &quot;$USAGE&quot; &amp;&amp; exit 0
+
+[[ -n &quot;$1&quot; ]] &amp;&amp; outdir=&quot;$1&quot;
+
+[[ -z ${outdir+x} ]] &amp;&amp; outdir=$SN
+mkdir -p $outdir/refs
+
+#--- Determine CPUs to use
+# First examines NCPU environment variable, then nproc, finally sets to  1
+[[ -n &quot;$NCPU&quot; ]] &amp;&amp; ncpu=$NCPU
+[[ -z $ncpu ]] &amp;&amp; ncpu=$(nproc 2&gt; /dev/null)
+[[ -z $ncpu ]] &amp;&amp; ncpu=1
+
+#--- Determine whether verbose
+[[ -n &quot;$VERBOSE&quot; ]] &amp;&amp; quiet=&quot;&quot; || quiet='--quiet'
+
+echo &quot;[---$SN---] ($(date)) outdir:            $outdir&quot;
+echo &quot;[---$SN---] ($(date)) num CPU:           $ncpu&quot;
+
+#--- Start the timer
+t1=$(date +&quot;%s&quot;)
+
+
+### We split up the samples, instead of looping through them for fastq-dump ###
+### because sometimes the fastq-dump/NCBI doesn't work. It was more helpful ###
+### to see when a sample failed this way rather than a loop for fastq-dump  ###
+### then a loop for running haphpipe_assemble_02.                           ###
+###############################################################################
+# Step 2a: Sample 1: SRR8525886
+###############################################################################
+# Step 1: Fastq-dump
+stage=&quot;Demo Sample 1: SRR8525886&quot;
+sra='SRR8525886'
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# checking for the 5 directories and fastq files
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: Demo Sample ${sra} paired fastq files&quot;
+else
+    read -r -d '' cmd1 &lt;&lt;EOF
+fastq-dump --outdir ${outdir}/${sra} \
+ --split-files\
+ --origfmt\
+ --minSpotId 30000\
+ --maxSpotId 40000\
+ --accession ${sra}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage fastq-dump failed for sample ${sra}&quot; &amp;&amp; exit 1 )
+
+fi
+
+if
+  [[ ! -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+  [[ ! -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+   echo &quot;[---$SN---] ($(date)) FAILED: file downloading SRA data for ${sra} did not complete&quot; &amp;&amp; exit 1
+
+fi
+
+# Step 2: Haphpipe_assemble_02
+pipeline=&quot;haphpipe_assemble_02&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $pipeline&quot;
+
+# checking for both fastq files and final.fna
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]] &amp;&amp;\
+   [[ -e $outdir/${sra}/${pipeline}/final.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $pipeline final.fna for sample ${sra}&quot;
+else
+   read -r -d '' cmd2 &lt;&lt;EOF
+${pipeline} ${outdir}/${sra}/${sra}_1.fastq\
+ ${outdir}/${sra}/${sra}_2.fastq\
+ ${outdir}/refs/HIV_B.K03455.HXB2.amplicons.fasta\
+ ${sra}\
+ ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $pipeline command for ${sra}:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $pipeline for ${sra} samples&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $pipeline&quot; &amp;&amp; exit 1 )
+
+fi
+
+# Step 3: PredictHaplo
+stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1 ||
+ if [[ $? -eq 0 ]] ; then
+    echo -e &quot;[---$SN---] ($(date)) $stage PredictHaplo present&quot;
+    read -r -d '' cmd1 &lt;&lt;EOF
+haphpipe predict_haplo\
+ --fq1 ${outdir}/${sra}/${pipeline}/corrected_1.fastq\
+ --fq2 ${outdir}/${sra}/${pipeline}/corrected_2.fastq\
+ --ref_fa ${outdir}/${sra}/${pipeline}/final.fna\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    for ph in ${outdir}/${sra}/${pipeline}/PH*; do
+        read -r -d '' cmd2 &lt;&lt;EOF
+ haphpipe ph_parser\
+ --haplotypes_fa $ph/PH*.best_*.fas\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${ph}\
+ --prefix ${sra}_$(basename $ph)
+EOF
+       echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+       eval $cmd2
+
+       cat ${outdir}/${sra}/${pipeline}/PH*/ph_haplotypes.fna &gt; ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna
+     done
+ fi
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 2b: Sample 2: SRR8525933
+###############################################################################
+# Step 1: Fastq-dump
+stage=&quot;Demo Sample 2: SRR8525933&quot;
+sra='SRR8525933'
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# checking for the 5 directories and fastq files
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: Demo Sample ${sra} paired fastq files&quot;
+else
+    read -r -d '' cmd1 &lt;&lt;EOF
+fastq-dump --outdir ${outdir}/${sra} \
+ --split-files\
+ --origfmt\
+ --minSpotId 30000\
+ --maxSpotId 40000\
+ --accession ${sra}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage fastq-dump failed for sample ${sra}&quot; &amp;&amp; exit 1 )
+
+fi
+
+if
+  [[ ! -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+  [[ ! -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+   echo &quot;[---$SN---] ($(date)) FAILED: file downloading SRA data for ${sra} did not complete&quot; &amp;&amp; exit 1
+
+fi
+
+# Step 2: Haphpipe_assemble_02
+pipeline=&quot;haphpipe_assemble_02&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $pipeline&quot;
+
+# checking for both fastq files and final.fna
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]] &amp;&amp;\
+   [[ -e $outdir/${sra}/${pipeline}/final.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $pipeline final.fna for sample ${sra}&quot;
+else
+   read -r -d '' cmd2 &lt;&lt;EOF
+${pipeline} ${outdir}/${sra}/${sra}_1.fastq\
+ ${outdir}/${sra}/${sra}_2.fastq\
+ ${outdir}/refs/HIV_B.K03455.HXB2.amplicons.fasta\
+ ${sra}\
+ ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $pipeline command for ${sra}:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $pipeline for ${sra} samples&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $pipeline&quot; &amp;&amp; exit 1 )
+
+fi
+
+# Step 3: PredictHaplo
+stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+ if [[ $? -eq 0 ]] ; then
+    echo -e &quot;[---$SN---] ($(date)) $stage PredictHaplo present&quot;
+    read -r -d '' cmd1 &lt;&lt;EOF
+haphpipe predict_haplo\
+ --fq1 ${outdir}/${sra}/${pipeline}/corrected_1.fastq\
+ --fq2 ${outdir}/${sra}/${pipeline}/corrected_2.fastq\
+ --ref_fa ${outdir}/${sra}/${pipeline}/final.fna\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    for ph in ${outdir}/${sra}/${pipeline}/PH*; do
+        read -r -d '' cmd2 &lt;&lt;EOF
+ haphpipe ph_parser\
+ --haplotypes_fa $ph/PH*.best_*.fas\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${ph}\
+ --prefix ${sra}_$(basename $ph)
+EOF
+       echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+       eval $cmd2
+
+       cat ${outdir}/${sra}/${pipeline}/PH*/ph_haplotypes.fna &gt; ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna
+    done
+ fi
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 2c: Sample 3: SRR8525938
+###############################################################################
+# Step 1: Fastq-dump
+stage=&quot;Demo Sample 1: SRR8525938&quot;
+sra='SRR8525938'
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# checking for the 5 directories and fastq files
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: Demo Sample ${sra} paired fastq files&quot;
+else
+    read -r -d '' cmd1 &lt;&lt;EOF
+fastq-dump --outdir ${outdir}/${sra} \
+ --split-files\
+ --origfmt\
+ --minSpotId 30000\
+ --maxSpotId 40000\
+ --accession ${sra}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage fastq-dump failed for sample ${sra}&quot; &amp;&amp; exit 1 )
+
+fi
+
+if
+  [[ ! -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+  [[ ! -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+   echo &quot;[---$SN---] ($(date)) FAILED: file downloading SRA data for ${sra} did not complete&quot; &amp;&amp; exit 1
+
+fi
+
+# Step 2: Haphpipe_assemble_02
+pipeline=&quot;haphpipe_assemble_02&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $pipeline&quot;
+
+# checking for both fastq files and final.fna
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]] &amp;&amp;\
+   [[ -e $outdir/${sra}/${pipeline}/final.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $pipeline final.fna for sample ${sra}&quot;
+else
+   read -r -d '' cmd2 &lt;&lt;EOF
+${pipeline} ${outdir}/${sra}/${sra}_1.fastq\
+ ${outdir}/${sra}/${sra}_2.fastq\
+ ${outdir}/refs/HIV_B.K03455.HXB2.amplicons.fasta\
+ ${sra}\
+ ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $pipeline command for ${sra}:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $pipeline for ${sra} samples&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $pipeline&quot; &amp;&amp; exit 1 )
+
+fi
+
+# Step 3: PredictHaplo
+stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+ if [[ $? -eq 0 ]] ; then
+    echo -e &quot;[---$SN---] ($(date)) $stage PredictHaplo present&quot;
+    read -r -d '' cmd1 &lt;&lt;EOF
+haphpipe predict_haplo\
+ --fq1 ${outdir}/${sra}/${pipeline}/corrected_1.fastq\
+ --fq2 ${outdir}/${sra}/${pipeline}/corrected_2.fastq\
+ --ref_fa ${outdir}/${sra}/${pipeline}/final.fna\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    for ph in ${outdir}/${sra}/${pipeline}/PH*; do
+        read -r -d '' cmd2 &lt;&lt;EOF
+ haphpipe ph_parser\
+ --haplotypes_fa $ph/PH*.best_*.fas\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${ph}\
+ --prefix ${sra}_$(basename $ph)
+EOF
+       echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+       eval $cmd2
+
+       cat ${outdir}/${sra}/${pipeline}/PH*/ph_haplotypes.fna &gt; ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna
+    done
+ fi
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 2d: Sample 4: SRR8525939
+###############################################################################
+# Step 1: Fastq-dump
+stage=&quot;Demo Sample 1: SRR8525939&quot;
+sra='SRR8525939'
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# checking for the 5 directories and fastq files
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: Demo Sample ${sra} paired fastq files&quot;
+else
+    read -r -d '' cmd1 &lt;&lt;EOF
+fastq-dump --outdir ${outdir}/${sra} \
+ --split-files\
+ --origfmt\
+ --minSpotId 30000\
+ --maxSpotId 40000\
+ --accession ${sra}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage fastq-dump failed for sample ${sra}&quot; &amp;&amp; exit 1 )
+
+fi
+
+if
+  [[ ! -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+  [[ ! -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+   echo &quot;[---$SN---] ($(date)) FAILED: file downloading SRA data for ${sra} did not complete&quot; &amp;&amp; exit 1
+
+fi
+
+# Step 2: Haphpipe_assemble_02
+pipeline=&quot;haphpipe_assemble_02&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $pipeline&quot;
+
+# checking for both fastq files and final.fna
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]] &amp;&amp;\
+   [[ -e $outdir/${sra}/${pipeline}/final.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $pipeline final.fna for sample ${sra}&quot;
+else
+   read -r -d '' cmd2 &lt;&lt;EOF
+${pipeline} ${outdir}/${sra}/${sra}_1.fastq\
+ ${outdir}/${sra}/${sra}_2.fastq\
+ ${outdir}/refs/HIV_B.K03455.HXB2.amplicons.fasta\
+ ${sra}\
+ ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $pipeline command for ${sra}:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $pipeline for ${sra} samples&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $pipeline&quot; &amp;&amp; exit 1 )
+
+fi
+
+# Step 3: PredictHaplo
+stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+ if [[ $? -eq 0 ]] ; then
+    echo -e &quot;[---$SN---] ($(date)) $stage PredictHaplo present&quot;
+    read -r -d '' cmd1 &lt;&lt;EOF
+haphpipe predict_haplo\
+ --fq1 ${outdir}/${sra}/${pipeline}/corrected_1.fastq\
+ --fq2 ${outdir}/${sra}/${pipeline}/corrected_2.fastq\
+ --ref_fa ${outdir}/${sra}/${pipeline}/final.fna\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    for ph in ${outdir}/${sra}/${pipeline}/PH*; do
+        read -r -d '' cmd2 &lt;&lt;EOF
+ haphpipe ph_parser\
+ --haplotypes_fa $ph/PH*.best_*.fas\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${ph}\
+ --prefix ${sra}_$(basename $ph)
+EOF
+       echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+       eval $cmd2
+
+       cat ${outdir}/${sra}/${pipeline}/PH*/ph_haplotypes.fna &gt; ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna
+    done
+ fi
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+
+###############################################################################
+# Step 2e: Sample 5: SRR8525940
+###############################################################################
+# Step 1: Fastq-dump
+stage=&quot;Demo Sample 1: SRR8525940&quot;
+sra='SRR8525940'
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+# checking for the 5 directories and fastq files
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: Demo Sample ${sra} paired fastq files&quot;
+else
+    read -r -d '' cmd1 &lt;&lt;EOF
+fastq-dump --outdir ${outdir}/${sra} \
+ --split-files\
+ --origfmt\
+ --minSpotId 30000\
+ --maxSpotId 40000\
+ --accession ${sra}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage fastq-dump failed for sample ${sra}&quot; &amp;&amp; exit 1 )
+
+fi
+
+if
+  [[ ! -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+  [[ ! -e ${outdir}/${sra}/${sra}_2.fastq ]]; then
+   echo &quot;[---$SN---] ($(date)) FAILED: file downloading SRA data for ${sra} did not complete&quot; &amp;&amp; exit 1
+
+fi
+
+# Step 2: Haphpipe_assemble_02
+pipeline=&quot;haphpipe_assemble_02&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $pipeline&quot;
+
+# checking for both fastq files and final.fna
+if [[ -e ${outdir}/${sra}/${sra}_1.fastq ]] &amp;&amp;\
+   [[ -e ${outdir}/${sra}/${sra}_2.fastq ]] &amp;&amp;\
+   [[ -e $outdir/${sra}/${pipeline}/final.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $pipeline final.fna for sample ${sra}&quot;
+else
+   read -r -d '' cmd2 &lt;&lt;EOF
+${pipeline} ${outdir}/${sra}/${sra}_1.fastq\
+ ${outdir}/${sra}/${sra}_2.fastq\
+ ${outdir}/refs/HIV_B.K03455.HXB2.amplicons.fasta\
+ ${sra}\
+ ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $pipeline command for ${sra}:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $pipeline for ${sra} samples&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $pipeline&quot; &amp;&amp; exit 1 )
+
+fi
+
+# Step 3: PredictHaplo
+stage=&quot;predict_haplo&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage corrected_1.fastq,corrected_2.fastq&quot;
+else
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+ if [[ $? -eq 0 ]] ; then
+    echo -e &quot;[---$SN---] ($(date)) $stage PredictHaplo present&quot;
+    read -r -d '' cmd1 &lt;&lt;EOF
+haphpipe predict_haplo\
+ --fq1 ${outdir}/${sra}/${pipeline}/corrected_1.fastq\
+ --fq2 ${outdir}/${sra}/${pipeline}/corrected_2.fastq\
+ --ref_fa ${outdir}/${sra}/${pipeline}/final.fna\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${outdir}/${sra}/${pipeline}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    for ph in ${outdir}/${sra}/${pipeline}/PH*; do
+        read -r -d '' cmd2 &lt;&lt;EOF
+ haphpipe ph_parser\
+ --haplotypes_fa $ph/PH*.best_*.fas\
+ --logfile ${outdir}/${sra}/${pipeline}/haphpipe_PH.out\
+ --outdir ${ph}\
+ --prefix ${sra}_$(basename $ph)
+EOF
+       echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+       eval $cmd2
+
+       cat ${outdir}/${sra}/${pipeline}/PH*/ph_haplotypes.fna &gt; ${outdir}/${sra}/${pipeline}/ph_haplotypes_comb.fna
+    done
+ fi
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+fi
+
+###############################################################################
+# Step 3: Run MSA with MAFFT
+###############################################################################
+
+stage=&quot;multiple_align&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/multiple_align/alignment_region00.fasta ]] &amp;&amp;\
+   [[ -e ${outdir}/multiple_align/alignment_region01.fasta ]] &amp;&amp;\
+   [[ -e ${outdir}/multiple_align/alignment_region02.fasta ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage alignment_region00.fasta,alignment_region01.fasta,alignment_region02.fasta&quot;
+else
+ # check for PredictHaplo
+ command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+ if [[ $? -eq 0 ]] ; then
+    read -r -d '' cmd1 &lt;&lt;EOF
+ls -d ${outdir}/SRR*/${pipeline} &gt; ${outdir}/dir_list.txt &amp;&amp;\
+ls -d ${outdir}/SRR*/${pipeline}/PH0* &gt;&gt; ${outdir}/dir_list.txt
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    read -r -d '' cmd2 &lt;&lt;EOF
+haphpipe multiple_align\
+ --ncpu $ncpu\
+ --dir_list ${outdir}/dir_list.txt\
+ --ref_gtf ${outdir}/refs/HIV_B.K03455.HXB2.gtf\
+ --logfile haphpipe.out\
+ --phylipout\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+
+  # if no PredictHaplo, execute these commands
+  else
+    read -r -d '' cmd1 &lt;&lt;EOF
+ls -d ${outdir}/SRR*/${pipeline} &gt; ${outdir}/dir_list.txt
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd1\n&quot;
+    eval $cmd1
+
+    read -r -d '' cmd2 &lt;&lt;EOF
+haphpipe multiple_align\
+ --ncpu $ncpu\
+ --dir_list ${outdir}/dir_list.txt\
+ --ref_gtf ${outdir}/refs/HIV_B.K03455.HXB2.gtf\
+ --logfile haphpipe.out\
+ --phylipout\
+ --outdir ${outdir}
+EOF
+    echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd2\n&quot;
+    eval $cmd2
+
+    [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+        (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+  fi
+fi
+
+###############################################################################
+# Step 4: ModelTest
+###############################################################################
+stage=&quot;model_test&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/alignment_region00_modeltest_results.out ]] &amp;&amp;\
+   [[ -e ${outdir}/alignment_region01_modeltest_results.out ]] &amp;&amp;\
+   [[ -e ${outdir}/alignment_region02_modeltest_results.out ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage alignment_region00_modeltest_results.out,alignment_region01_modeltest_results.out,alignment_region02_modeltest_results.out&quot;
+else
+    for region in ${outdir}/multiple_align/alignment_region??.fasta; do
+        reg=${region%.fasta}
+        read -r -d '' cmd &lt;&lt;EOF
+haphpipe model_test\
+ --seqs ${region}\
+ --run_id $(basename $reg)\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}\
+ --template raxml\
+ --ncpu ${ncpu}
+EOF
+        echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+        eval $cmd
+
+        [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage for $region&quot; || \
+            (  echo &quot;[---$SN---] ($(date)) FAILED: $stage for $region&quot; &amp;&amp; exit 1 )
+    done
+fi
+
+
+###############################################################################
+# Step 5: Build tree with RAxML
+###############################################################################
+stage=&quot;build_tree&quot;
+echo -e &quot;\n[---$SN---] ($(date)) Stage: $stage&quot;
+
+if [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region00 ]] &amp;&amp;\
+   [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region01 ]] &amp;&amp;\
+   [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region02 ]]; then
+    echo &quot;[---$SN---] ($(date)) EXISTS: $stage RAxML_bipartitionsBranchLabels.alignment_region00, RAxML_bipartitionsBranchLabels.alignment_region01, RAxML_bipartitionsBranchLabels.alignment_region02&quot;
+else
+    # check for PredictHaplo
+    command -v PredictHaplo-Paired &gt;/dev/null 2&gt;&amp;1
+    if [[ $? -eq 0 ]] ; then
+        for alignment in ${outdir}/multiple_align/alignment_region??.phy; do
+            reg=${alignment%.phy}
+            read -r -d '' cmd &lt;&lt;EOF
+haphpipe build_tree\
+ --run_full_analysis\
+ --seqs ${alignment}\
+ --output_name $(basename $reg)\
+ --model GTRGAMMAX\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+            echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+            eval $cmd
+
+            [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+                (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+        done
+    else
+        for alignment in ${outdir}/multiple_align/alignment_region00.phy ${outdir}/multiple_align/alignment_region01.phy; do
+            reg=${alignment%.phy}
+            read -r -d '' cmd &lt;&lt;EOF
+haphpipe build_tree\
+ --run_full_analysis\
+ --seqs ${alignment}\
+ --output_name $(basename $reg)\
+ --model GTRGAMMAX\
+ --logfile ${outdir}/haphpipe.out\
+ --outdir ${outdir}
+EOF
+            echo -e &quot;[---$SN---] ($(date)) $stage command:\n\n$cmd\n&quot;
+            eval $cmd
+
+            [[ $? -eq 0 ]] &amp;&amp; echo &quot;[---$SN---] ($(date)) COMPLETED: $stage&quot; || \
+                (  echo &quot;[---$SN---] ($(date)) FAILED: $stage&quot; &amp;&amp; exit 1 )
+        done
+        echo &quot;region02 did not run because there are only 3 sequences in the alignment&quot;
+    fi
+fi
+
+#---Complete job
+t2=$(date +&quot;%s&quot;)
+diff=$(($t2-$t1))
+echo &quot;[---$SN---] ($(date)) $(($diff / 60)) minutes and $(($diff % 60)) seconds elapsed.&quot;
+echo &quot;[---$SN---] ($(date)) $SN COMPLETE.&quot;
+</code></pre>
+
+</details>
+
+<p>The structure of this interactive demo is such:
+One sample (SRR8525886) will be used an example, and the single bash command for each step will be shown. </p>
+<p>Step 0: Get the reference data needed for this interactive demo.</p>
+<pre><code class="bash">hp_demo --refonly
+</code></pre>
+
+<p>Step 1: Pull sample data from SRA with fastq-dump.</p>
+<pre><code class="bash">fastq-dump --outdir haphpipe_demo/SRR8525886 \
+ --split-files \
+ --origfmt \
+ --minSpotId 30000 \
+ --maxSpotId 40000 \
+ --accession SRR8525886
+</code></pre>
+
+<p>Reminder that the above code is the same as (without the <code>\</code>) - the <code>\</code> just make it more visually readable than on one big line like so.
+<code>fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886</code></p>
+<p>Step 2: Run <code>haphpipe_assemble_02</code></p>
+<pre><code class="bash">haphpipe_assemble_02 \
+ haphpipe_demo/SRR8525886/SRR8525886_1.fastq \
+ haphpipe_demo/SRR8525886/SRR8525886_2.fastq \
+ haphpipe_demo/refs/HIV_B.K03455.HXB2.amplicons.fasta \
+ SRR8525886 \
+ haphpipe_demo/SRR8525886/haphpipe_assemble_02
+</code></pre>
+
+<p>(if PredictHaplo is installed) Step 3a: Run PredictHaplo </p>
+<pre><code>haphpipe predict_haplo\
+ --fq1 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_1.fastq \
+ --fq2 haphpipe_demo/SRR8525886/haphpipe_assemble_02/corrected_2.fastq \
+ --ref_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/final.fna \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02
+</code></pre>
+
+<p>Step 3b: Run PredictHaplo Parser for each amplicon region</p>
+<p>Individually:</p>
+<pre><code># PH01
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH01_PRRT \
+ --prefix ${sra}_PH01_PRRT
+
+# PH02 
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH02_INT/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH02_INT \
+ --prefix SRR8525886_PH02_INT
+
+
+# PH03 
+haphpipe ph_parser \
+ --haplotypes_fa haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH03_gp120/PH*.best_*.fas \
+ --logfile haphpipe_demo/SRR8525886/haphpipe_assemble_02/haphpipe_PH.out \
+ --outdir haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH03_gp120 \
+ --prefix SRR8525886_PH03_gp120
+</code></pre>
+
+<p>Or you can run ph_parser in a loop for all the haplotype regions:</p>
+<pre><code>for ph in haphpipe_demo/SRR8525886/haphpipe_assemble_02/PH*; do
+   haphpipe ph_parser \
+   --haplotypes_fa ${ph}/PH*.best_*.fas \
+   --logfile $(dirname $ph)/haphpipe_PH.out \
+   --outdir ${ph} \
+   --prefix SRR8525886_$(basename $ph)
+done
+</code></pre>
+
+<p>Step 4: Rerun steps 1-3 for all samples, make sure to replace the accession number.</p>
+<p>Step 5: Run multiple sequence alignment using MAFFT.</p>
+<p>Make a file with a list of directories containing the <code>final.fna</code> files and the <code>ph_haplotype.fna</code>:</p>
+<pre><code>ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 &gt; haphpipe_demo/dir_list.txt &amp;&amp;\
+ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* &gt;&gt; haphpipe_demo/dir_list.txt
+</code></pre>
+
+<p>If PredictHaplo was not installed, you only need the first line:
+<code>ls -d haphpipe_demo/SRR*/haphpipe_assemble_02 &gt; haphpipe_demo/dir_list.txt</code></p>
+<p>Now, run <code>multiple_align</code></p>
+<pre><code>haphpipe multiple_align \
+ --ncpu 1 \
+ --dir_list haphpipe_demo/dir_list.txt \
+ --ref_gtf haphpipe_demo/refs/HIV_B.K03455.HXB2.gtf \
+ --logfile haphpipe.out \
+ --phylipout \
+ --outdir haphpipe_demo
+</code></pre>
+
+<p>Step 6: Estimate best-fit model of evolution using ModelTest-NG</p>
+<pre><code># Region00 - this is amplicon PRRT
+haphpipe model_test \ 
+ --seqs alignment_region00.fasta \
+ --run_id alignment_region00 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+
+# Region01 - this is amplicon INT
+haphpipe model_test \ 
+ --seqs alignment_region01.fasta \
+ --run_id alignment_region01 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+
+# Region02 - this is amplicon gp120
+haphpipe model_test \ 
+ --seqs alignment_region02.fasta \
+ --run_id alignment_region02 \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
+</code></pre>
+
+<p>Step 7: Build a phylogenetic tree for each region using RAXML. The models can be changed according to the output of ModelTest (step 6 - above). Here we just show with model GTRGAMMAX.</p>
+<pre><code># Region00 - this is amplicon PRRT
+haphpipe build_tree \
+ --run_full_analysis \
+ --seqs alignment_region00.fasta \
+ --output_name alignment_region00.tre \
+ --model GTRGAMMAX\
+ --logfile haphpipe_demo/haphpipe.out\
+ --outdir haphpipe_demo
+
+# Region01 - this is amplicon INT
+haphpipe build_tree \
+ --run_full_analysis \
+ --seqs alignment_region01.fasta \
+ --output_name alignment_region01.tre \
+ --model GTRGAMMAX\
+ --logfile haphpipe_demo/haphpipe.out\
+ --outdir haphpipe_demo
+</code></pre>
+
+<p>If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.</p>
+<pre><code># Region02 - this is amplicon gp120
+haphpipe model_test \ 
+ --seqs alignment_region02.fasta \
+ --run_id alignment_region02.tre \
+ --logfile haphpipe_demo/haphpipe.out \
+ --outdir haphpipe_demo \
+ --template raxml \
+ --ncpu 1
 </code></pre>
               
             </div>
