@@ -219,9 +219,9 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
   
 ```
 	File	Criteria	Best Model
-	multiple_align/alignment.fasta	BIC	HKY
-	multiple_align/alignment.fasta	AIC	TrN
-	multiple_align/alignment.fasta	AICc	TrN
+	hp_multiple_align/alignment.fasta	BIC	HKY
+	hp_multiple_align/alignment.fasta	AIC	TrN
+	hp_multiple_align/alignment.fasta	AICc	TrN
 ```
 </details>
 <br>
