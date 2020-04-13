@@ -1,10 +1,8 @@
+![logo](img/haphpipe_logo.pdf)
+
 ## About HAPHPIPE
 
 _**HA**plotype and **PH**ylodynamics pipeline for viral assembly, population genetics, and phylodynamics._
-
-![logo](img/haphpipe_logo.pdf)
-
-<br>
 
 ![schematic](img/haphpipe_schematic.png)
 
