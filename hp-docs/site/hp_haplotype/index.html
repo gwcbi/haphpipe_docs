@@ -154,7 +154,7 @@
           <div role="main">
             <div class="section">
               
-                <p><strong>hp_haplotype</strong> includes haplotype assembly stages. HAPHPIPE implements PredictHaplo (<a href="https://www.ncbi.nlm.nih.gov/pubmed/26355517">paper</a>), although other haplotype reconstruction programs can be utilized outside of HAPHPIPE using the final output of HAPHPIPE, typically with the final consensus sequence (FASTA) file, reads (raw, trimmed, and/or corrected), and/or final alignment (BAM) file as input.
+                <p>The haplotype stage in HAPHPIPE implements PredictHaplo (<a href="https://www.ncbi.nlm.nih.gov/pubmed/26355517">paper</a>), although other haplotype reconstruction programs can be utilized outside of HAPHPIPE using the final output of HAPHPIPE, typically with the final consensus sequence (FASTA) file, reads (raw, trimmed, and/or corrected), and/or final alignment (BAM) file as input.
 Use -h after any command for a list of options. </p>
 <p><em>Note:</em> PredictHaplo is not compatable with read files including read IDs (.1 and .2 appended at the end of read names for read 1 and read 2, respectively). If your file has read IDs, use the following commands to create new files with the read IDs taken out before running PredictHaplo:</p>
 <pre><code>    cat corrected_1.fastq | sed 's/\.1 / /' &gt; corrected_1_fixed.fastq

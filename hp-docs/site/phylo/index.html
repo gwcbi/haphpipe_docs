@@ -160,11 +160,11 @@
           <div role="main">
             <div class="section">
               
-                <p><strong>hp_phylo</strong> includes phylogenomics stages.</p>
+                <p>This stage includes phylogenomics stages.</p>
 <h3 id="phylo-quick-start">Phylo Quick-Start</h3>
-<p>HAPHPIPE includes three stages for phylogenomics: <em>multiple_align</em>, <em>model_test</em>, and <em>build_tree</em>. These three stages are sufficient to turn your consensus and/or haplotype sequences from the other stages into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the stages to create a tree from HIV <em>pol</em> consensus sequences. </p>
+<p>HAPHPIPE includes three modules for phylogenomics: <em>multiple_align</em>, <em>model_test</em>, and <em>build_tree</em>. These three modules are sufficient to turn your consensus and/or haplotype sequences from the other modules into a phylogenetic tree! For purposes of this quick-start guide, we will demonstrate the modules to create a tree from HIV <em>pol</em> consensus sequences. </p>
 <p><strong>Step 1: Alignment</strong></p>
-<p>After running either of the assembly pipelines, <code>final.fna</code> files will be located in directories named <code>./&lt;SampleID&gt;/haphpipe_assemble_0[1|2]</code>. For the <em>multiple_align</em> stage, we need to create a list of all of these directories. We can do so easily with one command (shown for <code>haphpipe_assemble_01</code> output:</p>
+<p>After running either of the assembly pipelines, <code>final.fna</code> files will be located in directories named <code>./&lt;SampleID&gt;/haphpipe_assemble_0[1|2]</code>. For the <em>multiple_align</em> module, we need to create a list of all of these directories. We can do so easily with one command (shown for <code>haphpipe_assemble_01</code> output:</p>
 <pre><code>ls -d ./SRR*/haphpipe_assemble_01 &gt; ./dir_list.txt
 </code></pre>
 
@@ -174,7 +174,7 @@
 
 <p>The output will be located in a new directory, <code>hp_multiple_align</code>. The alignment of <em>pol</em> sequences is the file <code>alignment_region00.fasta</code>.</p>
 <p><strong>Step 2: Model Selection</strong></p>
-<p>Now, we will use the <em>model_test</em> stage to determine the best-fit evolutionary model for our data. This is an input to the tree building stage. We will use this command to generate best-fit models available in RAxML:</p>
+<p>Now, we will use the <em>model_test</em> module to determine the best-fit evolutionary model for our data. This is an input to the tree building module. We will use this command to generate best-fit models available in RAxML:</p>
 <pre><code>haphpipe model_test --seqs hp_multiple_align/alignment_region00.fasta --run_id alignment_region00 --template raxml
 </code></pre>
 
