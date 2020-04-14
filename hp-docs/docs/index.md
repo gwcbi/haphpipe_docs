@@ -1,6 +1,4 @@
-<p align="center"> 
-<img src="https://github.com/gwcbi/haphpipe_docs/blob/master/hp-docs/docs/img/haphpipe_logo.pdf">
-</p>
+![logo](img/haphpipe_logo.pdf)
 
 ## About HAPHPIPE
 
