@@ -1,4 +1,6 @@
-![logo](img/haphpipe_logo.pdf)
+<p align="center">
+  ![logo](img/haphpipe_logo.pdf)
+</p>
 
 ## About HAPHPIPE
 
