@@ -4,6 +4,8 @@
 
 _**HA**plotype and **PH**ylodynamics pipeline for viral assembly, population genetics, and phylodynamics._
 
+[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/haphpipe/README.html)
+
 ![schematic](img/haphpipe_schematic.png)
 
 
