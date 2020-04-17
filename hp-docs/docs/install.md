@@ -1,4 +1,4 @@
-## HAPHPIPE Installation Instructions
+## HAPHPIPE Installation Instructions 
 
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/haphpipe/README.html)
 
@@ -33,7 +33,6 @@ __3. Create a conda environment for HAPHPIPE__
 
 ```bash
 conda create -n haphpipe haphpipe
-
 ```
 This will install HAPHPIPE and all dependencies in Bioconda.Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:
 ```
