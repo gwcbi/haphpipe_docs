@@ -1099,7 +1099,7 @@ Step 6: Estimate best-fit model of evolution using ModelTest-NG
 ```bash
 # Region00 - this is amplicon PRRT
 haphpipe model_test \ 
- --seqs alignment_region00.fasta \
+ --seqs hp_alignments/alignment_region00.fasta \
  --run_id alignment_region00 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1108,7 +1108,7 @@ haphpipe model_test \
 
 # Region01 - this is amplicon INT
 haphpipe model_test \ 
- --seqs alignment_region01.fasta \
+ --seqs hp_alignments/alignment_region01.fasta \
  --run_id alignment_region01 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1117,7 +1117,7 @@ haphpipe model_test \
 
 # Region02 - this is amplicon gp120
 haphpipe model_test \ 
- --seqs alignment_region02.fasta \
+ --seqs hp_alignments/alignment_region02.fasta \
  --run_id alignment_region02 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1129,35 +1129,35 @@ Step 7: Build a phylogenetic tree for each region using RAXML. The models can be
 
 ```bash
 # Region00 - this is amplicon PRRT
-haphpipe build_tree \
- --run_full_analysis \
- --seqs alignment_region00.fasta \
- --output_name alignment_region00.tre \
+haphpipe build_tree_NG \
+ --all \
+ --seqs hp_alignments/alignment_region00.fasta \
+ --output_name alignment_region00 \
  --model GTRGAMMAX\
  --logfile haphpipe_demo/haphpipe.out\
- --outdir haphpipe_demo
+ --outdir haphpipe_demo/hp_tree
 
 # Region01 - this is amplicon INT
-haphpipe build_tree \
- --run_full_analysis \
- --seqs alignment_region01.fasta \
- --output_name alignment_region01.tre \
+haphpipe build_tree_NG \
+ --all \
+ --seqs hp_alignments/alignment_region01.fasta \
+ --output_name alignment_region01 \
  --model GTRGAMMAX\
  --logfile haphpipe_demo/haphpipe.out\
- --outdir haphpipe_demo
+ --outdir haphpipe_demo/hp_tree
 ```
 
 If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.
 
 ```bash
 # Region02 - this is amplicon gp120
-haphpipe model_test \ 
- --seqs alignment_region02.fasta \
- --run_id alignment_region02.tre \
- --logfile haphpipe_demo/haphpipe.out \
- --outdir haphpipe_demo \
- --template raxml \
- --ncpu 1
+haphpipe build_tree_NG \
+ --all \
+ --seqs hp_alignments/alignment_region02.fasta \
+ --output_name alignment_region02 \
+ --model GTRGAMMAX\
+ --logfile haphpipe_demo/haphpipe.out\
+ --outdir haphpipe_demo/hp_tree
 ```
 
 
