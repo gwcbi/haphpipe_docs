@@ -203,10 +203,6 @@
 <li>Buid a phylogenetic tree with RAxML</li>
 </ol>
 <p>We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running <code>haphpipe_assemble_02</code>.  </p>
-<p>fastq-dump common error:</p>
-<pre><code>
-</code></pre>
-
 <p>If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. </p>
 <hr />
 <h4 id="description-of-data-used">Description of data used</h4>
