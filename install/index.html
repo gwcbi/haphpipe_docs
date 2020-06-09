@@ -203,14 +203,14 @@ conda config --add channels conda-forge
 and install GATK directly. To fully install GATK, you must
 download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
 <a href="https://software.broadinstitute.org/gatk/download/archive">https://software.broadinstitute.org/gatk/download/archive</a>.</p>
-<p>Register the package using gatk3-register:</p>
+<p>Then, register the package using gatk3-register:</p>
 <pre><code>gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
 </code></pre>
 
 <p>This will copy GATK into your conda environment.</p>
 <p>Alternatively, GATK may be installed directly on the command line with the following commands:</p>
 <pre><code class="bash">mkdir -p /path/to/gatk_dir
-wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&amp;version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
+gsutil cp gs://gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2 path/to/gatk_dir/
 gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 </code></pre>
 
