@@ -53,7 +53,7 @@ and install GATK directly. To fully install GATK, you must
 download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
 [https://software.broadinstitute.org/gatk/download/archive](https://software.broadinstitute.org/gatk/download/archive).
 
-Register the package using gatk3-register:
+Then, register the package using gatk3-register:
 
 ```
 gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
@@ -65,7 +65,7 @@ Alternatively, GATK may be installed directly on the command line with the follo
 
 ```bash
 mkdir -p /path/to/gatk_dir
-wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
+gsutil cp gs://gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2 path/to/gatk_dir/
 gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 ```
 
