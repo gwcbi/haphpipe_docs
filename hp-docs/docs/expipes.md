@@ -45,6 +45,9 @@ samp_id:           Sample ID
 outdir:            Output directory (default is [sample_dir]/haphpipe_assemble_01)
 ```
 
+To use this pipeline with your own data, replace `[read1]` with your read1 fastq file, `[read2]` with your read2 fastq file, `[reference_fasta]` with the reference fasta file of your choice, `[reference_gtf]` with the reference GTF file corresponding to the reference fasta file, and `[samp_id]` with the sample ID label. See examples below:
+
+
 General command to execute pipeline 1:
 ```
 haphpipe_assemble_01 samp/read1.fq.gz samp/read2.fq.gz refs/ref.fasta refs/ref.gtf samp
@@ -80,6 +83,9 @@ amplicons_fasta:   Amplicon reference sequence (fasta)
 samp_id:           Sample ID
 outdir:            Output directory (default is sample_dir/haphpipe_assemble_02)
 ```
+
+To use this pipeline with your own data, replace `[read1]` with your read1 fastq file, `[read2]` with your read2 fastq file, `[amplicons_fasta]` with the reference fasta file containing as many amplicons as you desire, and `[samp_id]` with the sample ID label. See examples below:
+
 
 General command to execute pipeline 2:
 ```

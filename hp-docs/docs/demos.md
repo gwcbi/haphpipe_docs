@@ -1098,7 +1098,7 @@ Step 6: Estimate best-fit model of evolution using ModelTest-NG
 
 ```bash
 # Region00 - this is amplicon PRRT
-haphpipe model_test \ 
+haphpipe model_test \
  --seqs hp_alignments/alignment_region00.fasta \
  --run_id alignment_region00 \
  --logfile haphpipe_demo/haphpipe.out \
@@ -1107,7 +1107,7 @@ haphpipe model_test \
  --ncpu 1
 
 # Region01 - this is amplicon INT
-haphpipe model_test \ 
+haphpipe model_test \
  --seqs hp_alignments/alignment_region01.fasta \
  --run_id alignment_region01 \
  --logfile haphpipe_demo/haphpipe.out \
@@ -1116,7 +1116,7 @@ haphpipe model_test \
  --ncpu 1
 
 # Region02 - this is amplicon gp120
-haphpipe model_test \ 
+haphpipe model_test \
  --seqs hp_alignments/alignment_region02.fasta \
  --run_id alignment_region02 \
  --logfile haphpipe_demo/haphpipe.out \
