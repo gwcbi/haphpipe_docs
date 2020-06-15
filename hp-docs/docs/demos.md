@@ -27,12 +27,6 @@ These are the steps completed in the demo:
 We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running `haphpipe_assemble_02`.  
 
 
-fastq-dump common error:
-
-```
-
-```
-
 If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. 
 
 ---

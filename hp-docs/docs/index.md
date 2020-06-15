@@ -6,7 +6,7 @@ _**HA**plotype and **PH**ylodynamics pipeline for viral assembly, population gen
 
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/haphpipe/README.html)
 
-![schematic](img/haphpipe_schematic.png)
+![schematic](img/haphpipe_schematic_v2.png)
 
 
 In this User Guide, we assume basic familiarity with conda environments, basic bash knowledge and knowledge of general next-generation sequencing (NGS) concepts. For more information regarding all of these, see [helpful links](https://gwcbi.github.io/haphpipe_docs/help/) and [FAQ](https://gwcbi.github.io/haphpipe_docs/faq/). Remember that a directory is a simply a folder nesting system, similar to what you see on your computer. Where you see "folder" below you can also say "directory."

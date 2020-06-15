@@ -167,9 +167,10 @@
             <div class="section">
               
                 <h2 id="haphpipe-installation-instructions">HAPHPIPE Installation Instructions</h2>
-<p>HAPHIPE depends on more than a dozen different programs, each of which may itself depend on other programs and libraries. Installing everything separately would be a nightmare, so you should use the package manager "Bioconda" to install everything. Bioconda is a popular package manager in the bioinformatics world. See the Helpful Resources section for more information and resources for Bioconda. Here, we will describe where to get Bioconda and how to install it, then how to use Bioconda to install the necessary programs for HAPHPIPE. We will also detail the acquisition and installation of one program, GATK, that is not handled by Bioconda, and finally the acquisition and installation of HAPHPIPE itself.</p>
-<p>Here, we describe the procedure for installing HAPHPIPE using the package manager Bioconda (Grüning et al. 2018) on the command line. If you are unfamiliar with Bioconda, please see <a href="https://bioconda.github.io"></a> for installation and channel setup. HAPHPIPE is available <a href="https://github.com/gwcbi/haphpipe">here</a> and is written in Python 3.7.2 coding language. </p>
-<p>The installation process begins with the creation of a conda environment that installs the necessary dependencies required by HAPHPIPE. Once the conda environment has been created, it can be activated for use with the command conda activate haphpipe. Due to license restrictions, Bioconda cannot distribute and install GATK (McKenna et al. 2010; Van der Auwera et al. 2013; Poplin et al. 2018) directly. To fully install GATK, you must download a licensed copy of GATK (version 3.8-0) from the Broad Institute <a href="https://software.broadinstitute.org/gatk/download/archive">(link)</a>. You can then install HAPHPIPE using the single command <code>pip install git+git://github.com/gwcbi/haphpipe.git</code>, which pulls the repository from Github.</p>
+<p><a href="http://bioconda.github.io/recipes/haphpipe/README.html"><img alt="install with bioconda" src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat" /></a></p>
+<p>HAPHIPE depends on more than a dozen different programs, each of which may itself depend on other programs and libraries. Installing everything separately would be a nightmare, so you should use the package manager "Bioconda" to install the HAPHPIPE package. Bioconda is a popular package manager in the bioinformatics world. See the Helpful Resources section for more information and resources for Bioconda. Here, we will describe where to get Bioconda and how to install it, then how to use Bioconda to install HAPHPIPE. We will also detail the acquisition and installation of one program, GATK, that is not handled by Bioconda.</p>
+<p>Here, we describe the procedure for installing HAPHPIPE using the package manager Bioconda (Grüning et al. 2018) on the command line. If you are unfamiliar with Bioconda, please see <a href="https://bioconda.github.io"></a> for installation and channel setup. The source code for HAPHPIPE is available <a href="https://github.com/gwcbi/haphpipe">here</a> and is written in Python 3.7.2. </p>
+<p>The installation process begins with the creation of a conda environment that installs HAPHPIPE and its dependencies together with one short command. Once the conda environment has been created, it can be activated for use with the command conda activate haphpipe. Due to license restrictions, Bioconda cannot distribute and install GATK (McKenna et al. 2010; Van der Auwera et al. 2013; Poplin et al. 2018) directly. To fully install GATK, you must download a licensed copy of GATK (version 3.8-0) from the Broad Institute <a href="https://software.broadinstitute.org/gatk/download/archive">(link)</a>. </p>
 <p><strong>1. Install <a href="https://bioconda.github.io/user/install.html#set-up-channels">conda</a></strong></p>
 <p>Download the conda package:</p>
 <pre><code>wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
@@ -184,29 +185,11 @@ conda config --add channels bioconda
 conda config --add channels conda-forge
 </code></pre>
 
-<p><strong>3. Create a conda environment with the following dependencies</strong></p>
-<pre><code class="bash">conda create -n haphpipe \
-    python=3.7 \
-    future \
-    pyyaml \
-    biopython \
-    seqtk \
-    bowtie2 \
-    bwa \
-    flash \
-    freebayes \
-    mummer \
-    picard \
-    trimmomatic \
-    samtools=1.9 \
-    gatk=3.8 \
-    spades \
-    blast \
-    sierrapy
-
+<p><strong>3. Create a conda environment for HAPHPIPE</strong></p>
+<pre><code class="bash">conda create -n haphpipe haphpipe
 </code></pre>
 
-<p>Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:</p>
+<p>This will install HAPHPIPE and all dependencies in Bioconda.Note: on some HPC systems (including GW's Pegasus), certain dependencies must be installed as a 'User Install'. If this is the case (which will be apparent if you receive availability errors for any of the above packages after installing them through conda) use the following command to install the package:</p>
 <pre><code>pip install --user &lt;package name&gt;
 </code></pre>
 
@@ -214,30 +197,26 @@ conda config --add channels conda-forge
 <pre><code>conda activate haphpipe
 </code></pre>
 
+<p>You can now test your HAPHPIPE install by running <code>haphpipe -h</code>.</p>
 <p><strong>5. Install GATK</strong></p>
 <p>Due to license restrictions, bioconda cannot distribute
 and install GATK directly. To fully install GATK, you must
 download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
 <a href="https://software.broadinstitute.org/gatk/download/archive">https://software.broadinstitute.org/gatk/download/archive</a>.</p>
-<p>Register the package using gatk3-register:</p>
+<p>Then, register the package using gatk3-register:</p>
 <pre><code>gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
 </code></pre>
 
 <p>This will copy GATK into your conda environment.</p>
 <p>Alternatively, GATK may be installed directly on the command line with the following commands:</p>
 <pre><code class="bash">mkdir -p /path/to/gatk_dir
-wget -O - 'https://software.broadinstitute.org/gatk/download/auth?package=GATK-archive&amp;version=3.6-0-g89b7209' | tar -xjvC /path/to/gatk_dir
+gsutil cp gs://gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2 path/to/gatk_dir/
 gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 </code></pre>
 
 <p>NOTE: HAPHPIPE was developed and tested using GATK 3.8.</p>
-<p><strong>6. Install HAPHPIPE</strong></p>
-<pre><code>pip install git+git://github.com/gwcbi/haphpipe.git
-</code></pre>
-
-<p>Upon completion of the installation, you can test it to ensure the repository has been installed completely and correctly by running haphpipe -h (in quick start). Once HAPHPIPE is installed and performing correctly, there is no need to install it again; simply activate the conda environment when needed by executing <code>conda activate haphpipe</code>. If a new version is released in the future, HAPHPIPE can be updated by running the command line <code>pip install --upgrade git+git://github.com/gwcbi/haphpipe.git</code>. At any point, the <code>-h</code> option that follows any HAPHPIPE module will output a help message that provides a description of the module and the desired input(s) and output(s).</p>
 <h2 id="predicthaplo-installation-instructions">PredictHaplo Installation Instructions</h2>
-<p>Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype modules (<em>hp_predict_haplo</em> and <em>hp_ph_parser</em>).</p>
+<p>Users are required to download PredictHaplo on their own computing system prior to running any of the haplotype modules (<em>predict_haplo</em> and <em>ph_parser</em>).</p>
 <p>Here is how the GW CBI team installed PredictHaplo onto our HPC, which has a slurm scheduling system and uses Lua module files.</p>
 <p>We cannot help with the installation of this software, but have provided the code that we used here to install PredictHaplo onto our system. Please see <a href="https://bmda.dmi.unibas.ch/software.html">their website</a> for contact information if needed.</p>
 <p>This module loads predicthaplo onto GWU's HPC - Colonial One. </p>
