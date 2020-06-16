@@ -84,6 +84,9 @@
     <li class="toctree-l2"><a href="#ph_parser">ph_parser</a></li>
     
 
+    <li class="toctree-l2"><a href="#cliquesnv">cliquesnv</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -517,6 +520,153 @@ Use -h after any command for a list of options. </p>
 </code></pre>
 
 </details>
+
+<h3 id="cliquesnv"><em>cliquesnv</em></h3>
+<p>A reference-based reconstruction of viral variants from NGS data(<a href="https://github.com/vtsyvina/CliqueSNV">documentation</a>). Input is read files in Fastq format and reference Fasta file. 
+Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. </p>
+<p><strong>Usage:</strong></p>
+<p><code>haphpipe cliquesnv [CliqueSNV OPTIONS] [HAPHPIPE OPTIONS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; (or) --fqU &lt;FASTQ&gt; [--outdir]</code></p>
+<p><em>Output files:</em></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cs[NUM]_[REGION].fasta</td>
+<td>Reconstructed haplotypes in FASTA format.</td>
+</tr>
+<tr>
+<td>cs[NUM]_[REGION].txt</td>
+<td>CliqueSNV output summary file.</td>
+</tr>
+<tr>
+<td>cs[NUM]_[REGION]_summary.txt</td>
+<td>HAPHPIPE-generated output summary file with sequence length and diversity.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Input/Output Arguments:</em> </p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>CliqueSNV Equivalent</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--fq1 SEQS</td>
+<td></td>
+<td>Input reads in FASTQ format</td>
+</tr>
+<tr>
+<td>--fq2 SEQS</td>
+<td></td>
+<td>Input reads in FASTQ format</td>
+</tr>
+<tr>
+<td>--ref_fa REF_FA</td>
+<td></td>
+<td>Reference FASTA</td>
+</tr>
+<tr>
+<td>--outdir OUTDIR</td>
+<td>--prefix</td>
+<td>Output directory (default: .)</td>
+</tr>
+</tbody>
+</table>
+<p><em>CliqueSNV Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>CliqueSNV Equivalent</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--jardir JARDIR</td>
+<td>-jar</td>
+<td>Path to clique-snv.jar</td>
+</tr>
+<tr>
+<td>--O22min O22MIN</td>
+<td>-t</td>
+<td>Minimum threshold for O22 value</td>
+</tr>
+<tr>
+<td>--O22minfreq --O22MINFREQ</td>
+<td>-tf</td>
+<td>Minimum threshold for O22 frequency relative to read coverage</td>
+</tr>
+<tr>
+<td>--printlog</td>
+<td>-log</td>
+<td>Print log data to console</td>
+</tr>
+<tr>
+<td>--merging MERGING</td>
+<td>-cm</td>
+<td>Cliques merging algorithm: accurate or fast</td>
+</tr>
+<tr>
+<td>--outputstart OUTPUTSTART</td>
+<td>-os</td>
+<td>Output start position</td>
+</tr>
+<tr>
+<td>--outputend OUTPUTEND</td>
+<td>-oe</td>
+<td>Output end position</td>
+</tr>
+<tr>
+<td>--fasta_format FASTA_FORMAT</td>
+<td>-fdf</td>
+<td>Fasta defline format: short or extended, add number at end to adjust precision of frequency</td>
+</tr>
+</tbody>
+</table>
+<p><em>Options:</em></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--keep_tmp</td>
+<td>Keep temporary directory</td>
+</tr>
+<tr>
+<td>--quiet</td>
+<td>Do not write output to console (silence stdout and  stderr) (default: False)</td>
+</tr>
+<tr>
+<td>--logfile LOGFILE</td>
+<td>Name for log file (output)</td>
+</tr>
+<tr>
+<td>--debug</td>
+<td>Print commands but do not run (default: False)</td>
+</tr>
+<tr>
+<td>--ncpu NCPU</td>
+<td>Number of CPU to use (default: 1)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Example usage:</em></p>
+<pre><code>haphpipe cliquesnv --fq1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa final.fna
+</code></pre>
               
             </div>
           </div>
