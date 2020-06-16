@@ -231,7 +231,7 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
 
 **Step 3: Build a Tree**
 
-Now, we will use *build_tree_NG_* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTR). The `--all` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
+Now, we will use *build_tree_NG* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTR). The `--all` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
 ```
 haphpipe build_tree_NG --seqs hp_multiple_align/alignment_region00.fasta --all --model GTR
 ```
