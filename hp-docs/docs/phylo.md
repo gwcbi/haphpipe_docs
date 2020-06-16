@@ -231,12 +231,12 @@ The ModelTest output will be written to a file called `modeltest_results.out` an
 
 **Step 3: Build a Tree**
 
-Now, we will use *build_tree* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTRGAMMAX). The `--run_full_analysis` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
+Now, we will use *build_tree_NG_* to build our tree! You should use the best model outputted in *model_test* for the `--model` argument (here we are using GTR). The `--all` option will automatically run a full maximum likelihood & bootstrapping analysis for us:
 ```
-haphpipe build_tree --seqs hp_multiple_align/alignment_region00.fasta --run_full_analysis --model GTRGAMMAX
+haphpipe build_tree_NG --seqs hp_multiple_align/alignment_region00.fasta --all --model GTR
 ```
 
-The output will be written to a new directory, `hp_build_tree`. The best tree file from RAxML will be outputted as `RAxML_bipartitionsBranchLabels.build_tree.tre`. This tree can then be annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
+The output will be written to a new directory, `hp_build_tree`. The best tree file from RAxML will be outputted as `hp_tree.raxml.support`. This tree can then be annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
 
 **Phylogenomics Pipelines**
 
@@ -392,116 +392,90 @@ _Example usage:_
 haphpipe model_test --seqs multiple_align/alignment.fasta
 ```
 
-
-
-### *build_tree*
-Phylogeny reconstruction with RAxML ([documentation](https://cme.h-its.org/exelixis/resource/download/NewManual.pdf)). Input is an alignment (FASTA or PHYLIP format). Output is a tree file (TRE format).
-Please see the RAxML documentation for a full description of RAxML options. For convenience, we have included an option `--run_full_analysis` which will automatically find the best maximum likelihood tree, complete bootstrapping, and then merge output together for a final tree.
+### *build_tree_NG*
+Phylogeny reconstruction with RAxML-NG ([documentation](https://github.com/amkozlov/raxml-ng/wiki)). Input is an alignment (FASTA or PHYLIP format). Output is a tree file.
+Please see the RAxML-NG documentation for a full description of RAxML-NG options. 
 
 **Usage:**
 
-`haphpipe build_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
+`haphpipe build_tree_NG [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
 
 **(or):**
 
-`hp build_tree [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
+`hp build_tree_NG [RAxML OPTIONS] [HAPHPIPE OPTIONS] --seqs <FASTA> --output_name <TXT> [--outdir]`
 
 *Output files:*
 
 File   | Description |
 ---------|-------------|
-RaxML_info.build_tree.tre              | This file is written regardless of the command line option. It contains information about the model and algorithm used. If --InitialRearrangement is called, it will indicate the rearrangement setting used 
-RAxML_log.build_tree.tre               | This file prints out the time, likelihood value of the current tree, and number of the checkpoint file (if called) after each iteration of the search algorithm. Not generated in the case of multiple bootstraps. 
-RAxML_result.build_tree.tre            | Unless multiple bootstraps are executes, this file is written after each iteration of the search algorithm. It contians the final tree topology of the current run
-RAxML_parsimonyTree.build_tree.tre     | If a starting tree is not specified by --UserStartingTree, this file will contain the randomized parsimony starting tree
-RAxML_randomTree.build_tree.tre        | If --rand_starting_tree if called, this file will contain the completely random starting tree
-RAxML_checkpoint.build_tree.tre.checkpointNumber          | Generated if --print_intermediate_trees is called
-RAxML_bootstrap.build_tree.tre         | Consolidates final bootstrapped trees if called with --NumberofRuns
-RAxML_bipartitions.build_tree.tre      | Contain the input tree with confidence values at nodes if --algo_option is called
-RAxML_bipartitionsBranchLabels.build_tree.tre             | Support values are displayed as Newick branch labels rather than node labels
-AxML_bipartitionFrequencies.build_tree.tre                | If --algo_optio m is called, this file contains the pair-wise bipartition frequencies of all trees 
-RAxML_perSiteLLs.build_tree.tre        | This file contains contains the per–site log likelihood scores. Only generated if --algo_option g is called
-RAxML_bestTree.build_tree.tre          | Outputs the best-scoring ML tree
-RAxML_distances.build_tree.tre         | Contains the pair-wise ML-based distances between taxonpairs. This file is only generated when --algo_option x option is called.
+%PREFIX.raxml.bestTree                  | Outputs the best-scoring Maximum Likelihood tree
+%PREFIX.raxml.bestPartitionTrees        | Best-scoring ML tree for each partition 
+%PREFIX.raxml.bestModel                 | Optimized parameters for the highest-scoring ML tree
+%PREFIX.raxml.bootstraps                | Trees generated for every bootstrap replicate
+%PREFIX.raxml.bootstrapMSA.<REP>.phy    | Bootstrap replicate alignments
+%PREFIX.raxml.ckp                       | Contains last log record if RAxML-NG has not finished successfully
+%PREFIX.raxml.consensusTree             | Consensus tree: estimates support for each clade of the final tree
+%PREFIX.raxml.log                       | Screen log
+%PREFIX.raxml.mlTrees                   | Maximum Likelihood trees for each starting tree
+%PREFIX.raxml.startTree                 | The starting trees for each Maximum Likelihood inference
+%PREFIX.raxml.support                   | Best-scoring Maximum Likelihood tree with bootstrap values
+%PREFIX.raxml.terrace                   | Trees residing on a terrace (same likelihood or parsimony score) in compressed Newick form
+%PREFIX.raxml.terraceNewick             | Trees residing on a terrace in multi-line standard Newick form
+ 
+
 
 *Input/Output Arguments:* 
 
-Option   | RAxML Equivalent |Description |
----------|------------------|----        |
-  --seqs SEQS        | -s          |  Input alignment in PHYLIP or FASTA format|
-  --output_name NAME | -n          |  Run name for trees (default: build_tree.tre)|
-  --model MODEL      | -m          |  Substitution Model (default: GTRGAMMAIX)|
-  --outdir OUTDIR    | -w          |  Output directory (default: .)|
- 
-*RAxML Options:*
+Option   | RAxML-NG Equivalent |Description |
+---------|------------------|----           |
+  --seqs SEQS        | --msa                |  Input alignment in PHYLIP or FASTA format|
+  --output_name NAME | --prefix             |  Run name for trees (default: build_tree.tre)|
+  --outdir OUTDIR    | --prefix             |  Output directory (default: .)|
 
-Option   | RAxML Equivalent |Description |
+
+*RAxML-NG Options:*
+
+Option   | RAxML Equivalent-NG |Description |
 ---------|------------------|----        |
---run_full_analysis | Run bootstrap search and find best ML tree |
-  --outgroup                  | -o  | outgrpup for tree|
-  --parsimony_seed            | -p  | Parsimony Random Seed|
-  --wgtFile                   | -a  | Column weight file name to assign individual weights to each column of the alignment|
-  --secsub                    | -A  | Specify secondary structure substitution models, must also include file defining the secondary structure |
-  --bootstrap                 | -b  | bootstrapRandomNumberSeed for non-parametric bootstrapping|
-  --bootstrap_threshold       | -B  | Threshold for bootstopping criteria|
-  --numCat                    | -c  | Number of distinct rate categories for RAxML when model of rate heterogeneity is set to CAT|
-  --rand_starting_tree        | -d  | ML optimization from random starting tree|
-  --convergence_criterion     | -D  | ML search convergence criterion|
-  --likelihoodEpsilon         | -e  | Set model optimization precision in log likelihood units for final optimization of tree topology|
-  --excludeFileName           | -E  | File contains specifications of alignment positions to be excluded|
-  --algo_option               | -f  | Select what kind of algorithm RAxML shall execute|
-  --cat_model                 | -F  | Enable ML tree searches under CAT model for very large trees|
-  --groupingFile              | -g  | File name of a multifurcating constraint tree|
-  --placementThreshold        | -G  | Threshold value for ML­based evolutionary placement algorithm heuristics|
-  --disable_pattern_compression | -H |Disable pattern compression|
-  --InitialRearrangement      | -i  | Radius for pruned sub-tree re-insertion|
-  --posteriori                | -I  | posteriori bootstopping analysis|
-  --print_intermediate_trees  | -j  | Print out a couple of intermediate trees|
-  --majorityrule              | -J  | Compute majority rule consensus tree|
-  --print_branch_length       | -k  | Bootstrapped trees should be printed with branch lengths|
-  --ICTCmetrics               | -L  | Compute the TC and IC metrics on a consensus tree|
-  --partition_branch_length   | -M  | Switch on estimation of individual per­partition branch lengths|
-  --disable_check             | -O  | Disable check for completely undetermined sequence in alignment|
-  --AAmodel                   | -P  | Specify the file name of a user­defined AA (Protein) substitution model|
-  --multiplemodelFile         | -q  | Specify the file name which contains the assignment of models to alignment partitions for multiple models of substitution|
-  --binarytree                | -r  | Specify the file name of a binary constraint tree|
-  --BinaryParameterFile       | -R  | Specify the file name of a binary model parameter file that has previously been generated with RAxML using the ­f e tree evaluation option.|
-  --SecondaryStructure        | -S  | Specify the name of a secondary structure file|
-  --UserStartingTree          | -t  | Specifies a user starting tree file name which must be in Newick format|
-  --median_GAMMA              | -u  | Use the median for the discrete approximation of the GAMMA model of rateheterogeneity|
-  --version_info              | -v  | Display version information|
-  --rate_heterogeneity        | -V  | Disable rate heterogeneity among site model and use one without rate heterogeneity instead|
-  --directory                 | -w  | Full directory of output file|
-  --window                    | -W  | Sliding window size for leave­one­out site­specific placement bias algorithm|
-  --RapidBootstrapNumSeed     | -x  | Specify an integer number (random seed) and turn on rapid bootstrapping|
-  --random_addition           | -X  | RAxML will only do a randomized stepwise addition order parsimony tree reconstruction without performing any additional SPRs|
-  --starting_tree             | -y  | Only for computing parsimony|
-  --quartetGroupingFileName   | -Y  | Pass a quartet grouping file name defining four groups from which to draw quartets|
-  --multipleTreeFile          | -z  | Specify the file name of a file containing multiple trees e.g. from a bootstrap that shall be used to draw bipartition values onto a tree provided with ­t.|
-  --NumberofRuns              | -N  | Specify the number of alternative runs on distinct starting trees|
-  --mesquite                  | --mesquite                   | Print output files that can be parsed by Mesquite|
-  --silent                    | --silent                     | Disables printout of warnings related to identical sequences and entirely undetermined sites in the alignment|
-  --noseqcheck                | --no-seq-check               | Disables checking the input MSA for identical sequences and entirely undetermined sites|
-  --nobfgs                    | --no-bfgs                    | Disables automatic usage of BFGS method to optimize GTR rates on unpartitioned DNA datasets|
-  --epaPlaceNum               | ­­epa­keep­placements=       | Specify the number of potential placements you want to keep for each read in the EPA algorithm|
-  --epaProbThreshold          | ­­epa­prob­threshold=        | Specify a percent threshold for including potential placements of a read depending on the maximum placement weight for this read|
-  --epaLikelihood             | ­­epa­accumulated­threshold= | Specify an accumulated likelihood weight threshold|
-  --HKY85                     | --HKY85                      | Specify that all DNA partitions will evolve under the HKY85 model|
-  --BootstrapPerm             | ­­bootstop­perms=            | Specify the number of permutations to be conducted for the bootstopping/bootstrap convergence test; minimum 100|
-  --option_help               | -h                           | Display Help|
+ --model MODEL                      | --model       | Substitution model OR path to partition file|
+ --all                              | --all         | Run bootstrap search and find best ML tree|
+ --branch_length BRANCH_LENGTH      | --brlen       | Specify branch linkage model |
+ --consense                         | --consense    | Build a consensus tree |
+ --rand_tree RAND_TREE              | --tree rand   | Start tree option: start from a random topology |
+ --pars_tree PARS_TREE              | --tree pars   | Start tree option: parsimony-based randomized stepwise addition algorithm |
+ --user_tree USER_TREE              | --tree        | Start tree option: upload custom tree in Newick format |
+ --search                           | --search      | Predefined start tree: 10 random and 10 parsimony in v0.8.0 and later |
+ --search_1random                   | --search1     | Predefined start tree: 1 random |
+ --constraint_tree  CONSTRAINT_TREE | --tree-constraint | Specify topological constraint tree |
+ --outgroup OUTGROUP                | --outgroup    | Outgroup to root inferred tree |
+ --bsconverge                       | --bsconverge  | Posteriori bootstrap convergence test |
+ --bs_msa                           | --bsmsa       | Bootstrap replicate alignments |
+ --bs_trees BS_TREES                | --bs-trees    | Number of bootstrap trees OR autoMRE |
+ --bs_tree_cutoff BS_TREE_CUTOFF    | --bs-cutoff   | Specify bootstopping cutoff value |
+ --bs_metric BS_METRIC              | --bs-metric   | Compare bootstrap support values |
+ --bootstrap                        | --bootstrap   | Non-parametric bootstrap analysis |
+ --check                            | --check       | Alignment sanity check |
+ --log LOG                          | --log         | Options for output verbosity |
+ --loglh                            | --loglh       | Compute and print the likelihood of the tree(s) without optimization or generating output files |
+ --terrace TERRACE                  | --terrace     | Check if a tree is on a phylogenetic terrace. |
+
 
 *Options:*
 
 Option   | Description |
 ---------|-------------|
- --keep_tmp  | Keep temporary directory  |
- --quiet            |     Do not write output to console (silence stdout and  stderr) (default: False)|
- --logfile LOGFILE  |   Name for log file (output)|
- --debug            |  Print commands but do not run (default: False)|
+ --version    | check RAxML-NG version |
+ --seed SEED  | Seed for random numbers |
+ --redo       | Run even if there are existing files with the same name |
+ --keep_tmp   | Keep temporary directory  |
+ --quiet            | Do not write output to console (silence stdout and  stderr) (default: False)|
+ --logfile LOGFILE  | Name for log file (output)|
+ --debug            | Print commands but do not run (default: False)|
+ --ncpu NCPU      | Number of CPU to use (default: 1)|
  
 _Example usage:_
 
 
 ```
-haphpipe build_tree --seqs multiple_align/alignment.fasta --run_full_analysis
+haphpipe build_tree_NG --all --seqs hp_alignments/alignment.fasta --model GTR
 ```

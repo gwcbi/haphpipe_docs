@@ -66,7 +66,7 @@ Alternatively, GATK may be installed directly on the command line with the follo
 ```bash
 mkdir -p /path/to/gatk_dir
 gsutil cp gs://gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2 path/to/gatk_dir/
-gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
+gatk3-register /path/to/gatk_dir/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
 ```
 
 NOTE: HAPHPIPE was developed and tested using GATK 3.8.

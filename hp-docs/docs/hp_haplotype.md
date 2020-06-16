@@ -301,3 +301,58 @@ By default, PredictHaplo outputs their own unique version of a fasta file. It in
 </details>
 
 			
+### *cliquesnv*
+A reference-based reconstruction of viral variants from NGS data([documentation](https://github.com/vtsyvina/CliqueSNV)). Input is read files in Fastq format and reference Fasta file. 
+Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. 
+
+**Usage:**
+
+`haphpipe cliquesnv [CliqueSNV OPTIONS] [HAPHPIPE OPTIONS] --fq1 <FASTQ> --fq2 <FASTQ> (or) --fqU <FASTQ> [--outdir]`
+
+*Output files:*
+
+File   | Description |
+---------|-------------|
+cs[NUM]_[REGION].fasta | Reconstructed haplotypes in FASTA format. |
+cs[NUM]_[REGION].txt | CliqueSNV output summary file. |
+cs[NUM]_[REGION]_summary.txt | HAPHPIPE-generated output summary file with sequence length and diversity. |
+
+*Input/Output Arguments:* 
+
+Option   | CliqueSNV Equivalent |Description |
+---------|------------------|----           |
+  --fq1 SEQS         |                      |  Input reads in FASTQ format|
+  --fq2 SEQS         |                      |  Input reads in FASTQ format|
+  --ref_fa REF_FA    |                      |  Reference FASTA |
+  --outdir OUTDIR    | --prefix             |  Output directory (default: .)|
+
+*CliqueSNV Options:*
+
+Option   | CliqueSNV Equivalent |Description |
+---------|------------------|----        |
+ --jardir JARDIR           | -jar      | Path to clique-snv.jar |
+ --O22min O22MIN           | -t        | Minimum threshold for O22 value |
+ --O22minfreq --O22MINFREQ | -tf       | Minimum threshold for O22 frequency relative to read coverage |
+ --printlog                | -log      | Print log data to console |
+ --merging MERGING         | -cm       | Cliques merging algorithm: accurate or fast |
+ --outputstart OUTPUTSTART | -os       | Output start position |
+ --outputend OUTPUTEND     | -oe       | Output end position |
+ --fasta_format FASTA_FORMAT | -fdf      | Fasta defline format: short or extended, add number at end to adjust precision of frequency |
+
+*Options:*
+
+Option   | Description |
+---------|-------------|
+ --keep_tmp         | Keep temporary directory  |
+ --quiet            | Do not write output to console (silence stdout and  stderr) (default: False)|
+ --logfile LOGFILE  | Name for log file (output)|
+ --debug            | Print commands but do not run (default: False)|
+ --ncpu NCPU        | Number of CPU to use (default: 1)|
+
+_Example usage:_
+
+
+```
+haphpipe cliquesnv --fq1 corrected_1.fastq --fq2 corrected_2.fastq --ref_fa final.fna
+```
+		
