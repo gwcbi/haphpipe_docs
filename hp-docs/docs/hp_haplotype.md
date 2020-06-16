@@ -303,7 +303,7 @@ By default, PredictHaplo outputs their own unique version of a fasta file. It in
 			
 ### *cliquesnv*
 A reference-based reconstruction of viral variants from NGS data([documentation](https://github.com/vtsyvina/CliqueSNV)). Input is read files in Fastq format and reference Fasta file. 
-Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. 
+Input reads are aligned and outputted to SAM format using BWA and SAMtools prior to running CliqueSNV. Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. 
 
 **Usage:**
 
@@ -321,10 +321,10 @@ cs[NUM]_[REGION]_summary.txt | HAPHPIPE-generated output summary file with seque
 
 Option   | CliqueSNV Equivalent |Description |
 ---------|------------------|----           |
-  --fq1 SEQS         |                      |  Input reads in FASTQ format (read 1)|
-  --fq2 SEQS         |                      |  Input reads in FASTQ format (read 2)|
-  --fqU SEQS         |                      |  Input reads in FASTQ format (unpaired reads)|
-  --ref_fa REF_FA    |                      |  Reference FASTA |
+  --fq1 SEQS         | NA                   |  Input reads in FASTQ format (read 1)|
+  --fq2 SEQS         | NA                   |  Input reads in FASTQ format (read 2)|
+  --fqU SEQS         | NA                   |  Input reads in FASTQ format (unpaired reads)|
+  --ref_fa REF_FA    | NA                   |  Reference FASTA |
   --outdir OUTDIR    | --prefix             |  Output directory (default: .)|
 
 *CliqueSNV Options:*
