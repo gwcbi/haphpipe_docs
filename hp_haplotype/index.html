@@ -523,7 +523,7 @@ Use -h after any command for a list of options. </p>
 
 <h3 id="cliquesnv"><em>cliquesnv</em></h3>
 <p>A reference-based reconstruction of viral variants from NGS data(<a href="https://github.com/vtsyvina/CliqueSNV">documentation</a>). Input is read files in Fastq format and reference Fasta file. 
-Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. </p>
+Input reads are aligned and outputted to SAM format using BWA and SAMtools prior to running CliqueSNV. Output is inferred viral variants with respective frequencies and diversity. Please see the CliqueSNV  documentation for a full description of CliqueSNV  options. </p>
 <p><strong>Usage:</strong></p>
 <p><code>haphpipe cliquesnv [CliqueSNV OPTIONS] [HAPHPIPE OPTIONS] --fq1 &lt;FASTQ&gt; --fq2 &lt;FASTQ&gt; (or) --fqU &lt;FASTQ&gt; [--outdir]</code></p>
 <p><em>Output files:</em></p>
@@ -561,22 +561,22 @@ Output is inferred viral variants with respective frequencies and diversity. Ple
 <tbody>
 <tr>
 <td>--fq1 SEQS</td>
-<td></td>
+<td>NA</td>
 <td>Input reads in FASTQ format (read 1)</td>
 </tr>
 <tr>
 <td>--fq2 SEQS</td>
-<td></td>
+<td>NA</td>
 <td>Input reads in FASTQ format (read 2)</td>
 </tr>
 <tr>
 <td>--fqU SEQS</td>
-<td></td>
+<td>NA</td>
 <td>Input reads in FASTQ format (unpaired reads)</td>
 </tr>
 <tr>
 <td>--ref_fa REF_FA</td>
-<td></td>
+<td>NA</td>
 <td>Reference FASTA</td>
 </tr>
 <tr>
