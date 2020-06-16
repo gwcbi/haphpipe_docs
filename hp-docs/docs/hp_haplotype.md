@@ -321,8 +321,9 @@ cs[NUM]_[REGION]_summary.txt | HAPHPIPE-generated output summary file with seque
 
 Option   | CliqueSNV Equivalent |Description |
 ---------|------------------|----           |
-  --fq1 SEQS         |                      |  Input reads in FASTQ format|
-  --fq2 SEQS         |                      |  Input reads in FASTQ format|
+  --fq1 SEQS         |                      |  Input reads in FASTQ format (read 1)|
+  --fq2 SEQS         |                      |  Input reads in FASTQ format (read 2)|
+  --fqU SEQS         |                      |  Input reads in FASTQ format (unpaired reads)|
   --ref_fa REF_FA    |                      |  Reference FASTA |
   --outdir OUTDIR    | --prefix             |  Output directory (default: .)|
 
