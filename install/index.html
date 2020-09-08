@@ -201,7 +201,7 @@ conda config --add channels conda-forge
 <p><strong>5. Install GATK</strong></p>
 <p>Due to license restrictions, bioconda cannot distribute
 and install GATK directly. To fully install GATK, you must
-download a licensed copy of GATK (version 3.8-0) from the Broad Institute and register the package using gatk3-register:</p>
+download a licensed copy of GATK (version 3.8-0) from the Broad Institute and register the package using gatk3-register. <code>gsutil</code> has been included as a dependency in HAPHPIPE, so you do not need to worry about installing it for the GATK acquisition.</p>
 <p>This will copy GATK into your conda environment.</p>
 <p>GATK needs to be installed directly on the command line with the following commands:</p>
 <pre><code class="bash">mkdir -p /path/to/gatk_dir
