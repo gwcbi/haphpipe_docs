@@ -50,23 +50,16 @@ __5. Install GATK__
 
 Due to license restrictions, bioconda cannot distribute
 and install GATK directly. To fully install GATK, you must
-download a licensed copy of GATK (version 3.8-0) from the Broad Institute:
-[https://software.broadinstitute.org/gatk/download/archive](https://software.broadinstitute.org/gatk/download/archive).
-
-Then, register the package using gatk3-register:
-
-```
-gatk3-register /path/to/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
-```
+download a licensed copy of GATK (version 3.8-0) from the Broad Institute and register the package using gatk3-register:
 
 This will copy GATK into your conda environment.
 
-Alternatively, GATK may be installed directly on the command line with the following commands:
+GATK needs to be installed directly on the command line with the following commands:
 
 ```bash
 mkdir -p /path/to/gatk_dir
 gsutil cp gs://gatk-software/package-archive/gatk/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2 path/to/gatk_dir/
-gatk3-register /path/to/gatk_dir/GenomeAnalysisTK-3.8-0-ge9d806836.tar.bz2
+gatk3-register /path/to/gatk_dir/GenomeAnalysisTK.jar
 ```
 
 NOTE: HAPHPIPE was developed and tested using GATK 3.8.
