@@ -50,7 +50,7 @@ __5. Install GATK__
 
 Due to license restrictions, bioconda cannot distribute
 and install GATK directly. To fully install GATK, you must
-download a licensed copy of GATK (version 3.8-0) from the Broad Institute and register the package using gatk3-register:
+download a licensed copy of GATK (version 3.8-0) from the Broad Institute and register the package using gatk3-register. `gsutil` has been included as a dependency in HAPHPIPE, so you do not need to worry about installing it for the GATK acquisition.
 
 This will copy GATK into your conda environment.
 
