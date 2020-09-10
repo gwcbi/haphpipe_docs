@@ -117,6 +117,9 @@
     <li class="toctree-l2"><a href="#using-the-command-line">Using the Command Line</a></li>
     
 
+    <li class="toctree-l2"><a href="#sra">SRA</a></li>
+    
+
     <li class="toctree-l2"><a href="#conda">Conda</a></li>
     
 
@@ -164,10 +167,8 @@
             <div class="section">
               
                 <h3 id="haphpipe">HAPHPIPE</h3>
-<p><strong>How does HAPHPIPE compare to existing viral NGS pipelines?</strong></p>
-<p>Please refer to our papers (links here) for a thorough comparison.</p>
-<p><strong>How was HAPHPIPE tested?</strong></p>
-<p>Please refer to our validation study (link here).</p>
+<p><strong>How does HAPHPIPE compare to existing viral NGS pipelines and how was HAPHPIPE tested?</strong></p>
+<p>Please refer to our <a href="https://doi.org/10.3390/v12070758">validation study</a>.</p>
 <h3 id="ngs">NGS</h3>
 <p><strong>What is the difference between next-generation sequencing and Sanger sequencing?</strong></p>
 <p>The critical difference between Sanger sequencing and NGS is sequencing volume. While the Sanger method only sequences a single DNA fragment at a time, NGS is massively parallel, sequencing millions of fragments simultaneously per run. This high-throughput process translates into sequencing hundreds to thousands of genes at one time. NGS also offers greater discovery power to detect novel or rare variants with deep sequencing.</p>
@@ -184,6 +185,9 @@
 <p><strong>What is an interactive job and how do I run one?</strong></p>
 <p>When using HAPHPIPE on an HPC cluster, if stages/pipelines are not being run in a job through SLURM or a similar package manager, HAPHPIPE commands should be run on an interactive node of your HPC. 
 This <a href="https://github.com/gwcbi/HPC/blob/master/interactive_jobs.md">guide</a> gives instructions for using interactive nodes on GW's ColonialOne.</p>
+<h3 id="sra">SRA</h3>
+<p><strong>How do I download SRA files manually?</strong></p>
+<p>See the SRA search and download <a href="https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/">help site</a>.</p>
 <h3 id="conda">Conda</h3>
 <p><strong>What is Conda?</strong></p>
 <p>See the Conda documentation <a href="https://conda.io/en/latest/">here</a>.</p>
