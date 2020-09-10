@@ -27,7 +27,7 @@ These are the steps completed in the demo:
 We split up the samples, instead of looping through them for fastq-dump because sometimes the fastq-dump/NCBI doesn't work. It was more helpful to see when a sample failed this way rather than a loop for fastq-dump then a loop for running `haphpipe_assemble_02`.  
 
 
-If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the SRA database on a webpage. 
+If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the [SRA database](https://www.ncbi.nlm.nih.gov/sra) on a webpage. 
 
 ---
 
@@ -36,7 +36,7 @@ If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trou
 **Accession numbers:**
 SRR8525886, SRR8525933, SRR8525938, SRR8525939,and SRR8525940
 
-These data were first presented in this [paper](https://journals.plos.org/plosone/article/file?type=printable&id=10.1371/journal.pone.0214820). The SRA project data can be found [here](https://www.ncbi.nlm.nih.gov/pubmed/30964884?dopt=Abstract). This data was a part of a cohort study. The viral samples were amplified for three gene regions: *PRRT*, *int*, and *env*. This data was analyzed using HAPHPIPE and PredictHaplo in this [paper](https://www.ncbi.nlm.nih.gov/pubmed/32029767). Results will vary from this 2020 cross-sectional study because here, for the demo, we only use 10,000 reads for each of these 5 samples compared to the study which uses all the available NGS reads.
+These data were first presented in this [paper](https://journals.plos.org/plosone/article/file?type=printable&id=10.1371/journal.pone.0214820). The SRA project data can be found [here](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA517147/). This data was a part of a cohort study. The viral samples were amplified for three gene regions: *PRRT*, *int*, and *env*. This data was analyzed using HAPHPIPE and PredictHaplo in this [paper](https://www.ncbi.nlm.nih.gov/pubmed/32029767). Results will vary from this 2020 cross-sectional study because here, for the demo, we only use 10,000 reads for each of these 5 samples compared to the study which uses all the available NGS reads.
 
 ---
 
