@@ -1593,3 +1593,6 @@ fi
 
 Finally, the tree file `RAxML_bipartitionsBranchLabels.covid_genome.tre` can be viewed in and annotated in programs such as [FigTree](http://tree.bio.ed.ac.uk/software/figtree/) or [iTOL](https://itol.embl.de).
 
+### Snakemake
+
+Advanced users may also be interested in constructing a [Snakemake](https://snakemake.readthedocs.io/en/stable/) workflow. See the Snakemake documentation for details. 
