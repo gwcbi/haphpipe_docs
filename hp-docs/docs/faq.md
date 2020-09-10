@@ -1,12 +1,8 @@
 ### HAPHPIPE
 
-**How does HAPHPIPE compare to existing viral NGS pipelines?**
+**How does HAPHPIPE compare to existing viral NGS pipelines and how was HAPHPIPE tested?**
 
-Please refer to our papers (links here) for a thorough comparison.
-
-**How was HAPHPIPE tested?**
-
-Please refer to our validation study (link here).
+Please refer to our [validation study](https://doi.org/10.3390/v12070758).
 
 ### NGS
 
@@ -39,6 +35,12 @@ So maintaining a well-structured directory is essential to both software develop
 
 When using HAPHPIPE on an HPC cluster, if stages/pipelines are not being run in a job through SLURM or a similar package manager, HAPHPIPE commands should be run on an interactive node of your HPC. 
 This [guide](https://github.com/gwcbi/HPC/blob/master/interactive_jobs.md) gives instructions for using interactive nodes on GW's ColonialOne.
+
+### SRA
+
+**How do I download SRA files manually?**
+
+See the SRA search and download [help site](https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/).
 
 ### Conda
 
