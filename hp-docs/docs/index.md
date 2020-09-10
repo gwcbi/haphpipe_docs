@@ -15,11 +15,11 @@ HAPHPIPE is intended only for Linux and Mac OS X platforms. If you are a Windows
 
 This User Guide was developed jointly by undergraduate and graduate students to be accessible for users at all stages. Margaret C. Steiner, Keylie M. Gibson, Matthew L. Bendall, Uzma Rentia, and Pengfei Li all contributed to developing this User Guide and testing HAPHPIPE.
 
-See our protocol paper (link coming soon) for more information and this paper (link coming soon) for our validation study.
+See our protocol paper (link coming soon) for more information and this [paper](https://doi.org/10.3390/v12070758) for our validation study.
 
 ### Citing HAPHPIPE
 
-When using HAPHPIPE, please cite our article when it is available. For now, reference the GitHub website: https://github.com/gwcbi/haphpipe
+When using HAPHPIPE, please cite our article when it is available. For now, reference the GitHub website: https://github.com/gwcbi/haphpipe and the validation [paper](https://doi.org/10.3390/v12070758).
 
 
 ### The HAPHPIPE suite
