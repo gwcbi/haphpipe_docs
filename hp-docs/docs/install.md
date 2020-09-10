@@ -133,7 +133,7 @@ should produce:
 
 ```
 Program: haphpipe (haplotype and phylodynamics pipeline)
-Version: 0.8.1
+Version: 1.0.2
 
 Commands:
  -- Reads
@@ -154,12 +154,18 @@ Commands:
 
  -- Haplotype
     predict_haplo            assemble haplotypes with PredictHaplo
-    ph_parser                parse output from PredictHaplo.
+    ph_parser                parse output from PredictHaplo
+    cliquesnv                assemble haplotypes with CliqueSNV
 
- -- Annotate
+ -- Description
     pairwise_align           align consensus to an annotated reference
     extract_pairwise         extract sequence regions from pairwise alignment
-    annotate_from_ref        annotate consensus from reference annotation
+    summary_stats            generates summary statistics for samples
+
+ -- Phylo
+    multiple_align           multiple sequence alignment
+    model_test               tests for model of evolution using ModelTest
+    build_tree_NG            builds phylogenetic tree with RAxML-NG
 
  -- Miscellaneous
     demo                     setup demo directory and test data
