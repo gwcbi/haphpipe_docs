@@ -256,6 +256,22 @@ The demo pipeline bash script:
 ```bash
 #!/usr/bin/env bash
 
+# Copyright (C) 2020 Keylie M. Gibson
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 ###############################################################################
 # Demo pipeline implementing amplicon assembly using a reference-based approach
 #(haphpipe_assemble_02). Reads are error-corrected and used to refine
@@ -269,16 +285,12 @@ SN=$(basename $0)
 read -r -d '' USAGE <<EOF
 USAGE:
 $SN <outdir>
-
 ----- HAPHPIPE demo -----
-
 This demo implements amplicon assembly using a reference-based approach. Five SRA
 samples are pulled with fastq-dump, assembled with haphpipe_assemble_02,
 multiple aligned and a phylogeny estimated. If PredictHaplo is installed,
 haplotypes are also predicted followed by MSA and a phylogeny estimated.
-
 outdir:            Output directory (default is demo)
-
 EOF
 
 #--- Read command line args
@@ -328,7 +340,7 @@ fastq-dump --outdir ${outdir}/${sra} \
  --origfmt\
  --minSpotId 30000\
  --maxSpotId 40000\
- --accession ${sra}
+ ${sra}
 EOF
     echo -e "[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n"
     eval $cmd1
@@ -430,7 +442,7 @@ fastq-dump --outdir ${outdir}/${sra} \
  --origfmt\
  --minSpotId 30000\
  --maxSpotId 40000\
- --accession ${sra}
+ ${sra}
 EOF
     echo -e "[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n"
     eval $cmd1
@@ -517,7 +529,7 @@ fi
 # Step 2c: Sample 3: SRR8525938
 ###############################################################################
 # Step 1: Fastq-dump
-stage="Demo Sample 1: SRR8525938"
+stage="Demo Sample 3: SRR8525938"
 sra='SRR8525938'
 echo -e "\n[---$SN---] ($(date)) Stage: $stage"
 
@@ -532,7 +544,7 @@ fastq-dump --outdir ${outdir}/${sra} \
  --origfmt\
  --minSpotId 30000\
  --maxSpotId 40000\
- --accession ${sra}
+ ${sra}
 EOF
     echo -e "[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n"
     eval $cmd1
@@ -619,7 +631,7 @@ fi
 # Step 2d: Sample 4: SRR8525939
 ###############################################################################
 # Step 1: Fastq-dump
-stage="Demo Sample 1: SRR8525939"
+stage="Demo Sample 4: SRR8525939"
 sra='SRR8525939'
 echo -e "\n[---$SN---] ($(date)) Stage: $stage"
 
@@ -634,7 +646,7 @@ fastq-dump --outdir ${outdir}/${sra} \
  --origfmt\
  --minSpotId 30000\
  --maxSpotId 40000\
- --accession ${sra}
+ ${sra}
 EOF
     echo -e "[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n"
     eval $cmd1
@@ -721,7 +733,7 @@ fi
 # Step 2e: Sample 5: SRR8525940
 ###############################################################################
 # Step 1: Fastq-dump
-stage="Demo Sample 1: SRR8525940"
+stage="Demo Sample 5: SRR8525940"
 sra='SRR8525940'
 echo -e "\n[---$SN---] ($(date)) Stage: $stage"
 
@@ -736,7 +748,7 @@ fastq-dump --outdir ${outdir}/${sra} \
  --origfmt\
  --minSpotId 30000\
  --maxSpotId 40000\
- --accession ${sra}
+ ${sra}
 EOF
     echo -e "[---$SN---] ($(date)) $stage for ${sra} command:\n\n$cmd1\n"
     eval $cmd1
@@ -825,9 +837,9 @@ fi
 stage="multiple_align"
 echo -e "\n[---$SN---] ($(date)) Stage: $stage"
 
-if [[ -e ${outdir}/multiple_align/alignment_region00.fasta ]] &&\
-   [[ -e ${outdir}/multiple_align/alignment_region01.fasta ]] &&\
-   [[ -e ${outdir}/multiple_align/alignment_region02.fasta ]]; then
+if [[ -e ${outdir}/hp_alignments/alignment_region00.fasta ]] &&\
+   [[ -e ${outdir}/hp_alignments/alignment_region01.fasta ]] &&\
+   [[ -e ${outdir}/hp_alignments/alignment_region02.fasta ]]; then
     echo "[---$SN---] ($(date)) EXISTS: $stage alignment_region00.fasta,alignment_region01.fasta,alignment_region02.fasta"
 else
  # check for PredictHaplo
@@ -891,7 +903,7 @@ if [[ -e ${outdir}/alignment_region00_modeltest_results.out ]] &&\
    [[ -e ${outdir}/alignment_region02_modeltest_results.out ]]; then
     echo "[---$SN---] ($(date)) EXISTS: $stage alignment_region00_modeltest_results.out,alignment_region01_modeltest_results.out,alignment_region02_modeltest_results.out"
 else
-    for region in ${outdir}/multiple_align/alignment_region??.fasta; do
+    for region in ${outdir}/hp_alignments/alignment_region??.fasta; do
         reg=${region%.fasta}
         read -r -d '' cmd <<EOF
 haphpipe model_test\
@@ -914,27 +926,28 @@ fi
 ###############################################################################
 # Step 5: Build tree with RAxML
 ###############################################################################
-stage="build_tree"
+stage="build_tree_NG"
 echo -e "\n[---$SN---] ($(date)) Stage: $stage"
 
-if [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region00 ]] &&\
-   [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region01 ]] &&\
-   [[ -e ${outdir}/build_tree/RAxML_bipartitionsBranchLabels.alignment_region02 ]]; then
-    echo "[---$SN---] ($(date)) EXISTS: $stage RAxML_bipartitionsBranchLabels.alignment_region00, RAxML_bipartitionsBranchLabels.alignment_region01, RAxML_bipartitionsBranchLabels.alignment_region02"
+if [[ -e ${outdir}/hp_tree/alignment_region00.raxml.support ]] &&\
+   [[ -e ${outdir}/hp_tree/alignment_region01.raxml.support ]] &&\
+   [[ -e ${outdir}/hp_tree/alignment_region02.raxml.support ]]; then
+    echo "[---$SN---] ($(date)) EXISTS: $stage alignment_region00.raxml.support, alignment_region01.raxml.support, alignment_region02.raxml.support"
 else
     # check for PredictHaplo
     command -v PredictHaplo-Paired >/dev/null 2>&1
     if [[ $? -eq 0 ]] ; then
-        for alignment in ${outdir}/multiple_align/alignment_region??.phy; do
+        for alignment in ${outdir}/hp_alignments/alignment_region??.phy; do
             reg=${alignment%.phy}
             read -r -d '' cmd <<EOF
-haphpipe build_tree\
- --run_full_analysis\
+haphpipe build_tree_NG\
+ --all\
  --seqs ${alignment}\
  --output_name $(basename $reg)\
- --model GTRGAMMAX\
+ --model GTR+I\
  --logfile ${outdir}/haphpipe.out\
- --outdir ${outdir}
+ --outdir ${outdir}\
+--in_type PHYLIP
 EOF
             echo -e "[---$SN---] ($(date)) $stage command:\n\n$cmd\n"
             eval $cmd
@@ -943,24 +956,24 @@ EOF
                 (  echo "[---$SN---] ($(date)) FAILED: $stage" && exit 1 )
         done
     else
-        for alignment in ${outdir}/multiple_align/alignment_region00.phy ${outdir}/multiple_align/alignment_region01.phy; do
+        for alignment in ${outdir}/hp_alignments/alignment_region00.phy ${outdir}/hp_alignments/alignment_region01.phy; do
             reg=${alignment%.phy}
             read -r -d '' cmd <<EOF
-haphpipe build_tree\
- --run_full_analysis\
+haphpipe build_tree_NG\
+ --all\
  --seqs ${alignment}\
  --output_name $(basename $reg)\
- --model GTRGAMMAX\
+ --model GTR+I\
  --logfile ${outdir}/haphpipe.out\
- --outdir ${outdir}
+ --outdir ${outdir}\
+ --in_type PHYLIP
 EOF
             echo -e "[---$SN---] ($(date)) $stage command:\n\n$cmd\n"
             eval $cmd
 
-            [[ $? -eq 0 ]] && echo "[---$SN---] ($(date)) COMPLETED: $stage" || \
+            [[ $? -eq 0 ]] && echo "[---$SN---] ($(date)) COMPLETED: $stage" && echo "NOTE: region02 did not run because there are only 3 sequences in the alignment" || \
                 (  echo "[---$SN---] ($(date)) FAILED: $stage" && exit 1 )
         done
-        echo "region02 did not run because there are only 3 sequences in the alignment"
     fi
 fi
 
@@ -993,7 +1006,7 @@ fastq-dump --outdir haphpipe_demo/SRR8525886 \
  --origfmt \
  --minSpotId 30000 \
  --maxSpotId 40000 \
- --accession SRR8525886
+ SRR8525886
 ```
 
 Reminder that the above code is the same as this command on a single line - the `\` just makes it more visually readable.

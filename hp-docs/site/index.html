@@ -167,9 +167,9 @@
 <p>In this User Guide, we assume basic familiarity with conda environments, basic bash knowledge and knowledge of general next-generation sequencing (NGS) concepts. For more information regarding all of these, see <a href="https://gwcbi.github.io/haphpipe_docs/help/">helpful links</a> and <a href="https://gwcbi.github.io/haphpipe_docs/faq/">FAQ</a>. Remember that a directory is a simply a folder nesting system, similar to what you see on your computer. Where you see "folder" below you can also say "directory."</p>
 <p>HAPHPIPE is intended only for Linux and Mac OS X platforms. If you are a Windows user, see this section on our <a href="https://gwcbi.github.io/haphpipe_docs/install/#windows-users">install page</a>. </p>
 <p>This User Guide was developed jointly by undergraduate and graduate students to be accessible for users at all stages. Margaret C. Steiner, Keylie M. Gibson, Matthew L. Bendall, Uzma Rentia, and Pengfei Li all contributed to developing this User Guide and testing HAPHPIPE.</p>
-<p>See our protocol paper (link coming soon) for more information and this paper (link coming soon) for our validation study.</p>
+<p>See our protocol paper (link coming soon) for more information and this <a href="https://doi.org/10.3390/v12070758">paper</a> for our validation study.</p>
 <h3 id="citing-haphpipe">Citing HAPHPIPE</h3>
-<p>When using HAPHPIPE, please cite our article when it is available. For now, reference the GitHub website: https://github.com/gwcbi/haphpipe</p>
+<p>When using HAPHPIPE, please cite our article when it is available. For now, reference the GitHub website: https://github.com/gwcbi/haphpipe and the validation <a href="https://doi.org/10.3390/v12070758">paper</a>.</p>
 <h3 id="the-haphpipe-suite">The HAPHPIPE suite</h3>
 <p>Each stage can be run on its own. Stages are grouped into 4 categories: <code>hp_reads</code>, <code>hp_assemble</code>, <code>hp_haplotype</code>, and <code>hp_annotate</code>.
 More detailed description of command line options for each stage are available in the below sections. To view all available stages in HAPHPIPE, run: </p>
@@ -178,7 +178,7 @@ More detailed description of command line options for each stage are available i
 
 <p>Output will look like:</p>
 <pre><code>Program: haphpipe (haplotype and phylodynamics pipeline)
-Version: 0.8.1
+Version: 1.0.2
 
 Commands:
  -- Reads
@@ -199,12 +199,18 @@ Commands:
 
  -- Haplotype
     predict_haplo            assemble haplotypes with PredictHaplo
-    ph_parser                parse output from PredictHaplo.
+    ph_parser                parse output from PredictHaplo
+    cliquesnv                assemble haplotypes with CliqueSNV
 
- -- Annotate
+ -- Description
     pairwise_align           align consensus to an annotated reference
     extract_pairwise         extract sequence regions from pairwise alignment
-    annotate_from_ref        annotate consensus from reference annotation
+    summary_stats            generates summary statistics for samples
+
+ -- Phylo
+    multiple_align           multiple sequence alignment
+    model_test               tests for model of evolution using ModelTest
+    build_tree_NG            builds phylogenetic tree with RAxML-NG
 
  -- Miscellaneous
     demo                     setup demo directory and test data
@@ -263,5 +269,5 @@ Commands:
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2020-09-10 20:03:13
+Build Date UTC : 2020-09-10 20:15:43
 -->
