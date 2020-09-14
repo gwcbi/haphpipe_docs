@@ -1157,7 +1157,7 @@ One sample (SRR8525886) will be used an example, and the single bash command for
 </code></pre>
 
 <p>Reminder that the above code is the same as this command on a single line - the <code>\</code> just makes it more visually readable.
-<code>fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 --accession SRR8525886</code></p>
+<code>fastq-dump --outdir haphpipe_demo/SRR8525886 --split-files --origfmt --minSpotId 30000 --maxSpotId 40000 SRR8525886</code></p>
 <p>Step 2: Run <code>haphpipe_assemble_02</code></p>
 <pre><code class="bash">haphpipe_assemble_02 \
  haphpipe_demo/SRR8525886/SRR8525886_1.fastq \
@@ -1233,7 +1233,7 @@ ls -d haphpipe_demo/SRR*/haphpipe_assemble_02/PH0* &gt;&gt; haphpipe_demo/dir_li
 <p>Step 6: Estimate best-fit model of evolution using ModelTest-NG</p>
 <pre><code class="bash"># Region00 - this is amplicon PRRT
 haphpipe model_test \
- --seqs hp_alignments/alignment_region00.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region00.fasta \
  --run_id alignment_region00 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1242,7 +1242,7 @@ haphpipe model_test \
 
 # Region01 - this is amplicon INT
 haphpipe model_test \
- --seqs hp_alignments/alignment_region01.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region01.fasta \
  --run_id alignment_region01 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1251,7 +1251,7 @@ haphpipe model_test \
 
 # Region02 - this is amplicon gp120
 haphpipe model_test \
- --seqs hp_alignments/alignment_region02.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region02.fasta \
  --run_id alignment_region02 \
  --logfile haphpipe_demo/haphpipe.out \
  --outdir haphpipe_demo \
@@ -1263,31 +1263,31 @@ haphpipe model_test \
 <pre><code class="bash"># Region00 - this is amplicon PRRT
 haphpipe build_tree_NG \
  --all \
- --seqs hp_alignments/alignment_region00.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region00.fasta \
  --output_name alignment_region00 \
  --model GTRGAMMAX\
  --logfile haphpipe_demo/haphpipe.out\
- --outdir haphpipe_demo/hp_tree
+ --outdir haphpipe_demo
 
 # Region01 - this is amplicon INT
 haphpipe build_tree_NG \
  --all \
- --seqs hp_alignments/alignment_region01.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region01.fasta \
  --output_name alignment_region01 \
  --model GTRGAMMAX\
  --logfile haphpipe_demo/haphpipe.out\
- --outdir haphpipe_demo/hp_tree
+ --outdir haphpipe_demo
 </code></pre>
 
 <p>If PredictHaplo is not run, there is not enough taxa - only 3 - to build a tree for region02 gp120.</p>
 <pre><code class="bash"># Region02 - this is amplicon gp120
 haphpipe build_tree_NG \
  --all \
- --seqs hp_alignments/alignment_region02.fasta \
+ --seqs haphpipe_demo/hp_alignments/alignment_region02.fasta \
  --output_name alignment_region02 \
  --model GTRGAMMAX\
  --logfile haphpipe_demo/haphpipe.out\
- --outdir haphpipe_demo/hp_tree
+ --outdir haphpipe_demo
 </code></pre>
               
             </div>
