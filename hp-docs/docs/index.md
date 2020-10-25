@@ -1,4 +1,4 @@
-![logo](img/haphpipe_logo.pdf)
+![logo](img/haphpipe_logo.png)
 
 ## About HAPHPIPE
 
