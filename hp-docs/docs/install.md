@@ -8,6 +8,7 @@ Here, we describe the procedure for installing HAPHPIPE using the package manage
 
 The installation process begins with the creation of a conda environment that installs HAPHPIPE and its dependencies together with one short command. Once the conda environment has been created, it can be activated for use with the command conda activate haphpipe. Due to license restrictions, Bioconda cannot distribute and install GATK (McKenna et al. 2010; Van der Auwera et al. 2013; Poplin et al. 2018) directly. To fully install GATK, you must download a licensed copy of GATK (version 3.8-0) from the Broad Institute [(link)](https://software.broadinstitute.org/gatk/download/archive). 
 
+A video showing the full HAPHPIPE installation process and the automatic demo is available [here](https://youtu.be/B0boJSRiEM8).
 
 __1. Install [conda](https://bioconda.github.io/user/install.html#set-up-channels)__
 
