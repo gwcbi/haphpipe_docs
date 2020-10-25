@@ -30,6 +30,12 @@ We split up the samples, instead of looping through them for fastq-dump because 
 If fastq-dump doesn't work, check your wifi connection, sometimes HPCs have trouble downloading SRA data with the connection. Downloading on own computer should work just fine. If for some reason the fastq-dump doesn't work, you can download directly from the [SRA database](https://www.ncbi.nlm.nih.gov/sra) on a webpage. 
 
 ---
+#### Video of running demo interactively
+
+A video showing the full HAPHPIPE interactive demo process is available [here](https://www.youtube.com/watch?v=gX-EFIdT_UI). It follows all the steps outlined below in the 'Running Demo Interactively' section. It assumes you succesfully installed HAPHPIPE and activated the conda environment. 
+
+
+---
 
 #### Description of data used
 
@@ -247,6 +253,8 @@ haphpipe_demo
 ---
 
 ### Running Demo Interactively
+
+
 
 The demo pipeline bash script:
 
